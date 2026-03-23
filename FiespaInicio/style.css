@@ -1,0 +1,161 @@
+body {
+  margin: 0;
+  background: #020402;
+  font-family: "Courier New", monospace;
+  color: #33ff33;
+}
+
+.terminal {
+  max-width: 1500px;
+  margin: 40px auto;
+  padding: 30px;
+  border: 2px solid #33ff33;
+  box-shadow: 0 0 20px #33ff33;
+  height: 85vh;            /* ocupa casi toda la pantalla */
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  background: transparent;
+  border: none;
+  color: #33ff33;
+  font-family: inherit;
+  font-size: 50px;
+  outline: none;
+}
+
+span {
+    font-size: 50px;
+}
+
+.terminal :autofill{
+    box-shadow: 0 0 0px 1000px #000000 inset;
+    -webkit-text-fill-color: #33ff33;
+}
+
+#opciones{
+    padding-top: 10px;
+}
+
+#opciones button {
+  width: 100%;
+  text-align: left;
+  margin-top: 10px;
+}
+
+button {
+  background: transparent;
+  border: 1px solid #33ff33;
+  color: #33ff33;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 40px;
+  cursor: pointer;
+  margin-top: 15px;
+  display: block;
+}
+
+button:hover {
+  background: #33ff33;
+  color: #000;
+}
+
+.oculto {
+  display: none;
+}
+
+#mensajes {
+  flex:1;
+  overflow-y:auto;
+}
+
+#login {
+    font-size: 40px;
+}
+
+#sistema {
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#saludo {
+    font-size: 40px;
+}
+
+.linea {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.submitOculto {
+  display: none;
+}
+
+
+
+
+
+
+
+.contenedor {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  height: 100%;
+}
+
+/* Panel izquierdo */
+#listaCapitulos {
+  width: 250px;
+  padding-right: 10px;
+}
+
+/* El borde aparece solo cuando la terminal está activa */
+.terminal.activo #listaCapitulos {
+  border-right: 1px solid #33ff33;
+}
+
+
+.capituloBtn {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 1px solid #33ff33;
+  color: #33ff33;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.capituloBtn:hover {
+  background: #33ff33;
+  color: #000;
+}
+
+.bloqueado {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Panel derecho */
+.visorCapitulo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#mensajes {
+  flex: 1;
+  overflow-y: auto;
+}

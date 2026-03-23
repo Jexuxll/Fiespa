@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIESPA</title>
+    <link rel="stylesheet" href="Fiespa.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+</head>
+<body class="no-transition">
+    <header id="Inicio">
+       <nav>
+        <div>
+            <a href="#Inicio">Inicio</a>
+            <a href="#Minijuego">Minijuego</a>
+            <a href="#Info">Información</a>
+        </div>
+        <div class="logo">
+            <a href="#Inicio"><img src="logo2.png" alt="Logo FIESPA" class="logoFIESPA"></a>
+        </div>
+        <div>
+            <a href="#Ubicacion">Ubicación</a>
+            <a href="#Playlist">Playlist</a>
+            <a href="#contador">Contador</a>
+        </div>
+       </nav> 
+    </header>
+
+    <div class="contador">
+        <h1 id="contador"></h1>
+    </div>
+    
+    <div class="banner">
+    </div>
+    
+    <main>
+    <div class="Minijuego" id="Minijuego">
+
+        <!-- REGISTRO -->
+
+        <section id="registro">
+            <h2>Registro de Supervivientes</h2>
+
+            <p>
+            Una anomalía se acerca.<br>
+            La Frontera cambiará pronto.<br>
+            Solo quienes sepan tomar decisiones correctas podrán resistir.
+            </p>
+
+            <form id="loginForm">
+                <input type="text" id="alias" placeholder="¿Cómo te llamas viajero?" required>
+                <button type="submit">></button>
+            </form>
+        </section>
+
+        <!-- DECISIÓN -->
+
+        <section id="decision" style="display:none;">
+            <h3 id="saludo"></h3>
+
+            <div id="pregunta">
+                <p>
+                📜 INFORME 01<br>
+                El grupo avanza por terreno desconocido.<br>
+                Un miembro se queda atrás.
+                </p>
+
+                <p><strong>¿Qué haces?</strong></p>
+
+                <div id="respuestas">
+                    <button class="opciones" onclick="enviarDecision('A')">Le ayudas</button><br><br>
+                    <button class="opciones" onclick="enviarDecision('B')">Continúas</button><br><br>
+                    <button class="opciones" onclick="enviarDecision('C')">Lo utilizas como distracción</button>
+                </div>
+            </div>
+            
+            <p id="respuesta"></p>
+    </div>
+
+    <div class="Info" id="Info">
+        <div class="text1">
+            <h2>QUÉ ES LA FIESPA</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum error nesciunt similique inventore eos tempora quod soluta cupiditate culpa totam expedita rerum quo facere, quisquam molestias suscipit, eveniet illum quasi!</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab officiis odit atque voluptas. Nihil nobis saepe quia aspernatur? Nam, in distinctio. Voluptate corporis autem officiis omnis dolorem recusandae illum culpa.</p>
+        </div>
+        <img src="Fiespa'26/Fiespa2.jpeg" alt="Fiespa" class="multimedia1"></img>
+        <img src="Fiespa'26/Fiespa1.jpeg" alt="Fiespa" class="multimedia2"></img>
+        <div class="text2">
+            <h2>QUÉ NOS ESPERA ESTE AÑO</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum error nesciunt similique inventore eos tempora quod soluta cupiditate culpa totam expedita rerum quo facere, quisquam molestias suscipit, eveniet illum quasi!</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab officiis odit atque voluptas. Nihil nobis saepe quia aspernatur? Nam, in distinctio. Voluptate corporis autem officiis omnis dolorem recusandae illum culpa.</p>
+        </div>
+    </div>
+
+    <div class="carousel">
+        <div class="carousel-track">
+            <img src="Fiespa'26/carrusel (1).jpeg" alt="Foto 1">
+            <img src="Fiespa'26/carrusel (45).jpeg" alt="Foto 2">
+            <img src="Fiespa'26/carrusel (3).jpeg" alt="Foto 3">
+            <img src="Fiespa'26/carrusel (64).jpeg" alt="Foto 4">
+            <img src="Fiespa'26/carrusel (13).jpeg" alt="Foto 5">
+            <img src="Fiespa'26/carrusel (6).jpeg" alt="Foto 6">
+            <img src="Fiespa'26/carrusel (19).jpeg" alt="Foto 7">
+            <img src="Fiespa'26/carrusel (8).jpeg" alt="Foto 8">
+            <img src="Fiespa'26/carrusel (11).jpeg" alt="Foto 9">
+            <img src="Fiespa'26/carrusel (59).jpeg" alt="Foto 10">
+        </div>
+    </div>
+
+
+    <div class="Ubicacion" id="Ubicacion">
+        <h2>Ubicación</h2>
+        <p>Te esperamos en esta ubicación</p>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3003.8218181460015!2d-4.777851507207867!3d41.16023922442387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd40b4e797ad3de7%3A0xcf1e158d604df832!2sCam.%20de%20la%20B%C3%A1scula%2C%201%2C%2047219%20San%20Pablo%20de%20la%20Moraleja%2C%20Valladolid!5e0!3m2!1ses!2ses!4v1769890857522!5m2!1ses!2ses" 
+            width="600" 
+            height="450" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe> 
+
+        <!--<div id="mapa"></div>--> 
+
+    </div>
+    <div class="Playlist" id ="Playlist">
+        <h2>Playlist Oficial de FIESPA 2026</h2>
+        <a href="https://open.spotify.com/playlist/3MEwfbZRU22cHT0M0xm8ZR?si=77e190a0a40a4e5b&pt=455be73290bafbd4b2c2dc4313a66628" target="_blank" rel="noopener noreferrer">Click aquí para aportar tus canciones</a>
+        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/3MEwfbZRU22cHT0M0xm8ZR?utm_source=generator"
+            width="100%" 
+            height="352" 
+            frameBorder="0" 
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy">
+        </iframe>
+    </div>
+    </main>
+
+    <footer>
+        <div class="social-media">
+            <a href="https://www.instagram.com/" class="instagram"></a>
+            <a href="#" class="twitter"></a>
+            <a href="#" class="tiktok"></a>
+        </div>
+        <div class="footer-links">
+            <ul>
+                <li><a href="#Inicio">Inicio</a></li>
+                <li><a href="#Minijuego">Minijuego</a></li>
+                <li><a href="#Info">Información</a></li>
+                <li><a href="#Ubicacion">Ubicación</a></li>
+                <li><a href="#Playlist">Playlist</a></li>
+                <li><a href="#contador">Contador</a></li>
+            </ul>
+        </div>
+        <p class="copyright">© 2026 FIESPA. Todos los derechos reservados por Luis.</p>
+    </footer>
+    <div id="popupConfirmacion" class="popup oculto">
+        <div class="popup-box">
+            <p id="popupTexto"></p>
+            <div class="popup-botones">
+                <button id="popupOk">Confirmar</button>
+                <button id="popupCancel">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+
+
+     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="mapa.js"></script> 
+
+    <script src="Fiespa.js"></script>
+</body>
+</html>

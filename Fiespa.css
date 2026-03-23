@@ -1,0 +1,524 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #EFE7DA;
+    scroll-behavior: smooth;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    text-align: center; 
+    padding: 20px; 
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav a {
+    color: #AC3900;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 25px;
+    padding: 14px 50px;
+    transition: all 0.3s ease;
+}
+
+nav a:hover {
+    color: #BF4200;
+    text-shadow: #bf430093 0px 0px 2px;
+    transform: scale(1.1);
+    transition: transform 0.2s;
+    text-decoration-thickness: 5px;
+}
+
+.logo {
+    margin: 0 20px;
+    transition: all 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.07);
+    transition: transform 0.2s;
+}
+
+.logoFIESPA {
+    height: 100px;
+}
+
+/* Main content styles */
+
+main {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+}
+
+.Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2 {
+    text-align: center;
+    color: #0D4749;
+    font-size: 80px;
+    margin-top: 70px;
+    margin-bottom: 70px;
+}
+
+.Info p, .Ubicacion p, .Playlist p {
+    font-size: 32px;
+    line-height: 1.6;
+}
+
+/* Banner styles */
+
+.banner {
+    text-align: center;
+    padding: 40% 0% 0% 0%;
+    border: 1px solid #0d474928;
+    border-top: 0px;
+    margin: 0px 0px 50px 0px;
+    background-image: url('Fiespa\'26/BannerFiespa.jpeg');
+    background-size: cover;
+    background-position: 75% 20%;
+}
+
+/* Contador styles */
+
+.contador h1 {
+    margin: 0 0 0px 0;
+    font-size: 80px;
+    color:#052C29;
+    text-align: center;
+    background-color: #BF4200;
+}
+
+/* Minijuego styles */
+
+.Minijuego {
+    text-align: center;
+    padding: 50px 0px 50px 0px;
+}
+
+.Minijuego h2 {
+    margin-top: 0;
+}
+
+.Minijuego h3 {
+    color: #AC3900;
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.Minijuego iframe {
+    border-radius: 20px;
+    width: 80%;
+    height: 600px;
+}
+
+.Minijuego p {
+    font-size: 32px;
+    line-height: 1.6;
+}
+
+.Minijuego a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #0D4749;
+    font-size: 32px;
+    text-decoration: none;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    transition: all 0.3s ease;
+}
+
+.Minijuego button:hover {
+    background-color: #0D4749;
+    transition: all 0.3s ease;
+}
+
+.Minijuego form{
+    margin:  30px auto;
+    display: flex;
+    flex-direction: initial;
+    justify-content: left;
+}
+
+.Minijuego input{
+    border: 0;
+    box-sizing:content-box;
+    background-color: #EFE7DA;
+    font-size: 30px;
+    text-align: center;
+    color: #BF4200;
+    width: 90%;
+    padding-left: 150px;
+}
+
+.Minijuego input:focus{
+    outline: none;
+}
+
+.Minijuego :autofill{
+    box-shadow: 0 0 0px 1000px #EFE7DA inset;
+    -webkit-text-fill-color: #BF4200;
+}
+
+.Minijuego ::placeholder{
+    font-style: normal;
+    color: #ac390065;
+    text-align: center ;
+}
+
+.Minijuego button{
+    background-color: #BF4200;
+    color: #D3CBBE;
+    font-weight: bold;
+    font-size: 60px;
+    border: none;
+    padding: 20px 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    width: 7%;
+    overflow-wrap: break-word;
+}
+
+.Minijuego #pregunta{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Minijuego #respuestas{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-self: center;
+    width: 80%;
+}
+
+.Minijuego .opciones{
+    background-color: #BF4200;
+    color: #D3CBBE;
+    font-weight: bold;
+    font-size: 32px;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 200px;
+    width: 400px;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    overflow-wrap: break-word;
+    border-radius: 15px;
+}
+
+.popup {
+    position: fixed;
+    inset: 0;
+    background: #052C2999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.popup-box {
+    background: #0D4749;
+    border-radius: 15px;
+    padding: 25px 30px;
+    max-width: 600px;
+    text-align: center;
+    color: #EFE7DA;
+    font-size: 30px;
+}
+
+.popup-botones button {
+    margin: 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    background-color: #EFE7DA;
+    color: #052C29;
+    transition: all 0.3s ease;
+}
+
+.popup-botones button:hover {
+    background-color: #AC3900;
+    transition: all 0.3s ease;
+    color: #EFE7DA;
+}
+
+.oculto {
+    display: none;
+}
+/* Info section styles */
+
+.Info {
+    text-align: justify;
+    color: #D3CBBE;
+    align-items: center;
+    padding: 150px 150px 150px 150px;
+    background-color: #BF4200;
+    font-size: 24px;
+    display: grid;
+    grid-template-areas:
+        "text1 multimedia1"
+        "multimedia2 text2";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 100px;
+    justify-items: center;
+}
+
+.Info div {
+    width: 100%;
+}
+
+.Info img {
+    width: 80%;
+    height: auto;
+    border-radius: 30px;  
+    align-content: center;
+}
+
+.Info .multimedia1 {
+    rotate: 2.5deg;
+}
+
+.Info .multimedia2 {
+    rotate: -2.5deg;
+}
+
+.Info video {
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+}
+
+/* Carousel styles */
+
+.carousel {
+  max-width: 1300px;
+  margin: 80px auto;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 24px;
+  scroll-snap-type: x mandatory;
+  transition: transform 0.6s ease;
+}
+
+.carousel-track img {
+  flex: 0 0 calc((100% - 48px) / 3); /* 3 visibles exactos */
+  height: 500px;
+  border-radius: 20px;
+  object-fit: cover;
+  scroll-snap-align: start;
+}
+
+/* Mapa styles */
+
+.Ubicacion{
+    text-align: center;
+    padding: 0 150px 100px 150px;
+    color: #052C29;
+    background-color: #BF4200;
+}
+
+.Ubicacion p {
+    font-size: 32px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    color: #D3CBBE;
+}
+
+.Ubicacion iframe {
+    width: 70%;
+    height: 500px;
+    border-radius: 20px;
+    border: 0px;
+}
+
+#mapa {
+  height: 400px;
+  border-radius: 20px;
+}
+
+ /* Playlist styles */
+
+.Playlist {
+    text-align: center;
+    padding: 0 150px 100px 150px;
+    color: #D3CBBE;
+}
+
+.Playlist iframe {
+    border-radius: 20px;
+    width: 80%;
+    height: 500px;;
+}
+
+.Playlist a {
+    display: block;
+    color: #0D4749;
+    font-size: 32px;
+    text-decoration:none;
+    line-height: 1.6;
+    width: 550px;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 0.3s ease;
+}
+
+.Playlist a:hover {
+    color: #ac3900;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+/* Footer styles */
+
+footer {
+    background-color: #ac3900;
+    color:#EFE7DA;
+    text-align: center;
+    display: grid;
+    grid-template-areas:    "social-media"
+                            "footer-links"
+                            "copyright";
+    grid-template-columns: 1fr;
+    grid-gap: 40px;
+    padding: 40px;
+}
+
+footer a {
+    color: #EFE7DA;
+    text-decoration: none;
+    font-size: 24px;
+    margin: 0 10px;
+    transition: all 0.3s ease;
+}
+
+.instagram {
+    background-image: url('Fiespa\'26/Insta.png');
+}
+
+.twitter {
+    background-image: url('Fiespa\'26/twitter.png');
+    background-position: center;
+}
+
+.tiktok {
+    background-image: url('Fiespa\'26/tikTok.png');
+}
+
+.social-media {
+    grid-area: social-media;
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+}
+.social-media a {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    transition: all 0.3s ease;
+    background-size: cover;
+    display: inline-block;
+}
+
+.instagram:hover{
+    transform: scale(1.1);
+    transition: transform 0.2s;
+    background-image: url('Fiespa\'26/insta_hover.png');
+}
+
+.twitter:hover{
+    transform: scale(1.1);
+    transition: transform 0.2s;
+    background-image: url('Fiespa\'26/twitter_hover.png');
+}
+
+.tiktok:hover{
+    transform: scale(1.1);
+    transition: transform 0.2s;
+    background-image: url('Fiespa\'26/tikTok_hover.png');
+}
+
+footer a:hover {
+    color: #0D4749;
+    transition: transform 0.2s;
+}
+
+footer ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    grid-area: footer-links;
+    display: inline-flex;
+    gap: 50px;
+}
+
+footer li {
+    margin: 15px 0;
+    
+}
+
+.copyright {
+    margin: 0;
+    grid-area: copyright;
+}
+
+
+/* Verde petróleo oscuro:  #0D4749
+
+Beige medio (fondo): #EFE7DA
+
+Beige claro: #D3CBBE
+
+Terracota / naranja quemado: #AC3900 #BF4200
+
+Crema muy claro: #EEE6D9
+
+Crema cálido: #F4ECE0
+#052C29 */
+
+
+#pregunta {
+  opacity: 1;
+  max-height: 600px; /* suficiente para el contenido */
+  overflow: hidden;
+  transition: 
+    opacity 0.4s ease,
+    max-height 0.5s ease,
+    margin 0.4s ease;
+}
+
+#pregunta.ocultar {
+  opacity: 0;
+  max-height: 0;
+  margin: 0;
+}
+
+.no-transition * {
+  transition: none !important;
+}
+
+
+
