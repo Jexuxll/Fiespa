@@ -393,8 +393,22 @@ function iniciarSistema(alias) {
 
   mensajesDiv.innerHTML = "";
   opcionesDiv.innerHTML = "";
-  lanzarIntro();
+  mensajesDiv.innerHTML = "";
+  opcionesDiv.innerHTML = "";
+
+  const historial = localStorage.getItem("chatHistorial");
+
+  if(historial){
+    mensajesDiv.innerHTML = historial;
+
+    // 🔴 NO lanzar capítulos automáticamente
+    // SOLO mostramos lo que ya había
+
+  }else{
+    lanzarIntro();
+  }
 }
+
 
 // ===============================
 // INTRO
@@ -611,8 +625,11 @@ function escribirTexto(div, texto, callback) {
 
       div.textContent = texto;
       sonidoTecla.pause();
-      
 
+      if(guardandoChat){
+        guardarHistorial();
+      }
+      
       if (callback) callback();
     }
   }
@@ -753,6 +770,8 @@ function mostrarJugadorMultiple(respuestas, callback){
 
   siguiente();
 }
+
+let guardandoChat = false;
 
 // MEJORAR EFECTO ESCRITURA (PAUSA EN PUNTUACIÓN, SONIDO MÁS SUAVE, ETC)
 // AL CARGAR EL CHAT, SI HAY HISTORIAL EN LOCALSTORAGE, RECREARLO (PARA QUE NO SE PIERDA AL RECARGAR)
