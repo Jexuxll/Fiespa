@@ -39,13 +39,32 @@ body {
 }
 
 #login {
-  font-size: 51px;
+  font-size: 70px;
+  text-align: center;
 }
 
 .linea {
   display: flex;
   gap: 10px;
   margin: 10px 0;
+}
+
+.linea-centro {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#login .linea-centro span {
+  margin-top: 0px;
+  font-size: 70px;
+}
+
+#login .linea-centro input {
+  width: 70%;
+  text-align: center;
+  font-size: 70px;
+  margin-top: 50px;
 }
 
 input {
@@ -60,6 +79,11 @@ input {
 .error {
   text-shadow:0 0 4px red;
   color: red;
+  text-align: center;
+  width: 100%;
+  margin-top: 50px;
+  font-size: 70px;
+  margin-bottom: 0px;
 }
 
 .submitOculto {
@@ -118,6 +142,14 @@ input {
   font-size:37px;
   max-width:80%;
   padding:2px 14px;
+}
+
+.fechaCapitulo {
+  color: #7aff7a;
+  text-align: center;
+  font-size: 24px;
+  margin: 12px 0;
+  opacity: 0.8;
 }
 
 .mensajeJugador{

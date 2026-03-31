@@ -1,4 +1,5 @@
 const CLAVE_SECRETA = "PABLO";
+const USUARIO_POR_DEFECTO = "Usuario";
 let nombreJugador = localStorage.getItem("nombreJugador") || "";
 
 // SONIDO
@@ -362,25 +363,35 @@ const opcionesDiv = document.getElementById("opciones");
 document.getElementById("loginForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const alias = document.getElementById("alias").value.trim();
   const clave = document.getElementById("clave").value.trim();
   const error = document.getElementById("error");
+  const alias = USUARIO_POR_DEFECTO;
 
-  if (!alias || clave !== CLAVE_SECRETA) {
+  if (clave !== CLAVE_SECRETA) {
     error.textContent = "CLAVE INCORRECTA.";
     return;
   }
 
   localStorage.setItem("alias", alias);
 
-  // 🔥 LIMPIAR SI RECARGÓ A MITAD
-  localStorage.removeItem("chatHistorial");
+  // 🔥 NO LIMPIAR HISTORIAL, mantenerlo
+  // localStorage.removeItem("chatHistorial");
 
   iniciarSistema(alias);
 });
 
+const claveInput = document.getElementById("clave");
+if (claveInput) {
+  claveInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.getElementById("loginForm").requestSubmit();
+    }
+  });
+}
+
 const aliasGuardado = localStorage.getItem("alias");
-if (aliasGuardado) iniciarSistema(aliasGuardado);
+if (aliasGuardado) iniciarSistema(USUARIO_POR_DEFECTO);
 
 // ===============================
 // INICIO SISTEMA
@@ -389,7 +400,7 @@ if (aliasGuardado) iniciarSistema(aliasGuardado);
 function iniciarSistema(alias) {
   login.classList.add("oculto");
   sistema.classList.remove("oculto");
-  saludo.textContent = `Usuario ${alias} autorizado.`;
+  saludo.textContent = `ACCESO A TERMINAL AUTORIZADO.`;
 
   mensajesDiv.innerHTML = "";
   opcionesDiv.innerHTML = "";
@@ -397,16 +408,20 @@ function iniciarSistema(alias) {
   opcionesDiv.innerHTML = "";
 
   const historial = localStorage.getItem("chatHistorial");
+  const capIndex = localStorage.getItem("capituloActual");
+  const pasoIndex = localStorage.getItem("pasoActual");
 
-  if(historial){
-    mensajesDiv.innerHTML = historial;
+  lanzarIntro(() => {
+    if (historial) {
+      mensajesDiv.innerHTML = historial;
+    }
 
-    // 🔴 NO lanzar capítulos automáticamente
-    // SOLO mostramos lo que ya había
-
-  }else{
-    lanzarIntro();
-  }
+    if (capIndex !== null && pasoIndex !== null) {
+      lanzarCapitulo(parseInt(capIndex), parseInt(pasoIndex));
+    } else {
+      comprobarNuevosCapitulos();
+    }
+  });
 }
 
 
@@ -414,7 +429,7 @@ function iniciarSistema(alias) {
 // INTRO
 // ===============================
 
-function lanzarIntro() {
+function lanzarIntro(callback) {
 
   mensajesDiv.innerHTML = "";
 
@@ -434,7 +449,18 @@ function lanzarIntro() {
         setTimeout(siguiente, 500);
       });
     } else {
-      pedirNombre();
+      // una vez el intro se ha completado, borramos el texto de carga
+      mensajesDiv.innerHTML = "";
+
+      if (nombreJugador) {
+        if (callback) {
+          callback();
+        } else {
+          comprobarNuevosCapitulos();
+        }
+      } else {
+        pedirNombre();
+      }
     }
   }
 
@@ -479,12 +505,30 @@ function comprobarNuevosCapitulos() {
 // LANZAR CAPÍTULO
 // ===============================
 
-function lanzarCapitulo(index){
+function lanzarCapitulo(index, pasoInicial = 0){
 
   const cap = capitulos[index];
-  let pasoActual = 0;
+  let pasoActual = pasoInicial;
+
+  // Guardar estado
+  localStorage.setItem("capituloActual", index);
+  localStorage.setItem("pasoActual", pasoActual);
 
   function ejecutarPaso(){
+
+    // Insertar marcador de fecha al inicio del capítulo (estilo WhatsApp)
+    if (pasoActual === 0 && !localStorage.getItem("cap_fecha_" + cap.id)) {
+      localStorage.setItem("cap_fecha_" + cap.id, "guardada");
+      const [y, m, d] = cap.fecha.split("-");
+      const fechaFormateada = `${d}/${m}/${y}`;
+      const div = document.createElement("div");
+      div.className = "fechaCapitulo";
+      div.textContent = `— ${fechaFormateada} —`;
+      mensajesDiv.appendChild(div);
+      guardarHistorial();
+      ejecutarPaso();
+      return;
+    }
 
     const paso = cap.pasos[pasoActual];
 
@@ -492,6 +536,16 @@ function lanzarCapitulo(index){
 
         // 🔥 MARCAR CAPÍTULO COMO COMPLETADO
         localStorage.setItem("decision_" + cap.id, "completado");
+
+        // Limpiar pasos del capítulo
+        for(let p = 0; p < cap.pasos.length; p++){
+          localStorage.removeItem("paso_" + cap.id + "_" + p);
+          localStorage.removeItem("opcion_" + cap.id + "_" + p);
+        }
+
+        // Limpiar estado del capítulo
+        localStorage.removeItem("capituloActual");
+        localStorage.removeItem("pasoActual");
 
         comprobarNuevosCapitulos();
         return;
@@ -520,6 +574,8 @@ function lanzarCapitulo(index){
 
         }else{
           pasoActual++;
+          localStorage.setItem("pasoActual", pasoActual);
+          guardarHistorial();
           setTimeout(ejecutarPaso, 400);
         }
       }
@@ -530,7 +586,40 @@ function lanzarCapitulo(index){
 
     // 🔥 OPCIONES
     if(paso.opciones){
-      mostrarOpcionesPaso(paso);
+      // Verificar si ya se respondió este paso
+      const opcionGuardada = localStorage.getItem("opcion_" + cap.id + "_" + pasoActual);
+      if(opcionGuardada){
+        // Simular la selección
+        const op = paso.opciones.find(o => o.texto === opcionGuardada);
+        if(op){
+          opcionesDiv.innerHTML = "";
+
+          // � RESPUESTA (usa la del paso si no hay propia)
+          let respuestaFinal = op.respuesta || paso.respuesta;
+
+          let j = 0;
+
+          function escribirRespuesta(){
+            if(j < respuestaFinal.length){
+              agregarMensajeSistema(respuestaFinal[j], ()=>{
+                j++;
+                setTimeout(escribirRespuesta, 400);
+              });
+            }else{
+              pasoActual++;
+              localStorage.setItem("pasoActual", pasoActual);
+              guardarHistorial();
+              setTimeout(ejecutarPaso, 400);
+            }
+          }
+
+          escribirRespuesta();
+        } else {
+          mostrarOpcionesPaso(paso);
+        }
+      } else {
+        mostrarOpcionesPaso(paso);
+      }
     }
   }
 
@@ -545,6 +634,10 @@ function lanzarCapitulo(index){
 
       btn.onclick = ()=>{
 
+        // Marcar paso como respondido y guardar opción
+        localStorage.setItem("paso_" + cap.id + "_" + pasoActual, "respondido");
+        localStorage.setItem("opcion_" + cap.id + "_" + pasoActual, op.texto);
+
         opcionesDiv.innerHTML = "";
 
         // 🟢 MENSAJES DEL JUGADOR
@@ -557,6 +650,7 @@ function lanzarCapitulo(index){
               setTimeout(escribirJugador, 300);
             });
           }else{
+            guardarHistorial();
             setTimeout(escribirRespuesta, 400);
           }
         }
@@ -574,6 +668,8 @@ function lanzarCapitulo(index){
             });
           }else{
             pasoActual++;
+            localStorage.setItem("pasoActual", pasoActual);
+            guardarHistorial();
             setTimeout(ejecutarPaso, 400);
           }
         }
@@ -626,9 +722,7 @@ function escribirTexto(div, texto, callback) {
       div.textContent = texto;
       sonidoTecla.pause();
 
-      if(guardandoChat){
-        guardarHistorial();
-      }
+      // No guardar aquí
       
       if (callback) callback();
     }
@@ -773,7 +867,13 @@ function mostrarJugadorMultiple(respuestas, callback){
 
 let guardandoChat = false;
 
+// ===============================
+// GUARDAR HISTORIAL
+// ===============================
+
+function guardarHistorial() {
+  localStorage.setItem("chatHistorial", mensajesDiv.innerHTML);
+}
+
 // MEJORAR EFECTO ESCRITURA (PAUSA EN PUNTUACIÓN, SONIDO MÁS SUAVE, ETC)
-// AL CARGAR EL CHAT, SI HAY HISTORIAL EN LOCALSTORAGE, RECREARLO (PARA QUE NO SE PIERDA AL RECARGAR)
-// GUARDAR DECISIONES EN LOCALSTORAGE PARA CONTROLAR QUÉ OPCIONES SE HAN VISTO Y EVITAR SPOILERS´
 // UNIR LOGIN CON NOMBRE DE USUARIO
