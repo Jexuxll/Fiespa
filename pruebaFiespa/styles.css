@@ -9,10 +9,10 @@ src:url("/fonts/SGK075.ttf") format("truetype");
   --terminal-max-width: 980px;
   --terminal-padding: clamp(12px, 2.6vw, 30px);
   --terminal-margin: clamp(8px, 2.5vw, 40px);
-  --text-base: clamp(18px, 2.1vw, 39px);
-  --text-login: clamp(28px, 5.4vw, 70px);
-  --text-system: clamp(20px, 3vw, 37px);
-  --text-button: clamp(18px, 2.8vw, 37px);
+  --text-base: clamp(18px, 2.1vw, 42px);
+  --text-login: clamp(28px, 5.4vw, 72px);
+  --text-system: clamp(20px, 3vw, 40px);
+  --text-button: clamp(18px, 2.8vw, 40px);
 }
 
 html {
@@ -64,7 +64,6 @@ body {
 #login {
   font-size: var(--text-login);
   text-align: center;
-  overflow-y: auto;
 }
 
 #login .p1 {
@@ -264,14 +263,23 @@ button:hover{
 }
 
 .inputNombre {
-  width: 100%;
+  box-sizing: border-box;
+  width: min(100%, 640px);
+  margin-inline: auto;
   background: transparent;
   border: 1px solid var(--crt-green);
   color: var(--crt-green);
   font-family: inherit;
-  font-size: clamp(16px, 2.2vw, 24px);
-  padding: clamp(8px, 1.8vw, 10px);
+  font-size: clamp(16px, 2.6vw, 28px);
+  line-height: 1.15;
+  padding: clamp(8px, 1.8vw, 12px);
   outline: none;
+}
+
+#opciones .inputNombre {
+  width: min(100%, 760px);
+  font-size: clamp(16px, 3.8vw, 32px);
+  padding: clamp(8px, 2vw, 14px);
 }
 
 @media (max-width: 992px) {
@@ -289,6 +297,34 @@ button:hover{
   .mensajeSistema,
   .mensajeJugador {
     max-width: 88%;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --text-base: clamp(20px, 1.5vw, 44px);
+    --text-system: clamp(24px, 1.8vw, 46px);
+    --text-button: clamp(22px, 1.7vw, 44px);
+  }
+
+  #saludo {
+    font-size: clamp(30px, 2.4vw, 62px);
+  }
+
+  .fechaCapitulo {
+    font-size: clamp(24px, 1.4vw, 30px);
+  }
+}
+
+@media (min-width: 1600px) {
+  :root {
+    --text-base: clamp(22px, 1.3vw, 48px);
+    --text-system: clamp(26px, 1.7vw, 50px);
+    --text-button: clamp(24px, 1.6vw, 48px);
+  }
+
+  #saludo {
+    font-size: clamp(34px, 2.2vw, 68px);
   }
 }
 
@@ -316,6 +352,8 @@ button:hover{
 
   #login .linea-centro input {
     width: 100%;
+    font-size: clamp(22px, 8vw, 44px);
+    margin-top: clamp(10px, 3vh, 20px);
   }
 
   .mensajeSistema,
@@ -327,6 +365,18 @@ button:hover{
 
   #saludo {
     margin-left: 2px;
+  }
+}
+
+@media (max-height: 760px) {
+  #login .linea-centro input {
+    font-size: clamp(20px, 6.2vw, 34px);
+    margin-top: 10px;
+  }
+
+  #opciones .inputNombre {
+    font-size: clamp(15px, 3.6vw, 24px);
+    padding: 8px 10px;
   }
 }
 
@@ -353,5 +403,9 @@ button:hover{
 
   .fechaCapitulo {
     font-size: 16px;
+  }
+
+  #opciones .inputNombre {
+    font-size: clamp(15px, 4.8vw, 20px);
   }
 }
