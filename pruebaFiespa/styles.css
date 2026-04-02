@@ -3,25 +3,48 @@ font-family:"terminal";
 src:url("/fonts/SGK075.ttf") format("truetype");
 }
 
+:root {
+  --crt-green: #33ff33;
+  --crt-bg: #020402;
+  --terminal-max-width: 980px;
+  --terminal-padding: clamp(12px, 2.6vw, 30px);
+  --terminal-margin: clamp(8px, 2.5vw, 40px);
+  --text-base: clamp(18px, 2.1vw, 39px);
+  --text-login: clamp(28px, 5.4vw, 70px);
+  --text-system: clamp(20px, 3vw, 37px);
+  --text-button: clamp(18px, 2.8vw, 37px);
+}
+
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
-  background: #020402;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--crt-bg);
   font-family: "terminal", monospace;
-  color: #33ff33;
-  font-size: 39px;
+  color: var(--crt-green);
+  font-size: var(--text-base);
+  overflow: hidden;
+  padding: 0;
 }
 
 .terminal {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 30px;
-  border: 2px solid #33ff33;
-  box-shadow: 0 0 20px #33ff33;
-  height: 85vh;
+  box-sizing: border-box;
+  width: min(100% - (var(--terminal-margin) * 2), var(--terminal-max-width));
+  margin: var(--terminal-margin) auto;
+  padding: var(--terminal-padding);
+  border: 2px solid var(--crt-green);
+  box-shadow: 0 0 20px var(--crt-green);
+  min-height: calc((var(--vh, 1vh) * 100) - (var(--terminal-margin) * 2));
+  height: calc((var(--vh, 1vh) * 100) - (var(--terminal-margin) * 2));
   display: flex;
   flex-direction: column;
   position: relative;
-  text-shadow:0 0 4px #33ff33;
+  text-shadow: 0 0 4px var(--crt-green);
 }
 
 .terminal::after {
@@ -39,10 +62,19 @@ body {
 }
 
 #login {
-  font-size: 70px;
+  font-size: var(--text-login);
   text-align: center;
+  overflow-y: auto;
 }
 
+#login .p1 {
+  margin: clamp(30px, 8vh, 94px) 0 0 0;
+}
+#login .p2 {
+  margin: 20px 0 clamp(24px, 7vh, 70px) 0;
+  color: #9b0000;
+  text-shadow: #9b0000 0 0 4px;
+}
 .linea {
   display: flex;
   gap: 10px;
@@ -56,23 +88,23 @@ body {
 }
 
 #login .linea-centro span {
-  margin-top: 0px;
-  font-size: 70px;
+  margin-top: clamp(18px, 8vh, 94px);
+  font-size: var(--text-login);
 }
 
 #login .linea-centro input {
-  width: 70%;
+  width: min(70%, 560px);
   text-align: center;
-  font-size: 70px;
-  margin-top: 50px;
+  font-size: var(--text-login);
+  margin-top: clamp(12px, 4vh, 50px);
 }
 
 input {
   background: transparent;
   border: none;
-  color: #33ff33;
+  color: var(--crt-green);
   font-family: inherit;
-  font-size: 51px;
+  font-size: clamp(20px, 4.4vw, 51px);
   outline: none;
 }
 
@@ -81,9 +113,9 @@ input {
   color: red;
   text-align: center;
   width: 100%;
-  margin-top: 50px;
-  font-size: 70px;
-  margin-bottom: 0px;
+  margin-top: clamp(12px, 4vh, 50px);
+  font-size: var(--text-login);
+  margin-bottom: 20px;
 }
 
 .submitOculto {
@@ -92,14 +124,18 @@ input {
 
 /* SISTEMA */
 #sistema {
-  font-size: 30px;
+  font-size: clamp(18px, 2.4vw, 30px);
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0;
 }
 
 #saludo {
-  font-size: 55px;
+  font-size: clamp(24px, 4.2vw, 55px);
+  margin: 0 0 8px 6px;
+  color: #7fff7f;
+  text-shadow: #7fff7f 0 0 4px;
 }
 
 /* CHAT */
@@ -113,15 +149,16 @@ input {
 #mensajes {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: clamp(10px, 1.8vw, 20px);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: clamp(8px, 1.4vw, 12px);
+  min-height: 0;
 }
 
 #opciones {
-  padding: 15px;
-  background: #020402;
+  padding: clamp(10px, 1.8vw, 15px);
+  background: var(--crt-bg);
   flex-shrink: 0; /* evita que se mueva */
 }
 
@@ -130,18 +167,20 @@ input {
 }
 
 .chat {
-  background: #020402;
+  background: var(--crt-bg);
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden; /* clave para que el scroll funcione */
+  min-height: 0;
 }
 
 .mensajeSistema{
-  color:#33ff33;
-  font-size:37px;
+  color: var(--crt-green);
+  font-size: var(--text-system);
   max-width:80%;
   padding:2px 14px;
+  overflow-wrap: anywhere;
 }
 
 .fechaCapitulo {
@@ -154,11 +193,12 @@ input {
 
 .mensajeJugador{
   color:#85ff85;
-  font-size:37px;
+  font-size: var(--text-system);
   text-align:right;
   align-self:flex-end;
   max-width:80%;
   padding:2px 14px;
+  overflow-wrap: anywhere;
 }
 
 .mensajeSistema,
@@ -180,18 +220,18 @@ input {
 #opciones button {
   width: 100%;
   text-align: left;
-  margin-top: 10px;
-  font-size: 37px;
-  padding: 12px;
+  margin-top: clamp(8px, 1.5vw, 10px);
+  font-size: var(--text-button);
+  padding: clamp(8px, 2vw, 12px);
 }
 
 button {
   background: transparent;
-  border: 1px solid #33ff33;
-  color: #33ff33;
-  padding: 10px;
+  border: 1px solid var(--crt-green);
+  color: var(--crt-green);
+  padding: clamp(8px, 1.5vw, 10px);
   font-family: inherit;
-  font-size: 33px;
+  font-size: clamp(17px, 2.4vw, 33px);
   cursor: pointer;
 }
 
@@ -226,10 +266,92 @@ button:hover{
 .inputNombre {
   width: 100%;
   background: transparent;
-  border: 1px solid #33ff33;
-  color: #33ff33;
+  border: 1px solid var(--crt-green);
+  color: var(--crt-green);
   font-family: inherit;
-  font-size: 24px;
-  padding: 10px;
+  font-size: clamp(16px, 2.2vw, 24px);
+  padding: clamp(8px, 1.8vw, 10px);
   outline: none;
+}
+
+@media (max-width: 992px) {
+  .terminal {
+    width: min(100% - 24px, var(--terminal-max-width));
+    margin: 12px auto;
+    min-height: calc((var(--vh, 1vh) * 100) - 24px);
+    height: calc((var(--vh, 1vh) * 100) - 24px);
+  }
+
+  #login .linea-centro input {
+    width: min(90%, 560px);
+  }
+
+  .mensajeSistema,
+  .mensajeJugador {
+    max-width: 88%;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: clamp(16px, 4vw, 26px);
+  }
+
+  .terminal {
+    width: 100%;
+    margin: 0;
+    box-shadow: 0 0 12px var(--crt-green);
+    min-height: calc((var(--vh, 1vh) * 100) - 4px);
+    height: calc((var(--vh, 1vh) * 100) - 4px);
+  }
+
+  #login .p1,
+  #login .p2 {
+    line-height: 1.1;
+  }
+
+  #login .linea-centro span {
+    margin-top: clamp(16px, 5vh, 28px);
+  }
+
+  #login .linea-centro input {
+    width: 100%;
+  }
+
+  .mensajeSistema,
+  .mensajeJugador {
+    max-width: 94%;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  #saludo {
+    margin-left: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .terminal {
+    width: calc(100% - 8px);
+    margin: 4px auto;
+    min-height: calc((var(--vh, 1vh) * 100) - 8px);
+    height: calc((var(--vh, 1vh) * 100) - 8px);
+    padding: 10px;
+  }
+
+  #mensajes {
+    padding: 8px;
+  }
+
+  #opciones {
+    padding: 8px;
+  }
+
+  #opciones button {
+    min-height: 44px;
+  }
+
+  .fechaCapitulo {
+    font-size: 16px;
+  }
 }

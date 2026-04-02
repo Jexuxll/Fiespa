@@ -2,8 +2,53 @@ const CLAVE_SECRETA = "PABLO";
 const USUARIO_POR_DEFECTO = "Usuario";
 let nombreJugador = localStorage.getItem("nombreJugador") || "";
 
+function actualizarAlturaViewport() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+}
+
+actualizarAlturaViewport();
+window.addEventListener("resize", actualizarAlturaViewport);
+window.addEventListener("orientationchange", actualizarAlturaViewport);
+
+// ===============================
+// GOOGLE FORMS (ENVÍO DE RESPUESTAS)
+// ===============================
+
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdnVUO847DbfLZRgosgbX6uupVWoaPryeoUuuZPyc-aR_xEUA/formResponse";
+const ENTRY_ALIAS = "entry.788093874";
+const ENTRY_CAPITULO = "entry.138641531";
+const ENTRY_RESPUESTA1 = "entry.1826188647";
+const ENTRY_RESPUESTA2 = "entry.454956127";
+
+function enviarAGoogleForms(capId){
+
+  const alias = localStorage.getItem("nombreJugador") || "Anonimo";
+  const capitulo = capId;
+
+  const r1 = localStorage.getItem("opcion_" + capId + "_1") || "";
+  const r2 = localStorage.getItem("opcion_" + capId + "_2") || "";
+
+  console.log("Enviando:", {alias, capitulo, r1, r2});
+
+  const datos = new URLSearchParams();
+
+  datos.append(ENTRY_ALIAS, alias);
+  datos.append(ENTRY_CAPITULO, capitulo);
+  datos.append(ENTRY_RESPUESTA1, r1);
+  datos.append(ENTRY_RESPUESTA2, r2);
+
+  fetch(FORM_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: datos
+  });
+}
+
+
+
 // SONIDO
-let sonidoTecla = new Audio("tecleo.mp3");
+let sonidoTecla = document.getElementById("tecleo");
 sonidoTecla.volume = 0.15;
 
 // ===============================
@@ -35,7 +80,7 @@ function pedirNombre() {
 
         opcionesDiv.innerHTML = "";
 
-        agregarMensajeJugador(nombreJugador, () => {
+        agregarMensajeJugador("Soy " + nombreJugador, () => {
           setTimeout(() => comprobarNuevosCapitulos(), 800);
         });
       }
@@ -546,6 +591,7 @@ function lanzarCapitulo(index, pasoInicial = 0){
         // Limpiar estado del capítulo
         localStorage.removeItem("capituloActual");
         localStorage.removeItem("pasoActual");
+        localStorage.removeItem("enviado_" + cap.id);
 
         comprobarNuevosCapitulos();
         return;
@@ -638,6 +684,17 @@ function lanzarCapitulo(index, pasoInicial = 0){
         localStorage.setItem("paso_" + cap.id + "_" + pasoActual, "respondido");
         localStorage.setItem("opcion_" + cap.id + "_" + pasoActual, op.texto);
 
+        // 🚀 ENVIAR CUANDO YA HAY 2 RESPUESTAS
+        const r1 = localStorage.getItem("opcion_" + cap.id + "_1");
+        const r2 = localStorage.getItem("opcion_" + cap.id + "_2");
+
+        const yaEnviado = localStorage.getItem("enviado_" + cap.id);
+
+        if(r1 && r2 && !yaEnviado){
+          enviarAGoogleForms(cap.id);
+          localStorage.setItem("enviado_" + cap.id, "true");
+        }
+
         opcionesDiv.innerHTML = "";
 
         // 🟢 MENSAJES DEL JUGADOR
@@ -690,9 +747,6 @@ function lanzarCapitulo(index, pasoInicial = 0){
 
 function escribirTexto(div, texto, callback) {
 
-  sonidoTecla.pause();
-  sonidoTecla.currentTime = 0;
-
   let i = 0;
 
   function escribir() {
@@ -702,13 +756,15 @@ function escribirTexto(div, texto, callback) {
       div.textContent = texto.substring(0, i) + "█";
 
       if (texto[i] !== " ") {
-        sonidoTecla.currentTime = 0;
-        sonidoTecla.play().catch(() => {});
+        const clip = sonidoTecla.cloneNode(true);
+        clip.volume = 0.15;
+        clip.currentTime = 0;
+        clip.play().catch(() => {});
       }
 
       let velocidad = 20 + Math.random() * 40;
 
-      if (texto[i] === "." || texto[i] === "," || texto[i] === "...") {
+      if (texto[i] === "." || texto[i] === ",") {
         velocidad = 300;
       }
 
@@ -720,7 +776,6 @@ function escribirTexto(div, texto, callback) {
     } else {
 
       div.textContent = texto;
-      sonidoTecla.pause();
 
       // No guardar aquí
       
@@ -874,6 +929,3 @@ let guardandoChat = false;
 function guardarHistorial() {
   localStorage.setItem("chatHistorial", mensajesDiv.innerHTML);
 }
-
-// MEJORAR EFECTO ESCRITURA (PAUSA EN PUNTUACIÓN, SONIDO MÁS SUAVE, ETC)
-// UNIR LOGIN CON NOMBRE DE USUARIO
