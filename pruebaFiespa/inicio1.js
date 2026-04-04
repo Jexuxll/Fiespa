@@ -49,7 +49,96 @@ function enviarAGoogleForms(capId){
 
 // SONIDO
 let sonidoTecla = document.getElementById("tecleo");
-sonidoTecla.volume = 0.15;
+if (sonidoTecla) {
+  sonidoTecla.volume = 0.15;
+}
+
+let audioHabilitado = true;
+const audiosActivos = new Set();
+
+function detenerTodoAudio() {
+  if (sonidoTecla) {
+    sonidoTecla.pause();
+    sonidoTecla.currentTime = 0;
+  }
+
+  audiosActivos.forEach((audio) => {
+    audio.pause();
+    audio.currentTime = 0;
+  });
+
+  audiosActivos.clear();
+}
+
+function pausarAudioPorSalida() {
+  audioHabilitado = false;
+  detenerTodoAudio();
+}
+
+function restaurarAudio() {
+  audioHabilitado = true;
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    pausarAudioPorSalida();
+  } else {
+    restaurarAudio();
+  }
+});
+
+window.addEventListener("pagehide", pausarAudioPorSalida);
+window.addEventListener("beforeunload", pausarAudioPorSalida);
+window.addEventListener("blur", pausarAudioPorSalida);
+window.addEventListener("focus", restaurarAudio);
+
+const btnReiniciar = document.getElementById("btnReiniciar");
+if (btnReiniciar) {
+  btnReiniciar.addEventListener("click", () => {
+    pausarAudioPorSalida();
+    window.location.reload();
+  });
+}
+
+let escrituraEnCurso = null;
+
+function saltarAnimacionEscritura() {
+  if (escrituraEnCurso) {
+    const estado = escrituraEnCurso;
+    clearTimeout(estado.timeoutId);
+    estado.div.textContent = estado.texto;
+    escrituraEnCurso = null;
+    detenerTodoAudio();
+
+    if (estado.callback) {
+      estado.callback();
+    }
+  }
+}
+
+function esCampoTexto(elemento) {
+  if (!elemento) return false;
+  const tag = elemento.tagName;
+  return tag === "INPUT" || tag === "TEXTAREA";
+}
+
+function debeIgnorarToqueAvance(elemento) {
+  if (!elemento || !elemento.closest) return false;
+  return Boolean(elemento.closest("button, input, textarea"));
+}
+
+document.addEventListener("pointerdown", (e) => {
+  if (debeIgnorarToqueAvance(e.target)) return;
+  saltarAnimacionEscritura();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
+  if (esCampoTexto(document.activeElement)) return;
+
+  e.preventDefault();
+  saltarAnimacionEscritura();
+});
 
 // ===============================
 // INTRO (ANTES DEL CHAT)
@@ -679,7 +768,6 @@ function lanzarCapitulo(index, pasoInicial = 0){
       btn.textContent = op.texto;
 
       btn.onclick = ()=>{
-
         // Marcar paso como respondido y guardar opción
         localStorage.setItem("paso_" + cap.id + "_" + pasoActual, "respondido");
         localStorage.setItem("opcion_" + cap.id + "_" + pasoActual, op.texto);
@@ -748,6 +836,14 @@ function lanzarCapitulo(index, pasoInicial = 0){
 function escribirTexto(div, texto, callback) {
 
   let i = 0;
+  let timeoutId = null;
+
+  escrituraEnCurso = {
+    div,
+    texto,
+    callback,
+    timeoutId
+  };
 
   function escribir() {
 
@@ -755,10 +851,20 @@ function escribirTexto(div, texto, callback) {
 
       div.textContent = texto.substring(0, i) + "█";
 
-      if (texto[i] !== " ") {
+      if (texto[i] !== " " && audioHabilitado && sonidoTecla && !document.hidden) {
         const clip = sonidoTecla.cloneNode(true);
         clip.volume = 0.15;
         clip.currentTime = 0;
+
+        audiosActivos.add(clip);
+
+        const limpiarClip = () => {
+          audiosActivos.delete(clip);
+        };
+
+        clip.addEventListener("ended", limpiarClip, { once: true });
+        clip.addEventListener("error", limpiarClip, { once: true });
+
         clip.play().catch(() => {});
       }
 
@@ -771,14 +877,18 @@ function escribirTexto(div, texto, callback) {
       i++;
       mensajesDiv.scrollTop = mensajesDiv.scrollHeight;
 
-      setTimeout(escribir, velocidad);
+      timeoutId = setTimeout(escribir, velocidad);
+      if (escrituraEnCurso) {
+        escrituraEnCurso.timeoutId = timeoutId;
+      }
 
     } else {
 
       div.textContent = texto;
+      escrituraEnCurso = null;
 
       // No guardar aquí
-      
+
       if (callback) callback();
     }
   }
@@ -819,7 +929,6 @@ function mostrarOpciones(index) {
     btn.textContent = op.texto;
 
     btn.onclick = () => {
-
       opcionesDiv.innerHTML = "";
 
       mostrarJugadorMultiple(op.mensajes || op.texto, () => {
@@ -929,3 +1038,7 @@ let guardandoChat = false;
 function guardarHistorial() {
   localStorage.setItem("chatHistorial", mensajesDiv.innerHTML);
 }
+
+// CAMBIAR EL EL EXCEL EL TIPO DE OPCIONES PARA DIFERENCIAR BUENA DE MALA
+// CAMBIAR INTRO Y FINAL
+// CONFIRMACION DE OPCIONES (¿ESTÁS SEGURO? SÍ/NO)
