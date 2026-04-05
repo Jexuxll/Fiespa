@@ -69,11 +69,13 @@ body {
 #login .p1 {
   margin: clamp(30px, 8vh, 94px) 0 0 0;
 }
+
 #login .p2 {
   margin: 20px 0 clamp(24px, 7vh, 70px) 0;
   color: #9b0000;
   text-shadow: #9b0000 0 0 4px;
 }
+
 .linea {
   display: flex;
   gap: 10px;
@@ -188,6 +190,32 @@ input {
   overflow-wrap: anywhere;
 }
 
+.mensajeEstadoMicro {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding:0px 12px;
+  font-size: clamp(15px, 1.45vw, 23px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(198, 255, 198, 0.95);
+}
+
+.mensajeEstadoMicro::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff4c4c;
+  box-shadow: 0 0 7px rgba(255, 76, 76, 0.85);
+}
+
+.mensajeEstadoMicro.activo::before {
+  background: #87ff87;
+  box-shadow: 0 0 7px rgba(96, 255, 96, 0.85);
+  animation: pulsoMicro 1s ease-in-out infinite;
+}
+
 .fechaCapitulo {
   color: #7aff7a;
   text-align: center;
@@ -209,6 +237,155 @@ input {
 .mensajeSistema,
 .mensajeJugador{
   animation: aparecer 0.4s ease;
+}
+
+.mensajeAudioDirecto {
+  max-width: 88%;
+  padding: 0;
+}
+
+.audioDirecto {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  padding: 10px 12px;
+  min-height: 92px;
+}
+
+.audioDirectoOndas {
+  position: relative;
+  height: 64px;
+  display: grid;
+  grid-template-columns: repeat(40, minmax(0, 1fr));
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+}
+
+.audioDirectoOndas::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, transparent);
+  opacity: 0.75;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.audioDirectoOnda {
+  --amp: 1.45;
+  width: 100%;
+  height: 44px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to top,
+    rgba(122, 255, 122, 0.65) 0%
+  );
+  transform: scaleY(0.08);
+  transform-origin: center center;
+  opacity: 0.45;
+  will-change: transform, opacity;
+}
+
+.audioDirectoOnda:nth-child(5n) {
+  --amp: 1.7;
+}
+
+.audioDirectoOnda:nth-child(5n + 1) {
+  --amp: 1.2;
+}
+
+.audioDirectoOnda:nth-child(5n + 2) {
+  --amp: 1.95;
+}
+
+.audioDirectoOnda:nth-child(5n + 3) {
+  --amp: 1.35;
+}
+
+.mensajeAudioDirecto.activo .audioDirectoOnda {
+  animation-name: ondaDirecto;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.35, 0, 0.65, 1);
+  animation-delay: calc(var(--d, 0s) * -1);
+}
+
+.mensajeAudioDirecto.activo .audioDirectoOnda:nth-child(4n) {
+  animation-duration: 1.45s;
+}
+
+.mensajeAudioDirecto.activo .audioDirectoOnda:nth-child(4n + 1) {
+  animation-duration: 1.05s;
+}
+
+.mensajeAudioDirecto.activo .audioDirectoOnda:nth-child(4n + 2) {
+  animation-duration: 1.3s;
+}
+
+.mensajeAudioDirecto.cerrando .audioDirectoOnda {
+  animation: cierreOnda 0.34s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation-delay: calc(var(--d, 0s) * 0.45);
+}
+
+@keyframes ondaDirecto {
+  0% {
+    transform: scaleY(0.08);
+    opacity: 0.35;
+  }
+  20% {
+    transform: scaleY(var(--amp));
+    opacity: 0.95;
+  }
+  38% {
+    transform: scaleY(0.34);
+    opacity: 0.5;
+  }
+  55% {
+    transform: scaleY(calc(var(--amp) * 0.8));
+    opacity: 0.78;
+  }
+  74% {
+    transform: scaleY(0.3);
+    opacity: 0.46;
+  }
+  100% {
+    transform: scaleY(0.08);
+    opacity: 0.35;
+  }
+}
+
+@keyframes cierreOnda {
+  0% {
+    transform: scaleY(0.42);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scaleY(0.08);
+    opacity: 0.32;
+  }
+}
+
+@keyframes pulsoMicro {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.14);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.92);
+    opacity: 0.5;
+  }
 }
 
 @keyframes aparecer{
@@ -399,6 +576,22 @@ button:hover{
     max-width: 94%;
     padding-left: 8px;
     padding-right: 8px;
+  }
+
+  .mensajeAudioDirecto {
+    max-width: 96%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .audioDirecto {
+    gap: 12px;
+    padding: 14px 16px;
+    min-height: 120px;
+  }
+
+  .audioDirectoOndas {
+    height: 74px;
   }
 
   #opciones button {

@@ -70,6 +70,152 @@ function detenerTodoAudio() {
   audiosActivos.clear();
 }
 
+function resolverRutasAudio(rutaAudio) {
+  const rutas = [rutaAudio];
+
+  if (rutaAudio.startsWith("audio/")) {
+    rutas.push("../" + rutaAudio);
+  } else if (rutaAudio.startsWith("../audio/")) {
+    rutas.push(rutaAudio.replace("../", ""));
+  }
+
+  return rutas;
+}
+
+function formatearTiempo(segundos) {
+  const valorSeguro = Math.max(0, Math.floor(segundos || 0));
+  const mins = Math.floor(valorSeguro / 60);
+  const secs = valorSeguro % 60;
+  return `${mins}:${String(secs).padStart(2, "0")}`;
+}
+
+function crearBloqueAudioDirecto() {
+  const contenedor = document.createElement("div");
+  contenedor.className = "mensajeSistema mensajeAudioDirecto";
+
+  const tarjeta = document.createElement("div");
+  tarjeta.className = "audioDirecto";
+
+  const ondas = document.createElement("div");
+  ondas.className = "audioDirectoOndas";
+  for (let i = 0; i < 40; i++) {
+    const barra = document.createElement("span");
+    barra.className = "audioDirectoOnda";
+    barra.style.setProperty("--d", `${(i % 16) * 0.05}s`);
+    ondas.appendChild(barra);
+  }
+
+  tarjeta.appendChild(ondas);
+  contenedor.appendChild(tarjeta);
+  mensajesDiv.appendChild(contenedor);
+  mensajesDiv.scrollTop = mensajesDiv.scrollHeight;
+
+  return { contenedor };
+}
+
+function reproducirAudioNarrativo(rutaAudio, opciones = {}, callback) {
+  if (!rutaAudio || !audioHabilitado || document.hidden) {
+    if (callback) callback();
+    return;
+  }
+
+  const DURACION_CIERRE_ONDA = 360;
+
+  const volumen = typeof opciones.volumen === "number" ? opciones.volumen : 0.8;
+  const desde = typeof opciones.desde === "number" ? Math.max(0, opciones.desde) : 0;
+  const hasta = typeof opciones.hasta === "number" ? Math.max(0, opciones.hasta) : null;
+  const duracion = typeof opciones.duracion === "number" ? Math.max(0, opciones.duracion) : null;
+  const autoPlay = opciones.autoPlay !== false;
+
+  const ui = crearBloqueAudioDirecto();
+  const rutas = resolverRutasAudio(rutaAudio);
+  let indiceRuta = 0;
+
+  function intentarReproducir() {
+    if (indiceRuta >= rutas.length) {
+      ui.contenedor.classList.remove("activo");
+      ui.contenedor.classList.remove("cerrando");
+      if (callback) callback();
+      return;
+    }
+
+    const clip = new Audio(rutas[indiceRuta]);
+    indiceRuta++;
+    clip.volume = volumen;
+    clip.preload = "metadata";
+    clip.load();
+
+    audiosActivos.add(clip);
+
+    let finalizado = false;
+    let limiteFin = null;
+
+    const limpiar = () => {
+      audiosActivos.delete(clip);
+      clip.pause();
+      clip.removeAttribute("src");
+      clip.load();
+    };
+
+    const finalizar = () => {
+      if (finalizado) return;
+      finalizado = true;
+      ui.contenedor.classList.remove("activo");
+      ui.contenedor.classList.add("cerrando");
+      limpiar();
+      setTimeout(() => {
+        if (callback) callback();
+      }, DURACION_CIERRE_ONDA);
+    };
+
+    const fallarIntento = () => {
+      if (finalizado) return;
+      finalizado = true;
+      limpiar();
+      intentarReproducir();
+    };
+
+    const prepararAudio = () => {
+      const duracionTotal = Number.isFinite(clip.duration) ? clip.duration : 0;
+      clip.currentTime = Math.min(desde, duracionTotal);
+
+      if (hasta !== null && duracion !== null) {
+        limiteFin = Math.min(duracionTotal || Infinity, hasta, desde + duracion);
+      } else if (hasta !== null) {
+        limiteFin = Math.min(duracionTotal || Infinity, hasta);
+      } else if (duracion !== null) {
+        limiteFin = Math.min(duracionTotal || Infinity, desde + duracion);
+      } else {
+        limiteFin = duracionTotal || Infinity;
+      }
+
+      if (limiteFin <= desde) {
+        limiteFin = duracionTotal || Infinity;
+      }
+
+      if (autoPlay) {
+        clip.play().then(() => {
+          ui.contenedor.classList.remove("cerrando");
+          ui.contenedor.classList.add("activo");
+        }).catch(fallarIntento);
+      }
+    };
+
+    clip.addEventListener("loadedmetadata", prepararAudio, { once: true });
+    clip.addEventListener("timeupdate", () => {
+      if (finalizado) return;
+
+      if (Number.isFinite(limiteFin) && clip.currentTime >= limiteFin) {
+        finalizar();
+      }
+    });
+    clip.addEventListener("ended", finalizar, { once: true });
+    clip.addEventListener("error", fallarIntento, { once: true });
+  }
+
+  intentarReproducir();
+}
+
 function pausarAudioPorSalida() {
   audioHabilitado = false;
   detenerTodoAudio();
@@ -152,7 +298,7 @@ function pedirNombre() {
     return;
   }
 
-  agregarMensajeSistema("PABLO_ADMIN: ¿Hay alguien ahí? ¿Quién eres?", () => {
+  agregarMensajeSistema("¿Hay alguien ahí? ¿Quién eres?", () => {
 
     opcionesDiv.innerHTML = "";
 
@@ -191,61 +337,79 @@ const capitulos = [
     pasos: [
       {
         mensajes: [
-          () =>`${nombreJugador || "Usuario"}, menos mal que te conectas...`,
-          "Llevo días encerrado en el laboratorio de la facultad.",
-          "Encontré algo en los archivos muertos.",
-          "Una muestra congelada de la Fosa de las Marianas.",
-          "La llamaban Cepa-0.",
-          "La he descongelado en secreto."
+          { audio: "audio/pasoa1.mp3", avisoSistema: "MICROFONO ACTIVADO", volumen: 0.7, desde: 0, duracion: 6 },
+          () =>`${nombreJugador || "Usuario"}, menos mal... Soy Pablo`,
+          "Tenía miedo de que no averiguases como entrar en el sistema",
+          "Disculpa el rollo paranoico pero es la opción más segura en estos momentos"
         ]
       },
       {
         opciones: [
           {
-            texto: "Regañar",
+            texto: "Cuéntame qué pasa",
+            valor: "Cuéntame qué pasa 👍",
             mensajes: [
-              "¿Estás loco?",
-              "¡Devuelve eso antes de que te pillen!"
+              "¿Qué pasa, Pablo?",
+              "¿Por qué tanto secretismo?"
+            ],
+            respuesta: [
+              "Bueno, es que... no sé ni por dónde empezar"
             ]
           },
           {
-            texto: "Preguntar sobre la muestra",
+            texto: "Se te ha ido la pinza",
+            valor: "Se te ha ido la pinza 😡",
             mensajes: [
-              "¿Y qué es?", 
-              "¿Está viva?"
+              "¿Qué me estás contando?", 
+              "¿Qué tonterías te estás montando?"
+            ],
+            respuesta: [
+              "No es ninguna tontería, te lo juro",
             ]
           }
         ],
         respuesta: [ 
-              "No es como pensamos.",
-              "Reacciona a mí.",
-              "Cuando acerco la mano, el líquido viscoso del interior del frasco vibra.",
-              "Siento que... me está estudiando a través del cristal."
+              "Estoy metido en algo único",
+              "En serio, creo que esto es muy gordo y no puedo dejar que nadie meta las narices...",
+              "El otro día en las termas... Pasó algo",
+              "De verdad, no vas a creértelo, pero al menos presta atención"
             ]
       },
       {
         opciones: [
           {
-            texto: "Avisar del peligro",
+            texto: "Desembucha",
+            valor: "Desembucha 👍",
             mensajes: [
-            "Aléjate de ahí, Pablo.", 
-            "No me da buena espina."
+            "Venga, tío, suéltalo de una vez", 
+            "¿De qué me estás hablando?"
             ],
+            respuesta: [
+              () =>`Voy, ${nombreJugador || "Usuario"}, no me presiones...`,
+            ]
           },
           {
-            texto: "Mostrar curiosidad",
+            texto: "Me estás asustando",
+            valor: "Me estás asustando 😡",
             mensajes: [
-            "Toca el cristal.", 
-            "A ver qué hace si te acercas más."
+            "Pablo, ¿qué está pasando?",
+            "No estoy entendiendo nada", 
+            "Me estás asustando"
+            ],
+            respuesta: [
+              "Tranquilo, no quiero asustarte"
             ]
           }
         ],
         respuesta: [ 
-              "Mierda, oigo pasos en el pasillo.",
-              "Creo que los de seguridad están haciendo ronda.",
-              "Me desconecto rápido.",
-              "No le digas a nadie que has hablado conmigo.",
-              "Vuelve a entrar en 2 días, por favor."
+              "Joder, no sé ni por dónde empezar",
+            { audio: "audio/pasoa1.mp3", avisoSistema: "MICROFONO ACTIVADO", volumen: 0.7, desde: 0, duracion: 6 },
+              "Llevo días sin dormir y me siento rarísimo...",
+              "Mierda, viene alguien",
+              "No te imaginas desde donde te estoy escribiendo... Fliparías",
+              "Tengo que salir de aquí antes de que me pillen, pero volveré dentro de dos días",
+              "Hablamos entonces, vale?",
+              "No me dejes tirado, por favor..."
         ]
       }
     ]
@@ -266,6 +430,7 @@ const capitulos = [
       opciones: [
         {
           texto: "Insistir en el peligro",
+          valor: "Insistir en el peligro 👍",
           mensajes: [
             "¡Vete a urgencias ahora mismo!",
             "Puedes infectarte."
@@ -273,6 +438,7 @@ const capitulos = [
         },
         {
           texto: "Preguntar por la herida",
+          valor: "Preguntar por la herida 😡",
           mensajes: [
             "¿Te duele?",
             "¿Qué ha pasado con la herida?"
@@ -292,6 +458,7 @@ const capitulos = [
       opciones: [
         {
           texto: "Recomendar ir al médico",
+          valor: "Recomendar ir al médico 👍",
           mensajes: [
           "Eso no es normal, Pablo.", 
           "Es una infección cerebral, pide ayuda."
@@ -299,6 +466,7 @@ const capitulos = [
         },
         {
           texto: "Mostrar apoyo",
+          valor: "Mostrar apoyo 😡",
           mensajes: [
           "Suena a que te ha mejorado.", 
           "¿Qué más sientes?"
@@ -333,6 +501,7 @@ const capitulos = [
         opciones: [
           {
             texto: "Mostrar preocupación",
+            valor: "Mostrar preocupación 👍",
             mensajes: [
               "Voy a ir a tu casa.",
               "Ábreme la puerta en cuanto llegue."
@@ -340,6 +509,7 @@ const capitulos = [
           },
           {
             texto: "Calmarlo y preguntar",
+            valor: "Calmarlo y preguntar 😡",
             mensajes: [
               "Intenta calmarte.",
               "Describe exactamente qué ves o qué oyes."
@@ -358,6 +528,7 @@ const capitulos = [
         opciones: [
           {
             texto: "Advertir del peligro",
+            valor: "Advertir del peligro 👍",
             mensajes: [
             "No me metas en tus locuras.", 
             "Voy a llamar a la policía."
@@ -365,6 +536,7 @@ const capitulos = [
           },
           {
             texto: "Mostrar interés",
+            valor: "Mostrar interés 😡",
             mensajes: [
             "¿Conectarnos cómo?", 
             "¿A través de ti?"
@@ -402,6 +574,7 @@ const capitulos = [
         opciones: [
           {
             texto: "Intentar hacerle entrar en razón",
+            valor: "Intentar hacerle entrar en razón 👍",
             mensajes: [
               "Te estás perdiendo.",
               "Lucha contra eso, recuerda quién eres."
@@ -409,13 +582,14 @@ const capitulos = [
           },
           {
             texto: "Entender y aceptar",
+            valor: "Entender y aceptar 😡",
             mensajes: [
               "Suena a que has encontrado la paz que buscabas."
             ]
           }
         ],
         respuesta: [ 
-              "He estado analizando tu patrón de respuestas, " + (nombreJugador || "Usuario") + ".",
+              () => `He estado analizando tu patrón de respuestas, ${(nombreJugador || "Usuario")}.`,
               "La muestra me pide que seleccione a los aptos.",
               "No todos pueden sobrevivir a la inmensa presión del abismo."
         ]
@@ -424,12 +598,14 @@ const capitulos = [
         opciones: [
           {
             texto: "Mostrar rechazo",
+            valor: "Mostrar rechazo 👍",
             mensajes: [
             "Ni se te ocurra acercarte a mí con esa cosa."
             ]
           },
           {
             texto: "Unirte a él",
+            valor: "Unirte a él 😡",
             mensajes: [
             "¿Y bien?", 
             "¿Crees que yo sería apta para el cambio?"
@@ -466,6 +642,7 @@ const capitulos = [
         opciones: [
           {
             texto: "...",
+            valor: "... 🤐",
             mensajes: [
               " "
             ]
@@ -571,7 +748,7 @@ function lanzarIntro(callback) {
     "INICIANDO PROTOCOLO DE CONEXIÓN...",
     "SERVIDOR: SECURE_HOST_1984",
     "ESTADO: ENCRIPTACIÓN ACTIVA",
-    "> Conexión entrante detectada."
+    "> Mensaje entrante detectado."
   ];
 
   let i = 0;
@@ -644,6 +821,99 @@ function lanzarCapitulo(index, pasoInicial = 0){
   const cap = capitulos[index];
   let pasoActual = pasoInicial;
 
+  function normalizarRespuestas(respuesta) {
+    if (respuesta === undefined || respuesta === null) {
+      return [];
+    }
+    return Array.isArray(respuesta) ? respuesta : [respuesta];
+  }
+
+  function construirRespuestaFinal(op, paso) {
+    const personalizada = normalizarRespuestas(op.respuesta);
+    const comun = normalizarRespuestas(paso.respuesta);
+
+    // Si hay respuesta por opcion, va primero y luego la comun del paso.
+    if (personalizada.length > 0) {
+      return [...personalizada, ...comun];
+    }
+
+    return comun;
+  }
+
+  function agregarMensajePorTipo(tipoMensaje, texto, callback) {
+    if (tipoMensaje === "jugador") {
+      agregarMensajeJugador(texto, callback);
+      return;
+    }
+    agregarMensajeSistema(texto, callback);
+  }
+
+  function procesarElementoSecuencia(elemento, tipoMensaje, callback) {
+    let contenido = elemento;
+
+    if (typeof contenido === "function") {
+      contenido = contenido();
+    }
+
+    if (contenido && typeof contenido === "object" && !Array.isArray(contenido)) {
+      const audio = contenido.audio;
+      const texto = contenido.texto;
+      const volumen = typeof contenido.volumen === "number" ? contenido.volumen : 0.8;
+      const desde = typeof contenido.desde === "number" ? contenido.desde : undefined;
+      const hasta = typeof contenido.hasta === "number" ? contenido.hasta : undefined;
+      const duracion = typeof contenido.duracion === "number" ? contenido.duracion : undefined;
+      const avisoSistema = contenido.avisoSistema;
+      const cierreSistema = contenido.cierreSistema;
+
+      if (audio) {
+        const aviso = avisoSistema === false ? "" : (typeof avisoSistema === "string" ? avisoSistema : "MICROFONO ACTIVADO");
+        const cierre = cierreSistema === false ? "" : (typeof cierreSistema === "string" ? cierreSistema : "MICROFO CERRADO");
+
+        const continuarDespuesCierre = (divEstado) => {
+          if (typeof texto === "string" && texto.length > 0) {
+            agregarMensajePorTipo(tipoMensaje, texto, callback);
+          } else if (callback) {
+            callback();
+          }
+        };
+
+        const reproducir = (divEstado) => {
+          if (divEstado) {
+            divEstado.classList.add("activo");
+          }
+
+          reproducirAudioNarrativo(audio, { volumen, desde, hasta, duracion }, () => {
+            if (divEstado && cierre.length > 0) {
+              divEstado.textContent = cierre;
+              divEstado.classList.remove("activo");
+            }
+            setTimeout(() => continuarDespuesCierre(divEstado), 200);
+          });
+        };
+
+        if (tipoMensaje === "sistema" && aviso.length > 0) {
+          const divEstado = document.createElement("div");
+          divEstado.className = "mensajeSistema mensajeEstadoMicro";
+          mensajesDiv.appendChild(divEstado);
+          escribirTexto(divEstado, aviso, () => {
+            setTimeout(() => reproducir(divEstado), 250);
+          });
+        } else {
+          reproducir(null);
+        }
+
+        return;
+      }
+
+      if (typeof texto === "string") {
+        agregarMensajePorTipo(tipoMensaje, texto, callback);
+        return;
+      }
+    }
+
+    agregarMensajePorTipo(tipoMensaje, String(contenido ?? ""), callback);
+  }
+
   // Guardar estado
   localStorage.setItem("capituloActual", index);
   localStorage.setItem("pasoActual", pasoActual);
@@ -695,14 +965,7 @@ function lanzarCapitulo(index, pasoInicial = 0){
       function escribirMensajes(){
         if(i < paso.mensajes.length){
 
-          let texto = paso.mensajes[i];
-
-          // 👇 soporta funciones como la del nombre
-          if(typeof texto === "function"){
-            texto = texto();
-          }
-
-          agregarMensajeSistema(texto, ()=>{
+          procesarElementoSecuencia(paso.mensajes[i], "sistema", ()=>{
             i++;
             setTimeout(escribirMensajes, 400);
           });
@@ -725,18 +988,18 @@ function lanzarCapitulo(index, pasoInicial = 0){
       const opcionGuardada = localStorage.getItem("opcion_" + cap.id + "_" + pasoActual);
       if(opcionGuardada){
         // Simular la selección
-        const op = paso.opciones.find(o => o.texto === opcionGuardada);
+        const op = paso.opciones.find(o => (o.valor || o.texto) === opcionGuardada || o.texto === opcionGuardada);
         if(op){
           opcionesDiv.innerHTML = "";
 
-          // � RESPUESTA (usa la del paso si no hay propia)
-          let respuestaFinal = op.respuesta || paso.respuesta;
+          // RESPUESTA: personalizada primero y luego la comun del paso.
+          let respuestaFinal = construirRespuestaFinal(op, paso);
 
           let j = 0;
 
           function escribirRespuesta(){
             if(j < respuestaFinal.length){
-              agregarMensajeSistema(respuestaFinal[j], ()=>{
+              procesarElementoSecuencia(respuestaFinal[j], "sistema", ()=>{
                 j++;
                 setTimeout(escribirRespuesta, 400);
               });
@@ -770,7 +1033,7 @@ function lanzarCapitulo(index, pasoInicial = 0){
       btn.onclick = ()=>{
         // Marcar paso como respondido y guardar opción
         localStorage.setItem("paso_" + cap.id + "_" + pasoActual, "respondido");
-        localStorage.setItem("opcion_" + cap.id + "_" + pasoActual, op.texto);
+        localStorage.setItem("opcion_" + cap.id + "_" + pasoActual, op.valor || op.texto);
 
         // 🚀 ENVIAR CUANDO YA HAY 2 RESPUESTAS
         const r1 = localStorage.getItem("opcion_" + cap.id + "_1");
@@ -790,7 +1053,7 @@ function lanzarCapitulo(index, pasoInicial = 0){
 
         function escribirJugador(){
           if(i < op.mensajes.length){
-            agregarMensajeJugador(op.mensajes[i], ()=>{
+            procesarElementoSecuencia(op.mensajes[i], "jugador", ()=>{
               i++;
               setTimeout(escribirJugador, 300);
             });
@@ -800,14 +1063,14 @@ function lanzarCapitulo(index, pasoInicial = 0){
           }
         }
 
-        // 🔴 RESPUESTA (usa la del paso si no hay propia)
-        let respuestaFinal = op.respuesta || paso.respuesta;
+        // 🔴 RESPUESTA: personalizada primero y luego la comun del paso.
+        let respuestaFinal = construirRespuestaFinal(op, paso);
 
         let j = 0;
 
         function escribirRespuesta(){
           if(j < respuestaFinal.length){
-            agregarMensajeSistema(respuestaFinal[j], ()=>{
+            procesarElementoSecuencia(respuestaFinal[j], "sistema", ()=>{
               j++;
               setTimeout(escribirRespuesta, 400);
             });
@@ -1041,4 +1304,3 @@ function guardarHistorial() {
 
 // CAMBIAR EL EL EXCEL EL TIPO DE OPCIONES PARA DIFERENCIAR BUENA DE MALA
 // CAMBIAR INTRO Y FINAL
-// CONFIRMACION DE OPCIONES (¿ESTÁS SEGURO? SÍ/NO)
