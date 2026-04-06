@@ -89,6 +89,27 @@ function formatearTiempo(segundos) {
   return `${mins}:${String(secs).padStart(2, "0")}`;
 }
 
+function formatearAvisoMicrofono(estado) {
+  return `MICRÓFONO ${estado}`;
+}
+
+function ocultarYEliminarElemento(elemento, espera = 0, callback) {
+  if (!elemento) {
+    if (callback) callback();
+    return;
+  }
+
+  setTimeout(() => {
+    elemento.classList.add("mensajeTemporalOcultando");
+
+    setTimeout(() => {
+      elemento.remove();
+      mensajesDiv.scrollTop = mensajesDiv.scrollHeight;
+      if (callback) callback();
+    }, 240);
+  }, espera);
+}
+
 function crearBloqueAudioDirecto() {
   const contenedor = document.createElement("div");
   contenedor.className = "mensajeSistema mensajeAudioDirecto";
@@ -164,7 +185,7 @@ function reproducirAudioNarrativo(rutaAudio, opciones = {}, callback) {
       ui.contenedor.classList.add("cerrando");
       limpiar();
       setTimeout(() => {
-        if (callback) callback();
+        ocultarYEliminarElemento(ui.contenedor, 0, callback);
       }, DURACION_CIERRE_ONDA);
     };
 
@@ -337,7 +358,7 @@ const capitulos = [
     pasos: [
       {
         mensajes: [
-          { audio: "audio/pasoa1.mp3", avisoSistema: "MICROFONO ACTIVADO", volumen: 0.7, desde: 0, duracion: 6 },
+          { audio: "audio/lab.mp3", avisoSistema: formatearAvisoMicrofono("ACTIVO"), volumen: 0.7, desde: 0, duracion: 6 },
           () =>`${nombreJugador || "Usuario"}, menos mal... Soy Pablo`,
           "Tenía miedo de que no averiguases como entrar en el sistema",
           "Disculpa el rollo paranoico pero es la opción más segura en estos momentos"
@@ -353,7 +374,7 @@ const capitulos = [
               "¿Por qué tanto secretismo?"
             ],
             respuesta: [
-              "Bueno, es que... no sé ni por dónde empezar"
+              "Es algo complicado de explicar"
             ]
           },
           {
@@ -369,11 +390,11 @@ const capitulos = [
           }
         ],
         respuesta: [ 
-              "Estoy metido en algo único",
-              "En serio, creo que esto es muy gordo y no puedo dejar que nadie meta las narices...",
-              "El otro día en las termas... Pasó algo",
-              "De verdad, no vas a creértelo, pero al menos presta atención"
-            ]
+          "Estoy metido en algo único",
+          "En serio, creo que esto es muy gordo y no puedo dejar que nadie meta las narices...",
+          "El otro día en las termas... Pasó algo",
+          "De verdad, no vas a creértelo, pero al menos presta atención"
+        ]
       },
       {
         opciones: [
@@ -381,8 +402,8 @@ const capitulos = [
             texto: "Desembucha",
             valor: "Desembucha 👍",
             mensajes: [
-            "Venga, tío, suéltalo de una vez", 
-            "¿De qué me estás hablando?"
+              "Venga, tío, suéltalo de una vez", 
+              "¿De qué me estás hablando?"
             ],
             respuesta: [
               () =>`Voy, ${nombreJugador || "Usuario"}, no me presiones...`,
@@ -392,9 +413,9 @@ const capitulos = [
             texto: "Me estás asustando",
             valor: "Me estás asustando 😡",
             mensajes: [
-            "Pablo, ¿qué está pasando?",
-            "No estoy entendiendo nada", 
-            "Me estás asustando"
+              "Pablo, ¿qué está pasando?",
+              "No estoy entendiendo nada", 
+              "Me estás asustando"
             ],
             respuesta: [
               "Tranquilo, no quiero asustarte"
@@ -402,14 +423,14 @@ const capitulos = [
           }
         ],
         respuesta: [ 
-              "Joder, no sé ni por dónde empezar",
-            { audio: "audio/pasoa1.mp3", avisoSistema: "MICROFONO ACTIVADO", volumen: 0.7, desde: 0, duracion: 6 },
-              "Llevo días sin dormir y me siento rarísimo...",
-              "Mierda, viene alguien",
-              "No te imaginas desde donde te estoy escribiendo... Fliparías",
-              "Tengo que salir de aquí antes de que me pillen, pero volveré dentro de dos días",
-              "Hablamos entonces, vale?",
-              "No me dejes tirado, por favor..."
+          "Joder, no sé ni por dónde empezar",
+          "Llevo días sin dormir y me siento rarísimo...",
+          { audio: "audio/lab.mp3", avisoSistema: formatearAvisoMicrofono("ACTIVO"), volumen: 0.7, desde: 0, duracion: 6 },
+          "Mierda, viene alguien",
+          "No te imaginas desde donde te estoy escribiendo... Fliparías",
+          "Tengo que salir de aquí antes de que me pillen, pero volveré dentro de dos días",
+          "Hablamos entonces, vale?",
+          "No me dejes tirado, por favor..."
         ]
       }
     ]
@@ -744,6 +765,10 @@ function lanzarIntro(callback) {
 
   mensajesDiv.innerHTML = "";
 
+  const ESPERA_SALIDA_INTRO_MS = 1000;
+  const RETARDO_LINEA_INTRO_MS = 85;
+  const DURACION_FADE_INTRO_MS = 260;
+
   const intro = [
     "INICIANDO PROTOCOLO DE CONEXIÓN...",
     "SERVIDOR: SECURE_HOST_1984",
@@ -753,6 +778,40 @@ function lanzarIntro(callback) {
 
   let i = 0;
 
+  function continuarFlujo() {
+    if (nombreJugador) {
+      if (callback) {
+        callback();
+      } else {
+        comprobarNuevosCapitulos();
+      }
+    } else {
+      pedirNombre();
+    }
+  }
+
+  function desaparecerIntro(callbackSalida) {
+    const lineasIntro = Array.from(mensajesDiv.children);
+
+    if (lineasIntro.length === 0) {
+      mensajesDiv.innerHTML = "";
+      if (callbackSalida) callbackSalida();
+      return;
+    }
+
+    let lineasBorradas = 0;
+
+    lineasIntro.forEach((linea) => {
+      borrarTextoIntro(linea, () => {
+        lineasBorradas++;
+        if (lineasBorradas === lineasIntro.length) {
+          mensajesDiv.innerHTML = "";
+          if (callbackSalida) callbackSalida();
+        }
+      });
+    });
+  }
+
   function siguiente() {
     if (i < intro.length) {
       agregarMensajeSistema(intro[i], () => {
@@ -760,18 +819,9 @@ function lanzarIntro(callback) {
         setTimeout(siguiente, 500);
       });
     } else {
-      // una vez el intro se ha completado, borramos el texto de carga
-      mensajesDiv.innerHTML = "";
-
-      if (nombreJugador) {
-        if (callback) {
-          callback();
-        } else {
-          comprobarNuevosCapitulos();
-        }
-      } else {
-        pedirNombre();
-      }
+      setTimeout(() => {
+        desaparecerIntro(continuarFlujo);
+      }, ESPERA_SALIDA_INTRO_MS);
     }
   }
 
@@ -866,10 +916,10 @@ function lanzarCapitulo(index, pasoInicial = 0){
       const cierreSistema = contenido.cierreSistema;
 
       if (audio) {
-        const aviso = avisoSistema === false ? "" : (typeof avisoSistema === "string" ? avisoSistema : "MICROFONO ACTIVADO");
-        const cierre = cierreSistema === false ? "" : (typeof cierreSistema === "string" ? cierreSistema : "MICROFO CERRADO");
+        const aviso = avisoSistema === false ? "" : (typeof avisoSistema === "string" ? avisoSistema : formatearAvisoMicrofono("ACTIVO"));
+        const cierre = cierreSistema === false ? "" : (typeof cierreSistema === "string" ? cierreSistema : formatearAvisoMicrofono("DESACTIVADO"));
 
-        const continuarDespuesCierre = (divEstado) => {
+        const continuarDespuesCierre = () => {
           if (typeof texto === "string" && texto.length > 0) {
             agregarMensajePorTipo(tipoMensaje, texto, callback);
           } else if (callback) {
@@ -877,29 +927,43 @@ function lanzarCapitulo(index, pasoInicial = 0){
           }
         };
 
-        const reproducir = (divEstado) => {
-          if (divEstado) {
-            divEstado.classList.add("activo");
+        const mostrarCierre = () => {
+          if (!(tipoMensaje === "sistema" && cierre.length > 0)) {
+            continuarDespuesCierre();
+            return;
           }
 
+          const divCierre = document.createElement("div");
+          divCierre.className = "mensajeSistema mensajeEstadoMicro";
+          mensajesDiv.appendChild(divCierre);
+          mensajesDiv.scrollTop = mensajesDiv.scrollHeight;
+
+          escribirTexto(divCierre, cierre, () => {
+            setTimeout(() => {
+              ocultarYEliminarElemento(divCierre, 0, continuarDespuesCierre);
+            }, 2000);
+          });
+        };
+
+        const reproducir = () => {
           reproducirAudioNarrativo(audio, { volumen, desde, hasta, duracion }, () => {
-            if (divEstado && cierre.length > 0) {
-              divEstado.textContent = cierre;
-              divEstado.classList.remove("activo");
-            }
-            setTimeout(() => continuarDespuesCierre(divEstado), 200);
+            setTimeout(mostrarCierre, 120);
           });
         };
 
         if (tipoMensaje === "sistema" && aviso.length > 0) {
           const divEstado = document.createElement("div");
           divEstado.className = "mensajeSistema mensajeEstadoMicro";
+          divEstado.classList.add("activo");
           mensajesDiv.appendChild(divEstado);
+          mensajesDiv.scrollTop = mensajesDiv.scrollHeight;
           escribirTexto(divEstado, aviso, () => {
-            setTimeout(() => reproducir(divEstado), 250);
+            setTimeout(() => {
+              ocultarYEliminarElemento(divEstado, 0, reproducir);
+            }, 1000);
           });
         } else {
-          reproducir(null);
+          reproducir();
         }
 
         return;
@@ -1159,9 +1223,36 @@ function escribirTexto(div, texto, callback) {
   escribir();
 }
 
+function borrarTextoIntro(div, callback) {
+  let texto = div.textContent || "";
+  let i = texto.length;
+  let timeoutId = null;
+
+  function borrar() {
+    if (i > 0) {
+      div.textContent = texto.substring(0, i - 1) + "█";
+
+      let velocidad = 20 + Math.random() * 40;
+
+      if (texto[i - 1] === "." || texto[i - 1] === ",") {
+        velocidad = 300;
+      }
+
+      i--;
+      timeoutId = setTimeout(borrar, velocidad);
+    } else {
+      div.textContent = "";
+      if (callback) callback();
+    }
+  }
+
+  borrar();
+}
+
 // ===============================
 // MENSAJES
 // ===============================
+
 
 function agregarMensajeSistema(texto, callback) {
   const div = document.createElement("div");

@@ -194,11 +194,17 @@ input {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding:0px 12px;
+  padding: 6px 12px;
   font-size: clamp(15px, 1.45vw, 23px);
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(198, 255, 198, 0.95);
+  color: #7aff7a;
+}
+
+.mensajeEstadoMicro.activo {
+  color: #94ff94;
+  text-shadow: 0 0 7px rgba(122, 255, 122, 0.85);
 }
 
 .mensajeEstadoMicro::before {
@@ -211,7 +217,7 @@ input {
 }
 
 .mensajeEstadoMicro.activo::before {
-  background: #87ff87;
+  background: #33ff33;
   box-shadow: 0 0 7px rgba(96, 255, 96, 0.85);
   animation: pulsoMicro 1s ease-in-out infinite;
 }
@@ -237,6 +243,12 @@ input {
 .mensajeSistema,
 .mensajeJugador{
   animation: aparecer 0.4s ease;
+}
+
+.mensajeTemporalOcultando {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.24s ease, transform 0.24s ease;
 }
 
 .mensajeAudioDirecto {
@@ -283,7 +295,6 @@ input {
   --amp: 1.45;
   width: 100%;
   height: 44px;
-  border-radius: 2px;
   background: linear-gradient(
     to top,
     rgba(122, 255, 122, 0.65) 0%
@@ -332,7 +343,6 @@ input {
 
 .mensajeAudioDirecto.cerrando .audioDirectoOnda {
   animation: cierreOnda 0.34s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
-  animation-delay: calc(var(--d, 0s) * 0.45);
 }
 
 @keyframes ondaDirecto {
@@ -514,6 +524,27 @@ button:hover{
     font-size: clamp(28px, 4vw, 40px);
   }
 
+  .mensajeEstadoMicro {
+    font-size: clamp(28px, 4vw, 40px);
+    padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 18px);
+    gap: clamp(8px, 1.3vw, 12px);
+  }
+
+  .mensajeEstadoMicro::before {
+    width: clamp(13px, 1.7vw, 17px);
+    height: clamp(13px, 1.7vw, 17px);
+  }
+
+  .audioDirecto {
+    padding: 12px 14px;
+    min-height: 104px;
+  }
+
+  .audioDirectoOndas {
+    height: 68px;
+    gap: 4px;
+  }
+
   .mensajeSistema,
   .mensajeJugador {
     max-width: 88%;
@@ -602,6 +633,18 @@ button:hover{
     font-size: clamp(30px, 5.6vw, 44px);
   }
 
+  .mensajeEstadoMicro {
+    font-size: clamp(30px, 5.6vw, 44px);
+    padding: clamp(8px, 1.8vw, 14px) clamp(12px, 2.2vw, 18px);
+    gap: clamp(8px, 1.6vw, 12px);
+    letter-spacing: 0.07em;
+  }
+
+  .mensajeEstadoMicro::before {
+    width: clamp(10px, 1.8vw, 14px);
+    height: clamp(10px, 1.8vw, 14px);
+  }
+
   #saludo {
     margin-left: 2px;
   }
@@ -648,6 +691,11 @@ button:hover{
   .fechaCapitulo {
     font-size: clamp(30px, 6vw, 42px);
   }
+
+  .mensajeEstadoMicro {
+    font-size: clamp(30px, 6vw, 42px);
+  }
+
 }
 
 @media (min-width: 769px) and (max-width: 1100px) and (orientation: portrait) {
@@ -699,6 +747,34 @@ button:hover{
   .fechaCapitulo {
     font-size: clamp(28px, 4.2vw, 40px);
   }
+
+  .mensajeEstadoMicro {
+    font-size: clamp(28px, 4.2vw, 40px);
+    padding: clamp(8px, 1.3vw, 12px) clamp(12px, 1.8vw, 18px);
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+  }
+
+  .mensajeEstadoMicro::before {
+    width: clamp(11px, 1.35vw, 14px);
+    height: clamp(11px, 1.35vw, 14px);
+  }
+
+  .audioDirecto {
+    padding: 16px 20px;
+    min-height: 124px;
+  }
+
+  .audioDirectoOndas {
+    width: 96%;
+    height: 68px;
+    gap: 5px;
+  }
+
+  .audioDirectoOnda {
+    height: 40px;
+  }
 }
 
 @media (max-height: 760px) {
@@ -730,6 +806,16 @@ button:hover{
 
   #opciones button {
     font-size: clamp(30px, 6.5vw, 46px);
+  }
+
+  .mensajeEstadoMicro {
+    font-size: clamp(24px, 5.8vw, 36px);
+    padding: 7px 12px;
+  }
+
+  .mensajeEstadoMicro::before {
+    width: 10px;
+    height: 10px;
   }
 }
 
@@ -798,6 +884,18 @@ button:hover{
 
   .fechaCapitulo {
     font-size: clamp(24px, 6vw, 34px);
+  }
+
+  .mensajeEstadoMicro {
+    font-size: clamp(24px, 6vw, 34px);
+    padding: 6px 10px;
+    gap: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .mensajeEstadoMicro::before {
+    width: 10px;
+    height: 10px;
   }
 
 }
