@@ -688,6 +688,14 @@ const saludo = document.getElementById("saludo");
 const mensajesDiv = document.getElementById("mensajes");
 const opcionesDiv = document.getElementById("opciones");
 
+function irAlUltimoMensaje() {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      mensajesDiv.scrollTop = mensajesDiv.scrollHeight;
+    });
+  });
+}
+
 // ===============================
 // LOGIN
 // ===============================
@@ -746,6 +754,7 @@ function iniciarSistema(alias) {
   lanzarIntro(() => {
     if (historial) {
       mensajesDiv.innerHTML = historial;
+      irAlUltimoMensaje();
     }
 
     if (capIndex !== null && pasoIndex !== null) {
@@ -762,12 +771,9 @@ function iniciarSistema(alias) {
 // ===============================
 
 function lanzarIntro(callback) {
-
   mensajesDiv.innerHTML = "";
 
   const ESPERA_SALIDA_INTRO_MS = 1000;
-  const RETARDO_LINEA_INTRO_MS = 85;
-  const DURACION_FADE_INTRO_MS = 260;
 
   const intro = [
     "INICIANDO PROTOCOLO DE CONEXIÓN...",
@@ -791,25 +797,8 @@ function lanzarIntro(callback) {
   }
 
   function desaparecerIntro(callbackSalida) {
-    const lineasIntro = Array.from(mensajesDiv.children);
-
-    if (lineasIntro.length === 0) {
-      mensajesDiv.innerHTML = "";
-      if (callbackSalida) callbackSalida();
-      return;
-    }
-
-    let lineasBorradas = 0;
-
-    lineasIntro.forEach((linea) => {
-      borrarTextoIntro(linea, () => {
-        lineasBorradas++;
-        if (lineasBorradas === lineasIntro.length) {
-          mensajesDiv.innerHTML = "";
-          if (callbackSalida) callbackSalida();
-        }
-      });
-    });
+    mensajesDiv.innerHTML = "";
+    if (callbackSalida) callbackSalida();
   }
 
   function siguiente() {
