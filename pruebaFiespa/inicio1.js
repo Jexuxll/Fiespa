@@ -358,7 +358,6 @@ const capitulos = [
     pasos: [
       {
         mensajes: [
-          { audio: "audio/lab.mp3", avisoSistema: formatearAvisoMicrofono("ACTIVO"), volumen: 0.7, desde: 0, duracion: 6 },
           () =>`${nombreJugador || "Usuario"}, menos mal... Soy Pablo`,
           "Tenía miedo de que no averiguases como entrar en el sistema",
           "Disculpa el rollo paranoico pero es la opción más segura en estos momentos"
@@ -1382,5 +1381,4 @@ function guardarHistorial() {
   localStorage.setItem("chatHistorial", mensajesDiv.innerHTML);
 }
 
-// CAMBIAR EL EL EXCEL EL TIPO DE OPCIONES PARA DIFERENCIAR BUENA DE MALA
 // CAMBIAR INTRO Y FINAL
