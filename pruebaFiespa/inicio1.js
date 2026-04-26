@@ -441,64 +441,81 @@ const capitulos = [
     pasos: [
       {
         mensajes: [
-          () =>`${nombreJugador || "Usuario"}, he tenido que sacar la muestra del edificio.`,
-          "La tengo en mi casa. Hubo un accidente.",
-          "El frasco se agrietó y me corté al intentar meterlo en la mochila."
+          () =>`${nombreJugador || "Usuario"}?, Me recibes?`,
+          "Perdona lo del otro día, tengo que andarme con mucho ojo...",
+          "Siento que cualquier paso en falso puede acabar MUY mal para mí y... para mi descubrimiento."
         ],
       },
       {
       opciones: [
         {
-          texto: "Insistir en el peligro",
-          valor: "Insistir en el peligro 👍",
+          texto: "¿Que dices?",
+          valor: "¿Que dices? 👍",
           mensajes: [
-            "¡Vete a urgencias ahora mismo!",
-            "Puedes infectarte."
+            "Que coño dices Pablo?",
+            "Dejate de tonterias",
+            "Esto no es normal"
+          ],
+          respuesta: [
+            "Ya se que no es normal, por eso te lo estoy contando por aquí",
           ]
         },
         {
-          texto: "Preguntar por la herida",
-          valor: "Preguntar por la herida 😡",
+          texto: "Cuentame ya",
+          valor: "Cuentame ya 😡",
           mensajes: [
-            "¿Te duele?",
-            "¿Qué ha pasado con la herida?"
+            "Cuentame de una vez de qué va todo esto",
+            "Porque me estoy poniendo de los nervios",
+          ],
+          respuesta: [
+            "Tranquilizate, no quiero que te pongas nervioso",
           ]
         }
       ],
       respuesta: [ 
-            "Ese es el tema.",
-            "No sangra.",
-            "La piel se ha sellado sola, pero está... fría.",
-            "Muy fría. Y húmeda.",
-            "Lo más raro es que mi mente va a mil por hora.",
-            "Siento que he estado dormido toda mi vida y acabo de despertar."
+            "Te explico",
+            "Lo que te intentaba decir el otro día era que descubrí algo en las termas del molino hace unos días",
+            "Era de noche y el río había inundado las pozas",
+            "Yo iba tranquilamente de regreso a casa después de mi habitual caminata vespertina buscando pájaros",
+            "Y entonces lo vi, parecía que estaba esperando a que alguien le encontrase..."
       ]
     },
     {
       opciones: [
         {
-          texto: "Recomendar ir al médico",
-          valor: "Recomendar ir al médico 👍",
+          texto: "¿De qué hablas?",
+          valor: "¿De qué hablas? 👍",
           mensajes: [
-          "Eso no es normal, Pablo.", 
-          "Es una infección cerebral, pide ayuda."
+          "Esto da bastante mal rollo, Pablo", 
+          "¿QUÉ ENCONTRASTE?",
+          ],
+          respuesta: [
+            "Un \"bicho\" raro",
           ]
         },
         {
-          texto: "Mostrar apoyo",
-          valor: "Mostrar apoyo 😡",
+          texto: "Cuéntame más",
+          valor: "Cuéntame más 😡",
           mensajes: [
-          "Suena a que te ha mejorado.", 
-          "¿Qué más sientes?"
+          "¿Y qué hiciste?", 
+          "¿Fuiste a verlo?",
+          "Dame más detalles"
+          ],
+          respuesta: [
+            "Sí, me acerqué a ver que era ese \"bicho\"",
           ]
         }
       ],  
       respuesta: [ 
-          "Tengo muchísima sed.",
-          "Pero el agua del grifo me sabe a metal, como a sangre vieja.",
-          "Necesito preparar agua con sal.",
-          "La piel me pica horrores.",
-          "Me tengo que ir, hablamos en 48 horas... si sigo aquí."
+          "Y lo toqué, con temor, pero lo toqué",
+          "Bueno más bien me tocó él a mí",
+          "Era como una pequeña pelota verde intenso, brillaba en la oscuridad y se balanceaba ligeramente como un blandiblú",
+          "En cuanto acerqué la mano para tocarlo noté un latigazo en la yema del dedo y puf",
+          "El \"bicho\" se esfumó",
+          { audio: "audio/tos.mp3", avisoSistema: formatearAvisoMicrofono("ACTIVO"), volumen: 0.6, desde: 0, duracion: 5 },
+          "Tengo que dejarte, no me encuentro muy bien",
+          "Últimamente estoy muy cansado, será por andar constantemente huyendo, supongo",
+          "Nos vemos dentro de dos días, no le cuentes a nadie nada de esto..."
         ]
       }
     ]
@@ -1382,3 +1399,4 @@ function guardarHistorial() {
 }
 
 // CAMBIAR INTRO Y FINAL
+// añadir texto de conexion y desconexion
