@@ -2,9 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>TERMINAL // PACIENTE 0</title>
+  <title>TERMINAL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="../Fiespa'26/favicon.png" type="image/png">
 </head>
 <body>
 
@@ -12,43 +13,38 @@
 
   <!-- LOGIN -->
   <div id="login">
-  <p>TERMINAL DE LABORATORIO // ACCESO RESTRINGIDO</p>
-  <p>Introduce credenciales:</p>
+    <p class="p1">TERMINAL DE LABORATORIO</p>
+    <p class="p2">ACCESO RESTRINGIDO</p>
 
-  <form id="loginForm">
-  <div class="linea">
-    <span>USUARIO:</span>
-    <input type="text" id="alias" required>
+    <form id="loginForm">
+      <div class="linea linea-centro">
+        <span>INTRODUZCA CLAVE</span>
+      </div>
+      <div class="linea linea-centro">
+        <input type="password" id="clave" class="inputNombre" required>
+      </div>
+
+      <button type="submit" class="submitOculto"></button>
+      <p id="error" class="error"></p>
+    </form>
   </div>
 
-  <div class="linea">
-    <span>CLAVE:</span>
-    <input type="password" id="clave" required>
-  </div>
-
-  <!-- Botón invisible para activar el Enter -->
-  <button type="submit" class="submitOculto"></button>
-
-  <p id="error" class="error"></p>
-</form>
-
-</div>
-
-  <!-- TERMINAL -->
+  <!-- CHAT DEL SISTEMA -->
   <div id="sistema" class="oculto">
     <p id="saludo"></p>
-    <div class="contenedor">
-      <div id="listaCapitulos"></div>
-      <div class="visorCapitulo">
-        <div id="mensajes"></div>
-        <div id="opciones"></div>
-      </div>
+
+    <div class="chat">
+      <div id="mensajes"></div>
+      <div id="opciones"></div>
     </div>
   </div>
 
 </div>
 
-<script src="Inicio.js"></script>
+<audio id="tecleo" preload="auto">
+  <source src="../audio/data1.mp3" type="audio/mpeg">
+</audio>
+
+<script src="inicio.js"></script>
 </body>
 </html>
-

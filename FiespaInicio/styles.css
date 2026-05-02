@@ -190,6 +190,29 @@ input {
   overflow-wrap: anywhere;
 }
 
+.mensajeServidor {
+  font-size: clamp(15px, 2.3vw, 29px);
+  padding: 8px 14px;
+  color: #7aff7a;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.9;
+  width: 100%;
+  box-sizing: border-box;
+  line-height: 1.3;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mensajeServidorUnion {
+  margin-bottom: 38px;
+}
+
+.mensajeServidorSalida {
+  margin-top: 38px;
+}
+
 .mensajeEstadoMicro {
   display: inline-flex;
   align-items: center;
@@ -516,6 +539,10 @@ button:hover{
     font-size: clamp(32px, 5.2vw, 48px);
   }
 
+  .mensajeServidor {
+    font-size: clamp(25px, 4vw, 37px);
+  }
+
   #opciones button {
     font-size: clamp(32px, 5.2vw, 48px);
   }
@@ -609,6 +636,21 @@ button:hover{
     padding-right: 8px;
   }
 
+  .mensajeServidor {
+    font-size: clamp(30px, 5.5vw, 44px);
+    padding-left: 8px;
+    padding-right: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  .mensajeServidorUnion {
+    margin-bottom: 24px;
+  }
+
+  .mensajeServidorSalida {
+    margin-top: 24px;
+  }
+
   .mensajeAudioDirecto {
     max-width: 96%;
     padding-left: 0;
@@ -684,6 +726,10 @@ button:hover{
     font-size: clamp(40px, 8.5vw, 58px);
   }
 
+  .mensajeServidor {
+    font-size: clamp(31px, 6.6vw, 45px);
+  }
+
   #opciones button {
     font-size: clamp(40px, 8.5vw, 58px);
   }
@@ -738,6 +784,10 @@ button:hover{
   .mensajeSistema,
   .mensajeJugador {
     font-size: clamp(36px, 5.2vw, 52px);
+  }
+
+  .mensajeServidor {
+    font-size: clamp(28px, 4vw, 40px);
   }
 
   #opciones button {
@@ -804,6 +854,10 @@ button:hover{
     font-size: clamp(30px, 6.5vw, 46px);
   }
 
+  .mensajeServidor {
+    font-size: clamp(23px, 5vw, 36px);
+  }
+
   #opciones button {
     font-size: clamp(30px, 6.5vw, 46px);
   }
@@ -864,6 +918,19 @@ button:hover{
   .mensajeSistema,
   .mensajeJugador {
     font-size: clamp(30px, 8.4vw, 44px);
+  }
+
+  .mensajeServidor {
+    font-size: clamp(23px, 6.5vw, 34px);
+    letter-spacing: 0.03em;
+  }
+
+  .mensajeServidorUnion {
+    margin-bottom: 16px;
+  }
+
+  .mensajeServidorSalida {
+    margin-top: 16px;
   }
 
   #opciones button {
