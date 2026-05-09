@@ -61,7 +61,7 @@ main {
     grid-gap: 20px;
 }
 
-.Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2 {
+.Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
     text-align: center;
     color: #0D4749;
     font-size: 80px;
@@ -81,7 +81,7 @@ main {
     padding: 40% 0% 0% 0%;
     border: 1px solid #0d474928;
     border-top: 0px;
-    background-image: url('Fiespa\'26/BannerFiespa.jpeg');
+    background-image: url('Fiespa\'26/fotos/BannerFiespa.jpeg');
     background-size: cover;
     background-position: 75% 20%;
 }
@@ -309,24 +309,146 @@ main {
 /* Carousel styles */
 
 .carousel {
-  max-width: 1300px;
+  max-width: 1700px;
   margin: 80px auto;
+}
+
+.carousel-outer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 10px;
+}
+
+.carousel-viewport {
   overflow: hidden;
+  flex: 1;
+}
+
+.carousel-btn {
+  background-color: #BF4200;
+  color: #EFE7DA;
+  border: none;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  font-size: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background-color: #AC3900;
+  transform: scale(1.1);
 }
 
 .carousel-track {
   display: flex;
   gap: 24px;
-  scroll-snap-type: x mandatory;
   transition: transform 0.6s ease;
 }
 
-.carousel-track img {
-  flex: 0 0 calc((100% - 48px) / 3); /* 3 visibles exactos */
-  height: 500px;
+.carousel-track .slide-item {
+  flex: 0 0 calc((100% - 48px) / 3);
+  height: 680px;
+  position: relative;
   border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* ---- HOVER: versión SENCILLA (nombre arriba, desc abajo, solo esas bandas con fondo) ---- */
+.carousel-track .slide-item img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  scroll-snap-align: start;
+  display: block;
+}
+
+.slide-overlay-top,
+.slide-overlay-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 22px 28px;
+  text-align: center;
+  transition: transform 0.35s ease;
+}
+
+.slide-overlay-top {
+  top: 0;
+  transform: translateY(-100%);
+}
+
+.slide-overlay-bottom {
+  bottom: 0;
+  transform: translateY(100%);
+}
+
+.slide-item:hover .slide-overlay-top {
+  transform: translateY(0);
+}
+
+.slide-item:hover .slide-overlay-bottom {
+  transform: translateY(0);
+}
+/* ---- fin versión SENCILLA ---- */
+
+/* ---- HOVER: versión FLIP (la foto da la vuelta y aparece la info) ----
+.carousel-track .slide-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform-origin: center;
+  transition: transform 0.25s ease 0.22s;
+}
+
+.slide-item:hover img {
+  transform: scaleX(0);
+  transition: transform 0.25s ease;
+}
+
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: #052C29;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 28px;
+  text-align: center;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
+.slide-item:hover .slide-overlay {
+  transform: scaleX(1);
+  transition: transform 0.25s ease 0.22s;
+}
+---- fin versión FLIP ---- */
+
+.slide-nombre {
+  color: #AC3900;
+  font-size: 88px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.slide-desc {
+  color: #AC3900;
+  font-size: 28px;
+  line-height: 1.5;
 }
 
 /* Mapa styles */
@@ -355,6 +477,149 @@ main {
 #mapa {
   height: 400px;
   border-radius: 20px;
+}
+
+/* Planning styles */
+
+.Planning {
+    text-align: center;
+    padding: 0 0 100px 0;
+    color: #052C29;
+}
+
+.planning-subtitulo {
+    font-size: 32px;
+    line-height: 1.6;
+    color: #0D4749;
+    margin-bottom: 60px;
+}
+
+.planning-carrusel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 0 80px;
+}
+
+.planning-viewport {
+    overflow: hidden;
+    flex: 1;
+    max-width: 1100px;
+    border-radius: 30px;
+    box-shadow: 0 16px 50px rgba(5, 44, 41, 0.25);
+}
+
+.planning-track {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.dia-card {
+    flex: 0 0 100%;
+    background-color: #0D4749;
+    min-height: 620px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dia-header {
+    background-color: #BF4200;
+    padding: 60px 40px 50px 40px;
+    text-align: center;
+}
+
+.dia-numero {
+    font-size: 130px;
+    font-weight: bold;
+    color: #EFE7DA;
+    display: block;
+    line-height: 1;
+    opacity: 0.5;
+}
+
+.dia-header h3 {
+    color: #EFE7DA;
+    font-size: 54px;
+    margin: 10px 0 0 0;
+}
+
+.dia-eventos {
+    list-style: none;
+    padding: 50px 80px;
+    margin: 0;
+    text-align: left;
+    flex: 1;
+}
+
+.dia-eventos li {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 38px 0;
+    border-bottom: 1px solid rgba(239, 231, 218, 0.15);
+}
+
+.dia-eventos li:last-child {
+    border-bottom: none;
+}
+
+.hora {
+    font-size: 32px;
+    font-weight: bold;
+    color: #BF4200;
+    min-width: 80px;
+}
+
+.evento-nombre {
+    font-size: 38px;
+    color: #D3CBBE;
+}
+
+.planning-btn {
+    background-color: #BF4200;
+    color: #EFE7DA;
+    border: none;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    font-size: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.planning-btn:hover {
+    background-color: #AC3900;
+    transform: scale(1.1);
+}
+
+.planning-dots {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 45px;
+}
+
+.planning-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #0D4749;
+    border: none;
+    cursor: pointer;
+    opacity: 0.35;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.planning-dot.activo {
+    opacity: 1;
+    background-color: #BF4200;
+    transform: scale(1.4);
 }
 
  /* Playlist styles */
