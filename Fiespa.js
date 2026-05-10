@@ -3,15 +3,15 @@
 // Añade, quita o edita aquí.
 // ==============================
 const invitados = [
-    { foto: "Fiespa'26/fotos/carrusel (8).jpeg",  nombre: "Pablo Sanchez", desc: "El organizador de la Fiespa" },
-    { foto: "Fiespa'26/fotos/carrusel (1).jpeg", nombre: "Nuria Arenas", desc: "Una mujer que inspira a todos con su pasión" },
-    { foto: "",  nombre: "Elena Blasco", desc: "El terremoto de Pacifico" },
-    { foto: "", nombre: "Aitor de Dios", desc: "La señora fitness" },
-    { foto: "Fiespa'26/fotos/carrusel (25).jpeg", nombre: "Pablo Romero", desc: "Descripción breve del invitado" },
-    { foto: "",  nombre: "Jesús Leal", desc: "Descripción breve del invitado" },
-    { foto: "", nombre: "Cris", desc: "Descripción breve del invitado" },
-    { foto: "Fiespa'26/fotos/carrusel (3).jpeg",  nombre: "Enrique", desc: "Descripción breve del invitado" },
-    { foto: "Fiespa'26/fotos/carrusel (53).jpeg", nombre: "Almu", desc: "Descripción breve del invitado" },
+    { foto: "Fiespa'26/fotos/pablo4.jpeg",  nombre: "Pablo Sanchez", desc: "El arquitecto del caos, el creador de la Fiespa" },
+    { foto: "Fiespa'26/fotos/nuri4.jpeg", nombre: "Nuria", desc: "La que lo da todo en la pista y fuera de ella" },
+    { foto: "Fiespa'26/fotos/helen3.jpeg",  nombre: "Elena", desc: "El terremoto del Pacífico, nadie la para" },
+    { foto: "Fiespa'26/fotos/ait2.jpeg", nombre: "Aitor", desc: "Proteína, rutina y mucha marcha" },
+    { foto: "Fiespa'26/fotos/carrusel (25).jpeg", nombre: "Pablo Romero", desc: "El alma de la fiesta, siempre el último en irse" },
+    { foto: "Fiespa'26/fotos/jesus2.jpeg",  nombre: "Jesús", desc: "Más tranquilo que un martes por la mañana" },
+    { foto: "Fiespa'26/fotos/.jpeg", nombre: "Cris", desc: "Capaz de bailar cualquier canción, de cualquier década" },
+    { foto: "Fiespa'26/fotos/carrusel (3).jpeg",  nombre: "Enrique", desc: "El que siempre llega tarde pero nunca falta" },
+    { foto: "Fiespa'26/fotos/carrusel (53).jpeg", nombre: "Almu", desc: "La que convierte cada momento en un recuerdo" },
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -188,4 +188,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener("load", () => {
   document.body.classList.remove("no-transition");
+});
+
+// ==========================
+// HAMBURGER MENU
+// ==========================
+
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.getElementById("hamburger");
+  const nav = document.querySelector("nav");
+  if (!hamburger || !nav) return;
+
+  hamburger.addEventListener("click", () => {
+    nav.classList.toggle("open");
+    hamburger.textContent = nav.classList.contains("open") ? "\u2715" : "\u2630";
+  });
+
+  nav.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("open");
+      hamburger.textContent = "\u2630";
+    });
+  });
 });

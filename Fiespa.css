@@ -4,11 +4,13 @@ html, body {
     padding: 0;
     background-color: #EFE7DA;
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 header {
@@ -26,8 +28,8 @@ nav a {
     color: #AC3900;
     text-decoration: none;
     font-weight: bold;
-    font-size: 25px;
-    padding: 14px 50px;
+    font-size: clamp(15px, 1.5vw, 25px);
+    padding: 14px clamp(10px, 2vw, 50px);
     transition: all 0.3s ease;
 }
 
@@ -57,8 +59,14 @@ nav a:hover {
 
 main {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-gap: 20px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 .Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
@@ -311,6 +319,7 @@ main {
 .carousel {
   max-width: 1700px;
   margin: 80px auto;
+  padding: 60px 0;
 }
 
 .carousel-outer {
@@ -423,7 +432,7 @@ main {
   background: #052C29;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 32px 28px;
   text-align: center;
@@ -439,16 +448,19 @@ main {
 ---- fin versión FLIP ---- */
 
 .slide-nombre {
-  color: #AC3900;
+  color: #D3CBBE;
   font-size: 88px;
   font-weight: bold;
-  margin-bottom: 16px;
+  margin-bottom: 0;
+  text-shadow: 2px 4px 8px rgba(5, 44, 41, 0.7);
 }
 
 .slide-desc {
-  color: #AC3900;
+  color: #bf4200;
   font-size: 28px;
   line-height: 1.5;
+  font-weight: bold;
+  text-shadow: 1px 2px 6px rgba(5, 44, 41, 0.863);
 }
 
 /* Mapa styles */
@@ -505,6 +517,7 @@ main {
 .planning-viewport {
     overflow: hidden;
     flex: 1;
+    min-width: 0;
     max-width: 1100px;
     border-radius: 30px;
     box-shadow: 0 16px 50px rgba(5, 44, 41, 0.25);
@@ -747,6 +760,470 @@ footer li {
 .copyright {
     margin: 0;
     grid-area: copyright;
+}
+
+/* =============================
+   HAMBURGER BUTTON (always defined, hidden on desktop)
+   ============================= */
+
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #AC3900;
+    cursor: pointer;
+    padding: 8px 14px;
+    line-height: 1;
+    transition: color 0.3s ease, transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.hamburger:hover {
+    color: #BF4200;
+    transform: scale(1.1);
+}
+
+/* =============================
+   RESPONSIVE — LARGE TABLET (≤1200px)
+   ============================= */
+
+@media (max-width: 1200px) {
+    .Info {
+        padding: 80px 60px;
+        gap: 60px;
+        grid-template-rows: auto;
+    }
+
+    .planning-carrusel {
+        padding: 0 40px;
+        gap: 20px;
+    }
+
+    .Ubicacion {
+        padding: 0 60px 80px;
+    }
+
+    .Playlist {
+        padding: 0 80px 80px;
+    }
+}
+
+/* =============================
+   RESPONSIVE — TABLET (≤900px)
+   ============================= */
+
+@media (max-width: 900px) {
+    .Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
+        font-size: 52px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .Info {
+        padding: 60px 40px;
+        grid-template-areas: none;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 30px;
+    }
+
+    .Info .text1     { order: 1; }
+    .Info .multimedia1 { order: 2; }
+    .Info .text2     { order: 3; }
+    .Info .multimedia2 { order: 4; }
+
+    .Info img {
+        width: 85%;
+        rotate: 0deg !important;
+    }
+
+    .Info p, .Ubicacion p, .Playlist p {
+        font-size: 24px;
+    }
+
+    .carousel-track .slide-item {
+        flex: 0 0 calc((100% - 24px) / 2);
+        height: 580px;
+    }
+
+    .Ubicacion {
+        padding: 0 40px 70px;
+    }
+
+    .Ubicacion iframe {
+        width: 85%;
+    }
+
+    .Playlist {
+        padding: 0 40px 70px;
+    }
+
+    .dia-numero {
+        font-size: 90px;
+    }
+
+    .dia-header h3 {
+        font-size: 42px;
+    }
+
+    .dia-eventos {
+        padding: 35px 50px;
+    }
+
+    .hora {
+        font-size: 26px;
+    }
+
+    .evento-nombre {
+        font-size: 30px;
+    }
+
+    .planning-carrusel {
+        padding: 0 25px;
+        gap: 15px;
+    }
+
+    .planning-btn {
+        width: 65px;
+        height: 65px;
+        font-size: 28px;
+    }
+
+    .dia-card {
+        min-height: 520px;
+    }
+
+    .planning-dots {
+        gap: 14px;
+        margin-top: 32px;
+    }
+
+    .planning-dot {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* =============================
+   RESPONSIVE — MOBILE (≤768px)
+   ============================= */
+
+@media (max-width: 768px) {
+
+    /* --- Nav / Hamburger --- */
+    header {
+        padding: 10px 16px;
+        position: relative;
+    }
+
+    nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .hamburger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+    }
+
+    .nav-links {
+        display: none !important;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        order: 3;
+    }
+
+    nav.open .nav-links {
+        display: flex !important;
+    }
+
+    nav a {
+        font-size: 19px;
+        padding: 10px 20px;
+        display: block;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .logo {
+        flex: 1 0 0;
+        justify-content: center;
+        display: flex;
+    }
+
+    .logoFIESPA {
+        height: 55px;
+    }
+
+    /* --- Contador --- */
+    .contador h1 {
+        font-size: 32px;
+    }
+
+    /* --- Banner --- */
+    .banner {
+        padding: 65% 0 0 0;
+    }
+
+    /* --- Headings --- */
+    .Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
+        font-size: 36px;
+        margin-top: 40px;
+        margin-bottom: 35px;
+    }
+
+    /* --- Info --- */
+    .Info {
+        padding: 45px 22px;
+        grid-template-areas: none;
+        gap: 24px;
+    }
+
+    .Info img {
+        width: 100%;
+    }
+
+    .Info p, .Ubicacion p, .Playlist p {
+        font-size: 17px;
+    }
+
+    /* --- Planning --- */
+    .planning-carrusel {
+        padding: 0 10px;
+        gap: 10px;
+    }
+
+    .planning-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 22px;
+    }
+
+    .dia-card {
+        min-height: 0;
+    }
+
+    .planning-dots {
+        gap: 10px;
+        margin-top: 22px;
+    }
+
+    .planning-dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    .dia-numero {
+        font-size: 65px;
+    }
+
+    .dia-header {
+        padding: 28px 20px;
+    }
+
+    .dia-header h3 {
+        font-size: 30px;
+    }
+
+    .dia-eventos {
+        padding: 18px 22px;
+    }
+
+    .dia-eventos li {
+        gap: 12px;
+        padding: 16px 0;
+    }
+
+    .hora {
+        font-size: 18px;
+        min-width: 50px;
+    }
+
+    .evento-nombre {
+        font-size: 18px;
+    }
+
+    /* --- Carousel (Invitados) --- */
+    .carousel {
+        margin: 40px auto;
+    }
+
+    .carousel-outer {
+        gap: 10px;
+        padding: 0 5px;
+    }
+
+    .carousel-track .slide-item {
+        flex: 0 0 100%;
+        height: 460px;
+    }
+
+    .carousel-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 20px;
+    }
+
+    .slide-nombre {
+        font-size: 46px;
+    }
+
+    .slide-desc {
+        font-size: 18px;
+    }
+
+    /* --- Ubicación --- */
+    .Ubicacion {
+        padding: 0 16px 55px;
+    }
+
+    .Ubicacion iframe {
+        width: 100%;
+        height: 300px;
+    }
+
+    /* --- Playlist --- */
+    .Playlist {
+        padding: 0 16px 55px;
+    }
+
+    .Playlist a {
+        font-size: 18px;
+        width: auto;
+    }
+
+    /* --- Minijuego --- */
+    .Minijuego iframe {
+        width: 95%;
+        height: 360px;
+    }
+
+    .Minijuego h3 {
+        font-size: 26px;
+    }
+
+    .Minijuego p, .Minijuego a {
+        font-size: 18px;
+    }
+
+    .Minijuego input {
+        font-size: 20px;
+        padding-left: 15px;
+        width: 80%;
+    }
+
+    .Minijuego button {
+        font-size: 32px;
+        width: 20%;
+    }
+
+    .Minijuego .opciones {
+        font-size: 18px;
+        height: auto;
+        width: 44%;
+        padding: 12px;
+    }
+
+    .Minijuego #respuestas {
+        width: 95%;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    /* --- Footer --- */
+    .social-media {
+        gap: 40px;
+    }
+
+    footer ul {
+        flex-wrap: wrap;
+        gap: 4px 20px;
+        justify-content: center;
+    }
+
+    footer a {
+        font-size: 17px;
+    }
+}
+
+/* =============================
+   RESPONSIVE — SMALL (≤480px)
+   ============================= */
+
+@media (max-width: 480px) {
+    .contador h1 {
+        font-size: 22px;
+        padding: 8px;
+    }
+
+    .Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
+        font-size: 28px;
+        margin-top: 32px;
+        margin-bottom: 28px;
+    }
+
+    .banner {
+        padding: 80% 0 0 0;
+    }
+
+    .Info {
+        padding: 35px 15px;
+    }
+
+    .carousel-track .slide-item {
+        height: 380px;
+    }
+
+    .slide-nombre {
+        font-size: 36px;
+    }
+
+    .dia-numero {
+        font-size: 55px;
+    }
+
+    .dia-header h3 {
+        font-size: 26px;
+    }
+
+    .hora {
+        font-size: 15px;
+        min-width: 42px;
+    }
+
+    .evento-nombre {
+        font-size: 15px;
+    }
+
+    .Minijuego .opciones {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .Minijuego #respuestas {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .Minijuego button {
+        width: 25%;
+    }
+
+    .Playlist iframe {
+        height: 380px;
+    }
 }
 
 
