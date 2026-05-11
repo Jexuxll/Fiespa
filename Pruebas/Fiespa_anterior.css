@@ -1,34 +1,21 @@
-@font-face {
-    font-family: 'SGK075';
-    src: url('fonts/SGK075.ttf') format('truetype');
-}
-
-html, body {
+﻿html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-image: url('Fiespa\'26/fotos/background.jpeg');
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    background-color: #020802;
+    background-color: #EFE7DA;
     scroll-behavior: smooth;
     overflow-x: hidden;
 }
 body {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    color: #A8FFA8;
 }
 
 header {
     text-align: center; 
-    padding: 20px;
-    background-color: #010F01;
-    border-bottom: 1px solid #1AFF1A44;
-    backdrop-filter: blur(4px);
+    padding: 20px; 
 }
 
 nav {
@@ -38,18 +25,17 @@ nav {
 }
 
 nav a {
-    color: #39FF14;
+    color: #AC3900;
     text-decoration: none;
     font-weight: bold;
     font-size: clamp(15px, 1.5vw, 25px);
     padding: 14px clamp(10px, 2vw, 50px);
     transition: all 0.3s ease;
-    letter-spacing: 0.05em;
 }
 
 nav a:hover {
-    color: #9AFF9A;
-    text-shadow: 0 0 8px #39FF14;
+    color: #BF4200;
+    text-shadow: #bf430093 0px 0px 2px;
     transform: scale(1.1);
     transition: transform 0.2s;
     text-decoration-thickness: 5px;
@@ -74,6 +60,7 @@ nav a:hover {
 main {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
+    grid-gap: 20px;
 }
 
 .nav-links {
@@ -82,15 +69,12 @@ main {
     flex-wrap: nowrap;
 }
 
-.Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
+.Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
     text-align: center;
-    color: #39FF14;
-    font-size: 110px;
+    color: #0D4749;
+    font-size: 80px;
     margin-top: 70px;
     margin-bottom: 70px;
-    font-family: 'SGK075', 'Courier New', monospace;
-    text-shadow: 0 0 18px #39FF1480, 0 0 40px #39FF1440;
-    letter-spacing: 0.04em;
 }
 
 .Info p, .Ubicacion p, .Playlist p {
@@ -114,20 +98,141 @@ main {
 
 .contador h1 {
     margin: 0 0 0px 0;
-    font-size: 100px;
-    color: #39FF14;
+    font-size: 80px;
+    color:#052C29;
     text-align: center;
-    background-color: #010F01;
-    font-family: 'SGK075', 'Courier New', monospace;
-    text-shadow: 0 0 12px #39FF14;
-    letter-spacing: 0.08em;
-    border-bottom: 1px solid #1AFF1A44;
+    background-color: #BF4200;
+}
+
+/* Minijuego styles */
+
+.Minijuego {
+    text-align: center;
+    padding: 50px 0px 50px 0px;
+}
+
+.Minijuego h2 {
+    margin-top: 0;
+}
+
+.Minijuego h3 {
+    color: #AC3900;
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.Minijuego iframe {
+    border-radius: 20px;
+    width: 80%;
+    height: 600px;
+}
+
+.Minijuego p {
+    font-size: 32px;
+    line-height: 1.6;
+}
+
+.Minijuego a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #0D4749;
+    font-size: 32px;
+    text-decoration: none;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    transition: all 0.3s ease;
+}
+
+.Minijuego button:hover {
+    background-color: #0D4749;
+    transition: all 0.3s ease;
+}
+
+.Minijuego form{
+    margin:  30px auto;
+    display: flex;
+    flex-direction: initial;
+    justify-content: left;
+}
+
+.Minijuego input{
+    border: 0;
+    box-sizing:content-box;
+    background-color: #EFE7DA;
+    font-size: 30px;
+    text-align: center;
+    color: #BF4200;
+    width: 90%;
+    padding-left: 150px;
+}
+
+.Minijuego input:focus{
+    outline: none;
+}
+
+.Minijuego :autofill{
+    box-shadow: 0 0 0px 1000px #EFE7DA inset;
+    -webkit-text-fill-color: #BF4200;
+}
+
+.Minijuego ::placeholder{
+    font-style: normal;
+    color: #ac390065;
+    text-align: center ;
+}
+
+.Minijuego button{
+    background-color: #BF4200;
+    color: #D3CBBE;
+    font-weight: bold;
+    font-size: 60px;
+    border: none;
+    padding: 20px 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    width: 7%;
+    overflow-wrap: break-word;
+}
+
+.Minijuego #pregunta{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Minijuego #respuestas{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-self: center;
+    width: 80%;
+}
+
+.Minijuego .opciones{
+    background-color: #BF4200;
+    color: #D3CBBE;
+    font-weight: bold;
+    font-size: 32px;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 200px;
+    width: 400px;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    overflow-wrap: break-word;
+    border-radius: 15px;
 }
 
 .popup {
     position: fixed;
     inset: 0;
-    background: rgba(1, 8, 1, 0.92);
+    background: #052C2999;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -135,34 +240,31 @@ main {
 }
 
 .popup-box {
-    background: #0A2A0A;
-    border: 2px solid #1AFF1A;
+    background: #0D4749;
     border-radius: 15px;
     padding: 25px 30px;
     max-width: 600px;
     text-align: center;
-    color: #A8FFA8;
+    color: #EFE7DA;
     font-size: 30px;
-    box-shadow: 0 0 30px #39FF1440;
 }
 
 .popup-botones button {
     margin: 10px;
     padding: 8px 16px;
-    border: 1px solid #1AFF1A;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 20px;
-    background-color: #020802;
-    color: #39FF14;
+    background-color: #EFE7DA;
+    color: #052C29;
     transition: all 0.3s ease;
 }
 
 .popup-botones button:hover {
-    background-color: #0A2A0A;
+    background-color: #AC3900;
     transition: all 0.3s ease;
-    color: #9AFF9A;
-    box-shadow: 0 0 10px #39FF1460;
+    color: #EFE7DA;
 }
 
 .oculto {
@@ -172,13 +274,11 @@ main {
 
 .Info {
     text-align: justify;
-    color: #A8FFA8;
+    color: #D3CBBE;
     align-items: center;
     padding: 150px 150px 150px 150px;
-    background-color: #041404;
+    background-color: #BF4200;
     font-size: 24px;
-    border-top: 1px solid #1AFF1A44;
-    border-bottom: 1px solid #1AFF1A44;
     display: grid;
     grid-template-areas:
         "text1 multimedia1"
@@ -235,8 +335,8 @@ main {
 }
 
 .carousel-btn {
-  background-color: #39FF14;
-  color: #010F01;
+  background-color: #BF4200;
+  color: #EFE7DA;
   border: none;
   border-radius: 50%;
   width: 70px;
@@ -251,7 +351,7 @@ main {
 }
 
 .carousel-btn:hover {
-  background-color: #1AFF1A;
+  background-color: #AC3900;
   transform: scale(1.1);
 }
 
@@ -270,7 +370,7 @@ main {
   cursor: pointer;
 }
 
-/* ---- HOVER: versión SENCILLA (nombre arriba, desc abajo, solo esas bandas con fondo) ----
+/* ---- HOVER: versión SENCILLA (nombre arriba, desc abajo, solo esas bandas con fondo) ---- */
 .carousel-track .slide-item img {
   width: 100%;
   height: 100%;
@@ -283,14 +383,13 @@ main {
   position: absolute;
   left: 0;
   right: 0;
-  background: rgba(1, 8, 1, 0.82);
+  background: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 22px 28px;
   text-align: center;
   transition: transform 0.35s ease;
-  border-top: 1px solid #1AFF1A44;
 }
 
 .slide-overlay-top {
@@ -310,9 +409,9 @@ main {
 .slide-item:hover .slide-overlay-bottom {
   transform: translateY(0);
 }
----- fin versión SENCILLA ---- */
+/* ---- fin versión SENCILLA ---- */
 
-/* ---- HOVER: versión FLIP (la foto da la vuelta y aparece la info) ---- */
+/* ---- HOVER: versión FLIP (la foto da la vuelta y aparece la info) ----
 .carousel-track .slide-item img {
   width: 100%;
   height: 100%;
@@ -330,13 +429,12 @@ main {
 .slide-overlay {
   position: absolute;
   inset: 0;
-  background: #010F01;
-  border: 1px solid #1AFF1A44;
+  background: #052C29;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 40px 28px;
+  padding: 32px 28px;
   text-align: center;
   transform: scaleX(0);
   transform-origin: center;
@@ -347,24 +445,22 @@ main {
   transform: scaleX(1);
   transition: transform 0.25s ease 0.22s;
 }
-/* ---- fin versión FLIP ---- */
+---- fin versión FLIP ---- */
 
 .slide-nombre {
-  color: #39FF14;
+  color: #D3CBBE;
   font-size: 88px;
   font-weight: bold;
   margin-bottom: 0;
-  font-family: 'SGK075', 'Courier New', monospace;
-  text-shadow: 0 0 16px #39FF14, 0 0 40px #39FF1460;
-  text-transform: uppercase;
+  text-shadow: 2px 4px 8px rgba(5, 44, 41, 0.7);
 }
 
 .slide-desc {
-  color: #9AFF9A;
+  color: #bf4200;
   font-size: 28px;
   line-height: 1.5;
   font-weight: bold;
-  text-shadow: 0 0 8px #39FF14;
+  text-shadow: 1px 2px 6px rgba(5, 44, 41, 0.863);
 }
 
 /* Mapa styles */
@@ -372,25 +468,22 @@ main {
 .Ubicacion{
     text-align: center;
     padding: 0 150px 100px 150px;
-    color: #39FF14;
-    background-color: #041404;
-    border-top: 1px solid #1AFF1A44;
-    border-bottom: 1px solid #1AFF1A44;
+    color: #052C29;
+    background-color: #BF4200;
 }
 
 .Ubicacion p {
     font-size: 32px;
     line-height: 1.6;
     margin-bottom: 40px;
-    color: #A8FFA8;
+    color: #D3CBBE;
 }
 
 .Ubicacion iframe {
     width: 70%;
     height: 500px;
     border-radius: 20px;
-    border: 2px solid #1AFF1A44;
-    filter: hue-rotate(75deg) saturate(0.7) brightness(0.8);
+    border: 0px;
 }
 
 #mapa {
@@ -403,13 +496,13 @@ main {
 .Planning {
     text-align: center;
     padding: 0 0 100px 0;
-    color: #39FF14;
+    color: #052C29;
 }
 
 .planning-subtitulo {
     font-size: 32px;
     line-height: 1.6;
-    color: #A8FFA8;
+    color: #0D4749;
     margin-bottom: 60px;
 }
 
@@ -427,8 +520,7 @@ main {
     min-width: 0;
     max-width: 1100px;
     border-radius: 30px;
-    box-shadow: 0 16px 50px rgba(57, 255, 20, 0.15);
-    border: 1px solid #1AFF1A44;
+    box-shadow: 0 16px 50px rgba(5, 44, 41, 0.25);
 }
 
 .planning-track {
@@ -438,39 +530,31 @@ main {
 
 .dia-card {
     flex: 0 0 100%;
-    background-color: #0A2A0A;
+    background-color: #0D4749;
     min-height: 620px;
     display: flex;
     flex-direction: column;
-    border: 1px solid #1AFF1A44;
 }
 
 .dia-header {
-    background-color: #39FF14;
+    background-color: #BF4200;
     padding: 60px 40px 50px 40px;
     text-align: center;
-    border-bottom: 2px solid #1AFF1A;
 }
 
 .dia-numero {
     font-size: 130px;
     font-weight: bold;
-    color: #010F01;
+    color: #EFE7DA;
     display: block;
     line-height: 1;
-    opacity: 0.3;
-    font-family: 'SGK075', 'Courier New', monospace;
-    text-shadow: none;
+    opacity: 0.5;
 }
 
 .dia-header h3 {
-    color: #010F01;
+    color: #EFE7DA;
     font-size: 54px;
     margin: 10px 0 0 0;
-    font-family: 'SGK075', 'Courier New', monospace;
-    text-shadow: none;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
 }
 
 .dia-eventos {
@@ -486,7 +570,7 @@ main {
     align-items: center;
     gap: 30px;
     padding: 38px 0;
-    border-bottom: 1px solid rgba(26, 255, 26, 0.12);
+    border-bottom: 1px solid rgba(239, 231, 218, 0.15);
 }
 
 .dia-eventos li:last-child {
@@ -496,19 +580,18 @@ main {
 .hora {
     font-size: 32px;
     font-weight: bold;
-    color: #39FF14;
+    color: #BF4200;
     min-width: 80px;
-    text-shadow: 0 0 6px #39FF14;
 }
 
 .evento-nombre {
     font-size: 38px;
-    color: #A8FFA8;
+    color: #D3CBBE;
 }
 
 .planning-btn {
-    background-color: #39FF14;
-    color: #010F01;
+    background-color: #BF4200;
+    color: #EFE7DA;
     border: none;
     border-radius: 50%;
     width: 80px;
@@ -523,7 +606,7 @@ main {
 }
 
 .planning-btn:hover {
-    background-color: #1AFF1A;
+    background-color: #AC3900;
     transform: scale(1.1);
 }
 
@@ -538,7 +621,7 @@ main {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background-color: #1A5C1A;
+    background-color: #0D4749;
     border: none;
     cursor: pointer;
     opacity: 0.35;
@@ -548,9 +631,8 @@ main {
 
 .planning-dot.activo {
     opacity: 1;
-    background-color: #39FF14;
+    background-color: #BF4200;
     transform: scale(1.4);
-    box-shadow: 0 0 8px #39FF14;
 }
 
  /* Playlist styles */
@@ -558,21 +640,18 @@ main {
 .Playlist {
     text-align: center;
     padding: 0 150px 100px 150px;
-    color: #A8FFA8;
-    background-color: #020802;
-    border-top: 1px solid #1AFF1A44;
+    color: #D3CBBE;
 }
 
 .Playlist iframe {
     border-radius: 20px;
-    width: 70%;
-    height: 700px;
-    border: 2px solid #1AFF1A44;
+    width: 80%;
+    height: 500px;;
 }
 
 .Playlist a {
     display: block;
-    color: #39FF14;
+    color: #0D4749;
     font-size: 32px;
     text-decoration:none;
     line-height: 1.6;
@@ -582,12 +661,10 @@ main {
     margin-left: auto;
     margin-right: auto;
     transition: all 0.3s ease;
-    text-shadow: 0 0 6px #39FF1480;
 }
 
 .Playlist a:hover {
-    color: #9AFF9A;
-    text-shadow: 0 0 12px #39FF14;
+    color: #ac3900;
     transform: scale(1.05);
     transition: all 0.3s ease;
 }
@@ -595,8 +672,8 @@ main {
 /* Footer styles */
 
 footer {
-    background-color: #010F01;
-    color: #A8FFA8;
+    background-color: #ac3900;
+    color:#EFE7DA;
     text-align: center;
     display: grid;
     grid-template-areas:    "social-media"
@@ -605,11 +682,10 @@ footer {
     grid-template-columns: 1fr;
     grid-gap: 40px;
     padding: 40px;
-    border-top: 1px solid #1AFF1A44;
 }
 
 footer a {
-    color: #A8FFA8;
+    color: #EFE7DA;
     text-decoration: none;
     font-size: 24px;
     margin: 0 10px;
@@ -663,8 +739,7 @@ footer a {
 }
 
 footer a:hover {
-    color: #9AFF9A;
-    text-shadow: 0 0 8px #39FF14;
+    color: #0D4749;
     transition: transform 0.2s;
 }
 
@@ -696,17 +771,16 @@ footer li {
     background: none;
     border: none;
     font-size: 32px;
-    color: #39FF14;
+    color: #AC3900;
     cursor: pointer;
     padding: 8px 14px;
     line-height: 1;
     transition: color 0.3s ease, transform 0.2s ease;
     flex-shrink: 0;
-    text-shadow: 0 0 6px #39FF14;
 }
 
 .hamburger:hover {
-    color: #9AFF9A;
+    color: #BF4200;
     transform: scale(1.1);
 }
 
@@ -740,7 +814,7 @@ footer li {
    ============================= */
 
 @media (max-width: 900px) {
-    .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
+    .Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
         font-size: 52px;
         margin-top: 50px;
         margin-bottom: 50px;
@@ -903,7 +977,7 @@ footer li {
     }
 
     /* --- Headings --- */
-    .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
+    .Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
         font-size: 36px;
         margin-top: 40px;
         margin-bottom: 35px;
@@ -1029,6 +1103,45 @@ footer li {
         width: auto;
     }
 
+    /* --- Minijuego --- */
+    .Minijuego iframe {
+        width: 95%;
+        height: 360px;
+    }
+
+    .Minijuego h3 {
+        font-size: 26px;
+    }
+
+    .Minijuego p, .Minijuego a {
+        font-size: 18px;
+    }
+
+    .Minijuego input {
+        font-size: 20px;
+        padding-left: 15px;
+        width: 80%;
+    }
+
+    .Minijuego button {
+        font-size: 32px;
+        width: 20%;
+    }
+
+    .Minijuego .opciones {
+        font-size: 18px;
+        height: auto;
+        width: 44%;
+        padding: 12px;
+    }
+
+    .Minijuego #respuestas {
+        width: 95%;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+    }
+
     /* --- Footer --- */
     .social-media {
         gap: 40px;
@@ -1055,7 +1168,7 @@ footer li {
         padding: 8px;
     }
 
-    .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
+    .Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
         font-size: 28px;
         margin-top: 32px;
         margin-bottom: 28px;
@@ -1092,6 +1205,20 @@ footer li {
 
     .evento-nombre {
         font-size: 15px;
+    }
+
+    .Minijuego .opciones {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .Minijuego #respuestas {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .Minijuego button {
+        width: 25%;
     }
 
     .Playlist iframe {
@@ -1133,6 +1260,5 @@ Crema cálido: #F4ECE0
 .no-transition * {
   transition: none !important;
 }
-
 
 

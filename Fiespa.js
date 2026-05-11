@@ -7,11 +7,11 @@ const invitados = [
     { foto: "Fiespa'26/fotos/nuri4.jpeg", nombre: "Nuria", desc: "La que lo da todo en la pista y fuera de ella" },
     { foto: "Fiespa'26/fotos/helen3.jpeg",  nombre: "Elena", desc: "El terremoto del Pacífico, nadie la para" },
     { foto: "Fiespa'26/fotos/ait2.jpeg", nombre: "Aitor", desc: "Proteína, rutina y mucha marcha" },
-    { foto: "Fiespa'26/fotos/carrusel (25).jpeg", nombre: "Pablo Romero", desc: "El alma de la fiesta, siempre el último en irse" },
+    { foto: "Fiespa'26/fotos/pablor1.jpeg", nombre: "Pablo Romero", desc: "El alma de la fiesta, siempre el último en irse" },
     { foto: "Fiespa'26/fotos/jesus2.jpeg",  nombre: "Jesús", desc: "Más tranquilo que un martes por la mañana" },
-    { foto: "Fiespa'26/fotos/.jpeg", nombre: "Cris", desc: "Capaz de bailar cualquier canción, de cualquier década" },
-    { foto: "Fiespa'26/fotos/carrusel (3).jpeg",  nombre: "Enrique", desc: "El que siempre llega tarde pero nunca falta" },
-    { foto: "Fiespa'26/fotos/carrusel (53).jpeg", nombre: "Almu", desc: "La que convierte cada momento en un recuerdo" },
+    { foto: "Fiespa'26/fotos/cris1.jpeg", nombre: "Cris", desc: "Capaz de bailar cualquier canción, de cualquier década" },
+    { foto: "Fiespa'26/fotos/henry1.jpeg",  nombre: "Enrique", desc: "El que siempre llega tarde pero nunca falta" },
+    { foto: "Fiespa'26/fotos/almu1.jpeg", nombre: "Almu", desc: "La que convierte cada momento en un recuerdo" },
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -23,10 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
         item.className = "slide-item";
         item.innerHTML = `
             <img src="${inv.foto}" alt="${inv.nombre}">
-            <div class="slide-overlay-top">
+            <div class="slide-overlay">
                 <span class="slide-nombre">${inv.nombre}</span>
-            </div>
-            <div class="slide-overlay-bottom">
                 <span class="slide-desc">${inv.desc}</span>
             </div>`;
         track.appendChild(item);

@@ -1,22 +1,20 @@
-@font-face {
-    font-family: 'SGK075';
-    src: url('fonts/SGK075.ttf') format('truetype');
-}
+/* ==============================
+   FIESPA — Versión Matrix
+   Layout: original (Fiespa_anterior)
+   Colores: paleta matrix verde neón
+   ============================== */
 
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
     background-image: url('Fiespa\'26/fotos/background.jpeg');
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
     background-color: #020802;
     scroll-behavior: smooth;
     overflow-x: hidden;
 }
 body {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -25,10 +23,8 @@ body {
 
 header {
     text-align: center; 
-    padding: 20px;
+    padding: 20px; 
     background-color: #010F01;
-    border-bottom: 1px solid #1AFF1A44;
-    backdrop-filter: blur(4px);
 }
 
 nav {
@@ -44,7 +40,6 @@ nav a {
     font-size: clamp(15px, 1.5vw, 25px);
     padding: 14px clamp(10px, 2vw, 50px);
     transition: all 0.3s ease;
-    letter-spacing: 0.05em;
 }
 
 nav a:hover {
@@ -74,6 +69,7 @@ nav a:hover {
 main {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
+    grid-gap: 20px;
 }
 
 .nav-links {
@@ -82,15 +78,12 @@ main {
     flex-wrap: nowrap;
 }
 
-.Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
+.Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
     text-align: center;
     color: #39FF14;
-    font-size: 110px;
+    font-size: 80px;
     margin-top: 70px;
     margin-bottom: 70px;
-    font-family: 'SGK075', 'Courier New', monospace;
-    text-shadow: 0 0 18px #39FF1480, 0 0 40px #39FF1440;
-    letter-spacing: 0.04em;
 }
 
 .Info p, .Ubicacion p, .Playlist p {
@@ -103,7 +96,7 @@ main {
 .banner {
     text-align: center;
     padding: 40% 0% 0% 0%;
-    border: 1px solid #0d474928;
+    border: 1px solid #1AFF1A28;
     border-top: 0px;
     background-image: url('Fiespa\'26/fotos/BannerFiespa.jpeg');
     background-size: cover;
@@ -114,20 +107,143 @@ main {
 
 .contador h1 {
     margin: 0 0 0px 0;
-    font-size: 100px;
+    font-size: 80px;
     color: #39FF14;
     text-align: center;
-    background-color: #010F01;
-    font-family: 'SGK075', 'Courier New', monospace;
-    text-shadow: 0 0 12px #39FF14;
-    letter-spacing: 0.08em;
+    border-top: 1px solid #1AFF1A44;
     border-bottom: 1px solid #1AFF1A44;
+    background-color: #082508;
+}
+
+/* Minijuego styles */
+
+.Minijuego {
+    text-align: center;
+    padding: 50px 0px 50px 0px;
+}
+
+.Minijuego h2 {
+    margin-top: 0;
+}
+
+.Minijuego h3 {
+    color: #39FF14;
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.Minijuego iframe {
+    border-radius: 20px;
+    width: 80%;
+    height: 600px;
+}
+
+.Minijuego p {
+    font-size: 32px;
+    line-height: 1.6;
+}
+
+.Minijuego a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #39FF14;
+    font-size: 32px;
+    text-decoration: none;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    transition: all 0.3s ease;
+}
+
+.Minijuego button:hover {
+    background-color: #0A2A0A;
+    transition: all 0.3s ease;
+}
+
+.Minijuego form{
+    margin:  30px auto;
+    display: flex;
+    flex-direction: initial;
+    justify-content: left;
+}
+
+.Minijuego input{
+    border: 0;
+    box-sizing:content-box;
+    background-color: #020802;
+    font-size: 30px;
+    text-align: center;
+    color: #39FF14;
+    width: 90%;
+    padding-left: 150px;
+}
+
+.Minijuego input:focus{
+    outline: none;
+}
+
+.Minijuego :autofill{
+    box-shadow: 0 0 0px 1000px #020802 inset;
+    -webkit-text-fill-color: #39FF14;
+}
+
+.Minijuego ::placeholder{
+    font-style: normal;
+    color: #39FF1465;
+    text-align: center ;
+}
+
+.Minijuego button{
+    background-color: #39FF14;
+    color: #010F01;
+    font-weight: bold;
+    font-size: 60px;
+    border: none;
+    padding: 20px 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    width: 7%;
+    overflow-wrap: break-word;
+}
+
+.Minijuego #pregunta{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Minijuego #respuestas{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-self: center;
+    width: 80%;
+}
+
+.Minijuego .opciones{
+    background-color: #39FF14;
+    color: #010F01;
+    font-weight: bold;
+    font-size: 32px;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 200px;
+    width: 400px;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    overflow-wrap: break-word;
+    border-radius: 15px;
 }
 
 .popup {
     position: fixed;
     inset: 0;
-    background: rgba(1, 8, 1, 0.92);
+    background: rgba(1, 8, 1, 0.6);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -136,38 +252,36 @@ main {
 
 .popup-box {
     background: #0A2A0A;
-    border: 2px solid #1AFF1A;
     border-radius: 15px;
     padding: 25px 30px;
     max-width: 600px;
     text-align: center;
     color: #A8FFA8;
     font-size: 30px;
-    box-shadow: 0 0 30px #39FF1440;
 }
 
 .popup-botones button {
     margin: 10px;
     padding: 8px 16px;
-    border: 1px solid #1AFF1A;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 20px;
-    background-color: #020802;
-    color: #39FF14;
+    background-color: #A8FFA8;
+    color: #010F01;
     transition: all 0.3s ease;
 }
 
 .popup-botones button:hover {
-    background-color: #0A2A0A;
+    background-color: #39FF14;
     transition: all 0.3s ease;
-    color: #9AFF9A;
-    box-shadow: 0 0 10px #39FF1460;
+    color: #010F01;
 }
 
 .oculto {
     display: none;
 }
+
 /* Info section styles */
 
 .Info {
@@ -175,10 +289,10 @@ main {
     color: #A8FFA8;
     align-items: center;
     padding: 150px 150px 150px 150px;
-    background-color: #041404;
-    font-size: 24px;
     border-top: 1px solid #1AFF1A44;
     border-bottom: 1px solid #1AFF1A44;
+    background-color: #041404;
+    font-size: 24px;
     display: grid;
     grid-template-areas:
         "text1 multimedia1"
@@ -192,6 +306,8 @@ main {
 .Info div {
     width: 100%;
 }
+
+
 
 .Info img {
     width: 80%;
@@ -270,7 +386,6 @@ main {
   cursor: pointer;
 }
 
-/* ---- HOVER: versión SENCILLA (nombre arriba, desc abajo, solo esas bandas con fondo) ----
 .carousel-track .slide-item img {
   width: 100%;
   height: 100%;
@@ -283,14 +398,13 @@ main {
   position: absolute;
   left: 0;
   right: 0;
-  background: rgba(1, 8, 1, 0.82);
+  background: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 22px 28px;
   text-align: center;
   transition: transform 0.35s ease;
-  border-top: 1px solid #1AFF1A44;
 }
 
 .slide-overlay-top {
@@ -310,57 +424,17 @@ main {
 .slide-item:hover .slide-overlay-bottom {
   transform: translateY(0);
 }
----- fin versión SENCILLA ---- */
-
-/* ---- HOVER: versión FLIP (la foto da la vuelta y aparece la info) ---- */
-.carousel-track .slide-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transform-origin: center;
-  transition: transform 0.25s ease 0.22s;
-}
-
-.slide-item:hover img {
-  transform: scaleX(0);
-  transition: transform 0.25s ease;
-}
-
-.slide-overlay {
-  position: absolute;
-  inset: 0;
-  background: #010F01;
-  border: 1px solid #1AFF1A44;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 40px 28px;
-  text-align: center;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.25s ease;
-}
-
-.slide-item:hover .slide-overlay {
-  transform: scaleX(1);
-  transition: transform 0.25s ease 0.22s;
-}
-/* ---- fin versión FLIP ---- */
 
 .slide-nombre {
   color: #39FF14;
   font-size: 88px;
   font-weight: bold;
   margin-bottom: 0;
-  font-family: 'SGK075', 'Courier New', monospace;
   text-shadow: 0 0 16px #39FF14, 0 0 40px #39FF1460;
-  text-transform: uppercase;
 }
 
 .slide-desc {
-  color: #9AFF9A;
+  color: #39FF14;
   font-size: 28px;
   line-height: 1.5;
   font-weight: bold;
@@ -373,10 +447,11 @@ main {
     text-align: center;
     padding: 0 150px 100px 150px;
     color: #39FF14;
-    background-color: #041404;
     border-top: 1px solid #1AFF1A44;
     border-bottom: 1px solid #1AFF1A44;
+    background-color: #041404;
 }
+
 
 .Ubicacion p {
     font-size: 32px;
@@ -409,7 +484,7 @@ main {
 .planning-subtitulo {
     font-size: 32px;
     line-height: 1.6;
-    color: #A8FFA8;
+    color: #9AFF9A;
     margin-bottom: 60px;
 }
 
@@ -427,8 +502,7 @@ main {
     min-width: 0;
     max-width: 1100px;
     border-radius: 30px;
-    box-shadow: 0 16px 50px rgba(57, 255, 20, 0.15);
-    border: 1px solid #1AFF1A44;
+    box-shadow: 0 16px 50px rgba(57, 255, 20, 0.2);
 }
 
 .planning-track {
@@ -442,14 +516,12 @@ main {
     min-height: 620px;
     display: flex;
     flex-direction: column;
-    border: 1px solid #1AFF1A44;
 }
 
 .dia-header {
     background-color: #39FF14;
     padding: 60px 40px 50px 40px;
     text-align: center;
-    border-bottom: 2px solid #1AFF1A;
 }
 
 .dia-numero {
@@ -458,19 +530,13 @@ main {
     color: #010F01;
     display: block;
     line-height: 1;
-    opacity: 0.3;
-    font-family: 'SGK075', 'Courier New', monospace;
-    text-shadow: none;
+    opacity: 0.5;
 }
 
 .dia-header h3 {
     color: #010F01;
     font-size: 54px;
     margin: 10px 0 0 0;
-    font-family: 'SGK075', 'Courier New', monospace;
-    text-shadow: none;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
 }
 
 .dia-eventos {
@@ -486,7 +552,7 @@ main {
     align-items: center;
     gap: 30px;
     padding: 38px 0;
-    border-bottom: 1px solid rgba(26, 255, 26, 0.12);
+    border-bottom: 1px solid rgba(57, 255, 20, 0.15);
 }
 
 .dia-eventos li:last-child {
@@ -498,7 +564,6 @@ main {
     font-weight: bold;
     color: #39FF14;
     min-width: 80px;
-    text-shadow: 0 0 6px #39FF14;
 }
 
 .evento-nombre {
@@ -550,7 +615,6 @@ main {
     opacity: 1;
     background-color: #39FF14;
     transform: scale(1.4);
-    box-shadow: 0 0 8px #39FF14;
 }
 
  /* Playlist styles */
@@ -559,15 +623,12 @@ main {
     text-align: center;
     padding: 0 150px 100px 150px;
     color: #A8FFA8;
-    background-color: #020802;
-    border-top: 1px solid #1AFF1A44;
 }
 
 .Playlist iframe {
     border-radius: 20px;
-    width: 70%;
-    height: 700px;
-    border: 2px solid #1AFF1A44;
+    width: 80%;
+    height: 500px;
 }
 
 .Playlist a {
@@ -582,12 +643,10 @@ main {
     margin-left: auto;
     margin-right: auto;
     transition: all 0.3s ease;
-    text-shadow: 0 0 6px #39FF1480;
 }
 
 .Playlist a:hover {
     color: #9AFF9A;
-    text-shadow: 0 0 12px #39FF14;
     transform: scale(1.05);
     transition: all 0.3s ease;
 }
@@ -605,7 +664,6 @@ footer {
     grid-template-columns: 1fr;
     grid-gap: 40px;
     padding: 40px;
-    border-top: 1px solid #1AFF1A44;
 }
 
 footer a {
@@ -663,8 +721,7 @@ footer a {
 }
 
 footer a:hover {
-    color: #9AFF9A;
-    text-shadow: 0 0 8px #39FF14;
+    color: #0A2A0A;
     transition: transform 0.2s;
 }
 
@@ -702,7 +759,6 @@ footer li {
     line-height: 1;
     transition: color 0.3s ease, transform 0.2s ease;
     flex-shrink: 0;
-    text-shadow: 0 0 6px #39FF14;
 }
 
 .hamburger:hover {
@@ -740,7 +796,7 @@ footer li {
    ============================= */
 
 @media (max-width: 900px) {
-    .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
+    .Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
         font-size: 52px;
         margin-top: 50px;
         margin-bottom: 50px;
@@ -903,7 +959,7 @@ footer li {
     }
 
     /* --- Headings --- */
-    .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
+    .Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
         font-size: 36px;
         margin-top: 40px;
         margin-bottom: 35px;
@@ -1029,6 +1085,45 @@ footer li {
         width: auto;
     }
 
+    /* --- Minijuego --- */
+    .Minijuego iframe {
+        width: 95%;
+        height: 360px;
+    }
+
+    .Minijuego h3 {
+        font-size: 26px;
+    }
+
+    .Minijuego p, .Minijuego a {
+        font-size: 18px;
+    }
+
+    .Minijuego input {
+        font-size: 20px;
+        padding-left: 15px;
+        width: 80%;
+    }
+
+    .Minijuego button {
+        font-size: 32px;
+        width: 20%;
+    }
+
+    .Minijuego .opciones {
+        font-size: 18px;
+        height: auto;
+        width: 44%;
+        padding: 12px;
+    }
+
+    .Minijuego #respuestas {
+        width: 95%;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+    }
+
     /* --- Footer --- */
     .social-media {
         gap: 40px;
@@ -1055,7 +1150,7 @@ footer li {
         padding: 8px;
     }
 
-    .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
+    .Minijuego h2, .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
         font-size: 28px;
         margin-top: 32px;
         margin-bottom: 28px;
@@ -1094,29 +1189,29 @@ footer li {
         font-size: 15px;
     }
 
+    .Minijuego .opciones {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .Minijuego #respuestas {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .Minijuego button {
+        width: 25%;
+    }
+
     .Playlist iframe {
         height: 380px;
     }
 }
 
 
-/* Verde petróleo oscuro:  #0D4749
-
-Beige medio (fondo): #EFE7DA
-
-Beige claro: #D3CBBE
-
-Terracota / naranja quemado: #AC3900 #BF4200
-
-Crema muy claro: #EEE6D9
-
-Crema cálido: #F4ECE0
-#052C29 */
-
-
 #pregunta {
   opacity: 1;
-  max-height: 600px; /* suficiente para el contenido */
+  max-height: 600px;
   overflow: hidden;
   transition: 
     opacity 0.4s ease,
@@ -1133,6 +1228,3 @@ Crema cálido: #F4ECE0
 .no-transition * {
   transition: none !important;
 }
-
-
-
