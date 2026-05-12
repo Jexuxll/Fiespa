@@ -3,6 +3,19 @@
     src: url('fonts/SGK075.ttf') format('truetype');
 }
 
+:root {
+    --size-countdown: 100px;
+    --size-section-title: 110px;
+    --size-body-text: 32px;
+        --size-banner-title: clamp(58px, 5.4vw, 98px);
+    --size-slide-name: 88px;
+    --size-slide-desc: 28px;
+    --size-day-number: 130px;
+    --size-day-name: 54px;
+    --size-time: 32px;
+    --size-event: 38px;
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -85,7 +98,7 @@ main {
 .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
     text-align: center;
     color: #39FF14;
-    font-size: 110px;
+    font-size: var(--size-section-title);
     margin-top: 70px;
     margin-bottom: 70px;
     font-family: 'SGK075', 'Courier New', monospace;
@@ -94,27 +107,44 @@ main {
 }
 
 .Info p, .Ubicacion p, .Playlist p {
-    font-size: 32px;
+    font-size: var(--size-body-text);
     line-height: 1.6;
 }
 
 /* Banner styles */
 
 .banner {
-    text-align: center;
-    padding: 40% 0% 0% 0%;
+    min-height: 40vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 1px solid #0d474928;
     border-top: 0px;
-    background-image: url('Fiespa\'26/fotos/BannerFiespa.jpeg');
+    background-image: url('Fiespa\'26/fotos/banner.png');
     background-size: cover;
-    background-position: 75% 20%;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.banner h1 {
+    color: #A8FFA8;
+    font-family: 'SGK075', 'Courier New', monospace;
+    font-size: var(--size-banner-title);
+    text-shadow: 0 0 18px #39FF14, 0 0 50px #39FF1460;
+    letter-spacing: clamp(0.02em, 0.12vw, 0.06em);
+    line-height: 1.06;
+    text-align: center;
+    margin: 0;
+        width: min(94%, 18ch);
+    text-wrap: balance;
+    padding: 0 clamp(16px, 2.5vw, 40px);
 }
 
 /* Contador styles */
 
 .contador h1 {
     margin: 0 0 0px 0;
-    font-size: 100px;
+    font-size: var(--size-countdown);
     color: #39FF14;
     text-align: center;
     background-color: #010F01;
@@ -235,24 +265,25 @@ main {
 }
 
 .carousel-btn {
-  background-color: #39FF14;
-  color: #010F01;
+  background: transparent;
+  color: #39FF14;
   border: none;
-  border-radius: 50%;
-  width: 70px;
-  height: 70px;
-  font-size: 30px;
+  width: 56px;
+  font-size: 38px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  align-self: stretch;
+  padding: 0;
   transition: all 0.3s ease;
+  text-shadow: 0 0 8px #39FF14;
 }
 
 .carousel-btn:hover {
-  background-color: #1AFF1A;
-  transform: scale(1.1);
+  color: #9AFF9A;
+  text-shadow: 0 0 20px #39FF14, 0 0 40px #39FF1460;
 }
 
 .carousel-track {
@@ -330,8 +361,11 @@ main {
 .slide-overlay {
   position: absolute;
   inset: 0;
-  background: #010F01;
-  border: 1px solid #1AFF1A44;
+  background-image: url('Fiespa\'26/fotos/palmera.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+  border: 3px solid #37ff1463;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -351,7 +385,7 @@ main {
 
 .slide-nombre {
   color: #39FF14;
-  font-size: 88px;
+    font-size: var(--size-slide-name);
   font-weight: bold;
   margin-bottom: 0;
   font-family: 'SGK075', 'Courier New', monospace;
@@ -361,7 +395,7 @@ main {
 
 .slide-desc {
   color: #9AFF9A;
-  font-size: 28px;
+    font-size: var(--size-slide-desc);
   line-height: 1.5;
   font-weight: bold;
   text-shadow: 0 0 8px #39FF14;
@@ -387,7 +421,7 @@ main {
 
 .Ubicacion iframe {
     width: 70%;
-    height: 500px;
+    height: 600px;
     border-radius: 20px;
     border: 2px solid #1AFF1A44;
     filter: hue-rotate(75deg) saturate(0.7) brightness(0.8);
@@ -438,11 +472,11 @@ main {
 
 .dia-card {
     flex: 0 0 100%;
+    box-sizing: border-box;
     background-color: #0A2A0A;
     min-height: 620px;
     display: flex;
     flex-direction: column;
-    border: 1px solid #1AFF1A44;
 }
 
 .dia-header {
@@ -453,7 +487,7 @@ main {
 }
 
 .dia-numero {
-    font-size: 130px;
+    font-size: var(--size-day-number);
     font-weight: bold;
     color: #010F01;
     display: block;
@@ -465,7 +499,7 @@ main {
 
 .dia-header h3 {
     color: #010F01;
-    font-size: 54px;
+    font-size: var(--size-day-name);
     margin: 10px 0 0 0;
     font-family: 'SGK075', 'Courier New', monospace;
     text-shadow: none;
@@ -494,7 +528,7 @@ main {
 }
 
 .hora {
-    font-size: 32px;
+    font-size: var(--size-time);
     font-weight: bold;
     color: #39FF14;
     min-width: 80px;
@@ -502,29 +536,30 @@ main {
 }
 
 .evento-nombre {
-    font-size: 38px;
+    font-size: var(--size-event);
     color: #A8FFA8;
 }
 
 .planning-btn {
-    background-color: #39FF14;
-    color: #010F01;
+    background: transparent;
+    color: #39FF14;
     border: none;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    font-size: 36px;
+    width: 70px;
+    font-size: 42px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    align-self: stretch;
+    padding: 0;
     transition: all 0.3s ease;
+    text-shadow: 0 0 8px #39FF14;
 }
 
 .planning-btn:hover {
-    background-color: #1AFF1A;
-    transform: scale(1.1);
+    color: #9AFF9A;
+    text-shadow: 0 0 20px #39FF14, 0 0 40px #39FF1460;
 }
 
 .planning-dots {
@@ -740,8 +775,19 @@ footer li {
    ============================= */
 
 @media (max-width: 900px) {
+    :root {
+        --size-countdown: 72px;
+        --size-section-title: 78px;
+        --size-body-text: 23px;
+        --size-slide-name: 63px;
+        --size-slide-desc: 20px;
+        --size-day-number: 94px;
+        --size-day-name: 39px;
+        --size-time: 23px;
+        --size-event: 27px;
+    }
+
     .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
-        font-size: 52px;
         margin-top: 50px;
         margin-bottom: 50px;
     }
@@ -764,10 +810,6 @@ footer li {
         rotate: 0deg !important;
     }
 
-    .Info p, .Ubicacion p, .Playlist p {
-        font-size: 24px;
-    }
-
     .carousel-track .slide-item {
         flex: 0 0 calc((100% - 24px) / 2);
         height: 580px;
@@ -785,24 +827,12 @@ footer li {
         padding: 0 40px 70px;
     }
 
-    .dia-numero {
-        font-size: 90px;
-    }
-
-    .dia-header h3 {
-        font-size: 42px;
+    .Playlist iframe {
+        width: 85%;
     }
 
     .dia-eventos {
         padding: 35px 50px;
-    }
-
-    .hora {
-        font-size: 26px;
-    }
-
-    .evento-nombre {
-        font-size: 30px;
     }
 
     .planning-carrusel {
@@ -811,8 +841,7 @@ footer li {
     }
 
     .planning-btn {
-        width: 65px;
-        height: 65px;
+        width: 50px;
         font-size: 28px;
     }
 
@@ -836,6 +865,18 @@ footer li {
    ============================= */
 
 @media (max-width: 768px) {
+    :root {
+        --size-countdown: 48px;
+        --size-section-title: 58px;
+        --size-body-text: 18px;
+        --size-slide-name: 49px;
+        --size-slide-desc: 16px;
+        --size-day-number: 73px;
+        --size-day-name: 30px;
+        --size-time: 18px;
+        --size-event: 22px;
+    }
+
 
     /* --- Nav / Hamburger --- */
     header {
@@ -893,18 +934,8 @@ footer li {
     }
 
     /* --- Contador --- */
-    .contador h1 {
-        font-size: 32px;
-    }
-
-    /* --- Banner --- */
-    .banner {
-        padding: 65% 0 0 0;
-    }
-
     /* --- Headings --- */
     .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
-        font-size: 36px;
         margin-top: 40px;
         margin-bottom: 35px;
     }
@@ -920,10 +951,6 @@ footer li {
         width: 100%;
     }
 
-    .Info p, .Ubicacion p, .Playlist p {
-        font-size: 17px;
-    }
-
     /* --- Planning --- */
     .planning-carrusel {
         padding: 0 10px;
@@ -931,8 +958,7 @@ footer li {
     }
 
     .planning-btn {
-        width: 46px;
-        height: 46px;
+        width: 36px;
         font-size: 22px;
     }
 
@@ -950,16 +976,8 @@ footer li {
         height: 10px;
     }
 
-    .dia-numero {
-        font-size: 65px;
-    }
-
     .dia-header {
         padding: 28px 20px;
-    }
-
-    .dia-header h3 {
-        font-size: 30px;
     }
 
     .dia-eventos {
@@ -971,18 +989,14 @@ footer li {
         padding: 16px 0;
     }
 
-    .hora {
-        font-size: 18px;
-        min-width: 50px;
-    }
 
-    .evento-nombre {
-        font-size: 18px;
+    .hora {
+        min-width: 50px;
     }
 
     /* --- Carousel (Invitados) --- */
     .carousel {
-        margin: 40px auto;
+        margin: 0px auto;
     }
 
     .carousel-outer {
@@ -996,17 +1010,8 @@ footer li {
     }
 
     .carousel-btn {
-        width: 46px;
-        height: 46px;
+        width: 36px;
         font-size: 20px;
-    }
-
-    .slide-nombre {
-        font-size: 46px;
-    }
-
-    .slide-desc {
-        font-size: 18px;
     }
 
     /* --- Ubicación --- */
@@ -1022,6 +1027,10 @@ footer li {
     /* --- Playlist --- */
     .Playlist {
         padding: 0 16px 55px;
+    }
+
+    .Playlist iframe {
+        width: 100%;
     }
 
     .Playlist a {
@@ -1050,19 +1059,25 @@ footer li {
    ============================= */
 
 @media (max-width: 480px) {
+    :root {
+        --size-countdown: 28px;
+        --size-section-title: 48px;
+        --size-body-text: 15px;
+        --size-slide-name: 40px;
+        --size-slide-desc: 14px;
+        --size-day-number: 60px;
+        --size-day-name: 24px;
+        --size-time: 15px;
+        --size-event: 18px;
+    }
+
     .contador h1 {
-        font-size: 22px;
         padding: 8px;
     }
 
     .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
-        font-size: 28px;
         margin-top: 32px;
         margin-bottom: 28px;
-    }
-
-    .banner {
-        padding: 80% 0 0 0;
     }
 
     .Info {
@@ -1073,25 +1088,29 @@ footer li {
         height: 380px;
     }
 
-    .slide-nombre {
-        font-size: 36px;
-    }
-
-    .dia-numero {
-        font-size: 55px;
-    }
-
-    .dia-header h3 {
-        font-size: 26px;
-    }
-
     .hora {
-        font-size: 15px;
         min-width: 42px;
     }
 
-    .evento-nombre {
-        font-size: 15px;
+    /* --- Planning mobile --- */
+    :root {
+        --size-day-number: 42px;
+        --size-day-name: 20px;
+    }
+
+    .dia-header {
+        padding: 16px 16px;
+    }
+
+    .dia-eventos li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        padding: 12px 0;
+    }
+
+    .dia-eventos {
+        padding: 14px 18px;
     }
 
     .Playlist iframe {
