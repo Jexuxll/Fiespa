@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIESPA</title>
-    <link rel="stylesheet" href="Fiespa.css">
+    <link rel="stylesheet" href="Fiespa_banner_animado.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
 <body class="no-transition">
@@ -31,36 +31,40 @@
         <h1 id="contador"></h1>
     </div>
     
-    <div class="banner" id="bannerRoot">
-        <div class="banner-scanlines" aria-hidden="true"></div>
-        <div class="banner-terminal" id="bannerTerminal" aria-hidden="true">
-            <span class="bterm-tag">ANALISIS_BIOHIBRIDO //</span>
-            <div class="bterm-output" id="bTermOutput"></div>
-            <span class="bterm-cursor" id="bTermCursor">_</span>
-            <canvas id="bChartCanvas" class="bcanvas-chart"></canvas>
-            <canvas id="bGraphCanvas" class="bcanvas-graph"></canvas>
+    <div class="banner" id="banner">
+        <div class="banner-bg"></div>
+        <div class="banner-scanlines"></div>
+        <div class="banner-glitch-bars" id="bannerGlitchBars"></div>
+
+        <div class="banner-panel banner-panel--left">
+            <div class="banner-terminal-title">// ANALISIS_BIOHÍBRIDO //</div>
+            <div class="banner-terminal-log" id="bannerTerminalLog"></div>
         </div>
-        <div class="banner-center">
-            <img src="Fiespa'26/fotos/palmeraglitch2.png" alt="" class="banner-palmera" id="bannerPalmera" aria-hidden="true">
+
+        <div class="banner-panel banner-panel--center">
+            <img src="Fiespa'26/fotos/palmera.png" class="banner-palm-center" alt="">
         </div>
-        <div class="banner-panel-right" aria-hidden="true">
-            <canvas id="bChartRightCanvas" class="bcanvas-chart-right"></canvas>
-            <span class="btag-hero">PROYECTO:</span>
-            <span class="btag-hero">FIESPA //</span>
-            <span class="bline-hero">AVANCE: <em>78%</em></span>
-            <div class="bbio">
-                <div class="bbio-header">
-                    <span>BIO-IDENTIFICACION: SUJETO_114</span>
-                    <span class="bbio-sub">PROYECTO: CEPA_ABYSS</span>
-                </div>
-                <div class="bbio-inner">
-                    <img src="Fiespa'26/fotos/pescaoGlitch1.png" alt="" class="banner-pescao" id="bannerPescao" aria-hidden="true">
-                    <canvas class="bcanvas-scan" id="bScanCanvas"></canvas>
+
+        <div class="banner-panel banner-panel--right">
+            <canvas class="banner-minichart" id="bannerMiniChart"></canvas>
+            <div class="banner-project-box">
+                <div>PROYECTO:</div>
+                <div>FIESPA //</div>
+                <div>AVANCE: <span id="bannerAvancePct">0</span>%</div>
+            </div>
+            <div class="banner-face-box">
+                <div class="banner-face-header">BIO-IDENTIFICACION: SUJETO_114<br>PROYECTO: CEPA_ABYSS</div>
+                <div class="banner-face-wrap">
+                    <img src="Fiespa'26/fotos/pescao.png" class="banner-face-img" alt="">
+                    <div class="banner-face-scanline"></div>
                 </div>
             </div>
         </div>
-        <canvas class="banner-glitch" id="bannerGlitch" aria-hidden="true"></canvas>
-        <h1>Bienvenidos a la Fiespa'26</h1>
+
+        <canvas class="banner-waveform" id="bannerWaveform"></canvas>
+        <div class="banner-content">
+            <h1>Bienvenidos a la Fiespa'26</h1>
+        </div>
     </div>
     
     <main>
@@ -217,6 +221,6 @@
      <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="mapa.js"></script> 
 
-    <script src="Fiespa.js"></script>
+    <script src="Fiespa_banner_animado.js"></script>
 </body>
 </html>
