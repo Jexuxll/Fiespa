@@ -24,11 +24,116 @@ document.addEventListener("DOMContentLoaded", () => {
         item.innerHTML = `
             <img src="${inv.foto}" alt="${inv.nombre}">
             <div class="slide-overlay">
+                <div class="slide-bg-img" aria-hidden="true"></div>
+                <canvas class="slide-glitch-canvas"></canvas>  <!-- ⚡ CANVAS GLITCH BARS -->
                 <span class="slide-nombre">${inv.nombre}</span>
                 <span class="slide-desc">${inv.desc}</span>
             </div>`;
         track.appendChild(item);
     });
+
+    // ===========================================================
+    // ⚡ GLITCH BARS — barras verdes en canvas al hacer hover
+    //    (+ glitch cromático en palmera, frecuencia controlada por cNext)
+    // ===========================================================
+    (function animateSlideGlitch() {
+        const now = Date.now();
+        document.querySelectorAll(".slide-item").forEach(item => {
+            const canvas = item.querySelector(".slide-glitch-canvas");
+            if (!canvas) return;
+            if (!canvas._gs) canvas._gs = { f: 0, cFlash: 0, cEnd: 0, cNext: now + 600 + Math.random() * 800 };
+            const s = canvas._gs;
+            s.f++;
+            const hovered = item.matches(":hover") || item.classList.contains("is-flipped");
+            if (!canvas.width || canvas.width < 2) {
+                canvas.width  = canvas.parentElement.offsetWidth  || 160;
+                canvas.height = canvas.parentElement.offsetHeight || 220;
+            }
+            const ctx = canvas.getContext("2d");
+            if (hovered) {
+                if (s.f % 3 === 0) {
+                    const W = canvas.width, H = canvas.height;
+                    ctx.clearRect(0, 0, W, H);
+                    const n = 5 + Math.floor(Math.random() * 5);
+                    for (let i = 0; i < n; i++) {
+                        const y = Math.random() * H;
+                        const roll = Math.random();
+                        const bh = roll < 0.08 ? 3 + Math.random() * 7 : roll < 0.25 ? 1 + Math.random() * 3 : 1;
+                        const bw = (0.15 + Math.random() * 0.78) * W;
+                        const x = Math.random() * (W - bw);
+                        ctx.shadowColor = 'rgba(57,255,20,0.9)';
+                        ctx.shadowBlur = 8;
+                        ctx.fillStyle = `rgba(57,255,20,${(0.65 + Math.random() * 0.35).toFixed(2)})`;
+                        ctx.fillRect(x, y, bw, bh);
+                    }
+                    ctx.shadowBlur = 0;
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+                // Glitch cromático en foto de fondo
+                const bgImg = item.querySelector(".slide-bg-img");
+                if (bgImg) {
+                    if (s.cFlash === 0 && now > s.cNext) {
+                        s.cFlash = 3 + Math.floor(Math.random() * 3);
+                        s.cEnd = now;
+                    }
+                    if (s.cFlash > 0 && now > s.cEnd) {
+                        const dx = (Math.random() - 0.5) * 14;
+                        bgImg.style.filter = `drop-shadow(${dx}px 0 0 rgba(255,0,80,0.65)) drop-shadow(${-dx}px 0 0 rgba(0,200,255,0.65))`;
+                        s.cFlash--;
+                        s.cEnd = now + 60 + Math.random() * 80;
+                        if (s.cFlash === 0) s.cNext = now + 600 + Math.random() * 800; // ↑ frecuencia glitch palmera
+                    } else if (s.cFlash === 0) {
+                        bgImg.style.filter = "";
+                    }
+                }
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const bgImg = item.querySelector(".slide-bg-img");
+                if (bgImg) { bgImg.style.filter = ""; s.cFlash = 0; }
+            }
+        });
+        requestAnimationFrame(animateSlideGlitch);
+    })();
+
+      const touchLikeDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+      if (touchLikeDevice) {
+        let flipTimer;
+
+        const unflipItem = (item) => {
+          const img = item.querySelector(":scope > img");
+          if (img) {
+            img.style.transition = "transform 0.25s ease 0.22s";
+            void img.getBoundingClientRect();
+          }
+          item.classList.remove("is-flipped");
+          if (img) setTimeout(() => { img.style.transition = ""; }, 600);
+        };
+
+        const clearFlip = () => {
+          track.querySelectorAll(".slide-item.is-flipped").forEach(unflipItem);
+        };
+
+        track.addEventListener("click", (e) => {
+          const item = e.target.closest(".slide-item");
+          if (!item) return;
+
+          const wasFlipped = item.classList.contains("is-flipped");
+          clearFlip();
+
+          if (!wasFlipped) {
+            item.classList.add("is-flipped");
+            clearTimeout(flipTimer);
+            flipTimer = setTimeout(() => {
+              unflipItem(item);
+            }, 1800);
+          }
+        });
+
+        document.addEventListener("touchstart", (e) => {
+          if (!track.contains(e.target)) clearFlip();
+        }, { passive: true });
+      }
 });
 
 // ==========================
@@ -76,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (slides.length === 0) return;
 
   const visible = 3;
-  const gap = 24;
 
   // Clonamos los primeros slides para loop infinito
   for (let i = 0; i < visible; i++) {
@@ -88,6 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let index = 0;
 
   function slideWidth() {
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
     return slides[0].offsetWidth + gap;
   }
 
@@ -129,29 +234,58 @@ document.addEventListener("DOMContentLoaded", () => {
     clearInterval(autoplay);
     retreat();
   });
+
+  // Swipe táctil
+  const vp = document.querySelector(".carousel-viewport");
+  if (vp) {
+    let swipeX = 0;
+    vp.addEventListener("touchstart", (e) => { swipeX = e.changedTouches[0].clientX; }, { passive: true });
+    vp.addEventListener("touchend", (e) => {
+      const diff = swipeX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) { clearInterval(autoplay); diff > 0 ? advance() : retreat(); }
+    }, { passive: true });
+  }
 });
 
 // ==========================
 // MAPA CON LEAFLET.JS
 // ==========================
 
-// Coordenadas del lugar (ejemplo: Obelisco)
-//const lat = -34.6037;
-//const lng = -58.3816;
+document.addEventListener("DOMContentLoaded", () => {
+  const mapEl = document.getElementById("mapa");
+  if (!mapEl || !window.L) return;
 
-// Crear mapa
-//const mapa = L.map('mapa').setView([lat, lng], 15);
+  const lat = 41.16023922442387;
+  const lng = -4.777851507207867;
 
-// Cargar mapa base (OpenStreetMap)
-//L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//attribution: '© OpenStreetMap contributors'
-//}).addTo(mapa);
+  const mapa = L.map("mapa", {
+    zoomControl: false,
+    scrollWheelZoom: false
+  }).setView([lat, lng], 16);
 
-// Crear marcador
-//L.marker([lat, lng])
-//.addTo(mapa)
-//.bindPopup("📍 FIESPA 2026<br>Te esperamos aqui")
-//.openPopup();
+  if (mapa.attributionControl) {
+    mapa.attributionControl.setPrefix(false);
+  }
+
+  L.control.zoom({ position: "bottomright" }).addTo(mapa);
+
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    attribution: ""
+  }).addTo(mapa);
+
+  const markerIcon = L.divIcon({
+    className: "fiespa-pin",
+    iconSize: [22, 22],
+    iconAnchor: [11, 11]
+  });
+
+  L.marker([lat, lng], { icon: markerIcon })
+    .addTo(mapa)
+    .bindPopup("FIESPA 2026<br>Camino de la Bascula, 1")
+    .openPopup();
+
+  setTimeout(() => mapa.invalidateSize(), 120);
+});
 
 
 // ==========================
@@ -177,7 +311,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   prevBtn.addEventListener("click", () => goTo(current - 1));
   nextBtn.addEventListener("click", () => goTo(current + 1));
+  document.getElementById("planningPrevMobile")?.addEventListener("click", () => goTo(current - 1));
+  document.getElementById("planningNextMobile")?.addEventListener("click", () => goTo(current + 1));
   dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
+
+  const planningVp = document.querySelector(".planning-viewport");
+  if (planningVp) {
+    let swipeX = 0;
+    planningVp.addEventListener("touchstart", (e) => { swipeX = e.changedTouches[0].clientX; }, { passive: true });
+    planningVp.addEventListener("touchend", (e) => {
+      const diff = swipeX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) { diff > 0 ? goTo(current + 1) : goTo(current - 1); }
+    }, { passive: true });
+  }
 });
 
 // ==========================
@@ -207,6 +353,46 @@ document.addEventListener("DOMContentLoaded", () => {
       nav.classList.remove("open");
       hamburger.textContent = "\u2630";
     });
+  });
+});
+
+// ==========================
+// PROPUESTAS FORM
+// ==========================
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form   = document.getElementById("propuestasForm");
+  const status = document.getElementById("propuestasStatus");
+  if (!form || !status) return;
+
+  const sheetsWebhook = (form.dataset.sheetsWebhook || "").trim();
+
+  function enviarASheets(propuesta) {
+    const payload = { propuesta, fechaISO: new Date().toISOString() };
+    fetch(sheetsWebhook, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).catch(() => {
+      const formBody = new URLSearchParams();
+      formBody.set("propuesta", propuesta);
+      formBody.set("fechaISO", new Date().toISOString());
+      fetch(sheetsWebhook, { method: "POST", mode: "no-cors", body: formBody });
+    });
+  }
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const propuesta = (form.propuesta?.value || "").trim();
+    if (!propuesta) {
+      status.textContent = "> ESCRIBE UNA PROPUESTA ANTES DE ENVIAR";
+      return;
+    }
+
+    enviarASheets(propuesta);
+    status.textContent = "> TENDREMOS EN CUENTA TU PROPUESTA.";
+    form.reset();
+    setTimeout(() => { status.textContent = ""; }, 5000);
   });
 });
 
@@ -303,6 +489,24 @@ document.addEventListener("DOMContentLoaded", () => {
     drawWave();
   }
 
+  // ---- Estado de glitch cromático compartido para los charts ----
+  const chartGlitch = {
+    active: false, dx: 0, end: 0,
+    next: Date.now() + 4000 + Math.random() * 5000,
+    tick() {
+      const now = Date.now();
+      if (!this.active && now > this.next) {
+        this.active = true;
+        this.dx = 5 + Math.random() * 9;
+        this.end = now + 200 + Math.random() * 440;
+      }
+      if (this.active && now > this.end) {
+        this.active = false;
+        this.next = now + 3000 + Math.random() * 5000;
+      }
+    }
+  };
+
   const graphCanvas = document.getElementById("bGraphCanvas");
   if (graphCanvas) {
     const gCtx = graphCanvas.getContext("2d");
@@ -346,6 +550,25 @@ document.addEventListener("DOMContentLoaded", () => {
         gCtx.beginPath(); gCtx.moveTo(0, y); gCtx.lineTo(W, y); gCtx.stroke();
       }
 
+      chartGlitch.tick();
+      if (chartGlitch.active) {
+        const gdx = chartGlitch.dx;
+        [[gdx, 'rgba(255,30,0,0.75)'], [-gdx, 'rgba(0,210,255,0.75)']].forEach(([offset, color]) => {
+          gCtx.save();
+          gCtx.beginPath();
+          gCtx.rect(gdx + 4, 0, W - (gdx + 4) * 2, H);
+          gCtx.clip();
+          gCtx.translate(offset, 0);
+          gCtx.shadowBlur = 0;
+          gHistory.forEach((v, i) => {
+            const x = i * step;
+            const barH = Math.max(1, Math.round((Math.max(0, Math.min(100, v)) / 100) * H));
+            gCtx.fillStyle = color;
+            gCtx.fillRect(x, H - barH, barW, barH);
+          });
+          gCtx.restore();
+        });
+      }
       gHistory.forEach((v, i) => {
         const x = i * step;
         const barH = Math.max(1, Math.round((Math.max(0, Math.min(100, v)) / 100) * H));
@@ -371,10 +594,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     drawGraph();
 
+    const fechaInicio = new Date("2026-02-01").getTime();
+    const pct = Math.min(100, Math.max(0, Math.round((Date.now() - fechaInicio) / (fechaObjetivo - fechaInicio) * 100)));
     const barFill = document.querySelector(".bbar-fill");
-    if (barFill) {
-      requestAnimationFrame(() => { setTimeout(() => { barFill.style.width = "78%"; }, 400); });
-    }
+    if (barFill) requestAnimationFrame(() => { setTimeout(() => { barFill.style.width = pct + "%"; }, 400); });
+    const avancePct = document.getElementById("bAvancePct");
+    if (avancePct) avancePct.textContent = pct + "%";
   }
 
   // ---- CHART (panel derecho) — EKG multichannel retro ----
@@ -425,6 +650,25 @@ document.addEventListener("DOMContentLoaded", () => {
       if (cBuf.length > W)  cBuf.shift();
       if (cBuf2.length > W) cBuf2.shift();
 
+      // Glitch cromático
+      chartGlitch.tick();
+      if (chartGlitch.active) {
+        const cdx = chartGlitch.dx;
+        [[cdx, 'rgba(255,30,0,0.72)'], [-cdx, 'rgba(0,210,255,0.72)']].forEach(([offset, color]) => {
+          cCtx.save();
+          cCtx.beginPath();
+          cCtx.rect(cdx + 4, 0, W - (cdx + 4) * 2, H);
+          cCtx.clip();
+          cCtx.translate(offset, 0);
+          cCtx.beginPath();
+          cBuf.forEach((y, x) => x === 0 ? cCtx.moveTo(x, y) : cCtx.lineTo(x, y));
+          cCtx.strokeStyle = color;
+          cCtx.shadowBlur = 0;
+          cCtx.lineWidth = 2.5;
+          cCtx.stroke();
+          cCtx.restore();
+        });
+      }
       // Canal rojo (fondo, más tenue)
       cCtx.beginPath();
       cBuf2.forEach((y, x) => x === 0 ? cCtx.moveTo(x, y) : cCtx.lineTo(x, y));
@@ -553,6 +797,27 @@ document.addEventListener("DOMContentLoaded", () => {
         rCtx.fillStyle = grad;
         rCtx.fill();
 
+        // Glitch cromático integrado en la línea principal
+        chartGlitch.tick();
+        if (chartGlitch.active) {
+          const rdx = chartGlitch.dx;
+          rCtx.save();
+          rCtx.beginPath();
+          rCtx.rect(PAD_L + rdx + 3, PAD_T, plotW - (rdx + 3) * 2, plotH);
+          rCtx.clip();
+          [[rdx, 'rgba(255,30,0,0.72)'], [-rdx, 'rgba(0,210,255,0.72)']].forEach(([offset, color]) => {
+            rCtx.beginPath();
+            rBuf.forEach((v, i) => {
+              const x = PAD_L + i * xStep + offset;
+              i === 0 ? rCtx.moveTo(x, toY(v)) : rCtx.lineTo(x, toY(v));
+            });
+            rCtx.strokeStyle = color;
+            rCtx.shadowBlur = 0;
+            rCtx.lineWidth = 2.5;
+            rCtx.stroke();
+          });
+          rCtx.restore();
+        }
         // Línea principal
         rCtx.beginPath();
         rBuf.forEach((v, i) => {
@@ -653,12 +918,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---- GLITCH en el resto de elementos del banner ----
   // Aplica el mismo efecto cromático a: terminal, panel-right, canvases, pescao
   const glitchTargets = [
-    { el: document.getElementById("bannerTerminal"),     base: "",  interval: [6000, 5000] },
-    { el: document.querySelector(".banner-panel-right"), base: "",  interval: [8000, 6000] },
-    { el: document.getElementById("bGraphCanvas"),      base: "",  interval: [11000, 5000], noTransform: true },
-    { el: document.getElementById("bChartCanvas"),      base: "",  interval: [13000, 6000], noTransform: true },
-    { el: document.getElementById("bChartRightCanvas"), base: "",  interval: [7000, 8000],  noTransform: true },
+    { el: document.getElementById("bannerTerminal"), base: "", interval: [6000, 5000] },
   ];
+  [
+    [".btag-hero",  [7000, 4000]],
+    [".bline-hero", [8000, 5000]],
+    [".bbio",       [9000, 6000]],
+    [".bbar",       [5000, 4000], true],
+  ].forEach(([sel, interval, noTransform]) => {
+    document.querySelectorAll(sel).forEach(el => glitchTargets.push({ el, base: "", interval, noTransform: !!noTransform }));
+  });
 
   function startElementGlitch({ el, base, interval, noTransform }) {
     if (!el) return;
@@ -715,23 +984,24 @@ document.addEventListener("DOMContentLoaded", () => {
       if (burstActive || glFrame % 3 === 0) {
         const W = glitchCanvas.width, H = glitchCanvas.height;
         glCtx.clearRect(0, 0, W, H);
-        const numBars = burstActive ? 10 + Math.floor(Math.random() * 12) : 2 + Math.floor(Math.random() * 3);
+        const numBars = burstActive ? 18 + Math.floor(Math.random() * 14) : 6 + Math.floor(Math.random() * 6);
 
         for (let i = 0; i < numBars; i++) {
           const y = Math.random() * H;
-          // Barras más variadas: ocasionalmente muy grandes
           const roll = Math.random();
           const barH = roll < 0.08 ? 8 + Math.random() * 22
                      : roll < 0.25 ? 3 + Math.random() * 6
                      : 1;
-          const barW = (0.08 + Math.random() * 0.72) * W;
+          const barW = (0.15 + Math.random() * 0.78) * W;
           const x = Math.random() * (W - barW);
-          const isRed = Math.random() < (burstActive ? 0.28 : 0.12);
-          const alpha = 0.25 + Math.random() * 0.55;
-          glCtx.fillStyle = isRed ? `rgba(255,50,0,${alpha.toFixed(2)})` : `rgba(57,255,20,${alpha.toFixed(2)})`;
+          const alpha = 0.72 + Math.random() * 0.28;
+          glCtx.shadowColor = `rgba(57,255,20,0.9)`;
+          glCtx.shadowBlur = burstActive ? 18 : 10;
+          glCtx.fillStyle = `rgba(57,255,20,${alpha.toFixed(2)})`;
           glCtx.fillRect(x, y, barW, barH);
         }
-      } else if (glFrame % 3 === 1) {
+        glCtx.shadowBlur = 0;
+      } else {
         glCtx.clearRect(0, 0, glitchCanvas.width, glitchCanvas.height);
       }
 

@@ -16,6 +16,13 @@
     --size-event: 38px;
     }
 
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #39FF1460; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #39FF14; }
+* { scrollbar-width: thin; scrollbar-color: #39FF1460 transparent; }
+
 html, body {
     height: 100%;
     margin: 0;
@@ -94,6 +101,22 @@ main {
     flex-wrap: nowrap;
 }
 
+.Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2, .Propuestas h2 {
+    text-align: center;
+    color: #39FF14;
+    font-size: var(--size-section-title);
+    margin-top: 70px;
+    margin-bottom: 50px;
+    font-family: 'SGK075', 'Courier New', monospace;
+    text-shadow: 0 0 18px #39FF1480, 0 0 40px #39FF1440;
+    letter-spacing: 0.04em;
+}
+
+.Info p, .Ubicacion p, .Playlist p, .Propuestas p {
+    font-size: var(--size-body-text);
+    line-height: 1.6;
+}
+
 /* Banner styles */
 
 .banner {
@@ -119,13 +142,13 @@ main {
 
 .banner::before {
     z-index: 1;
-    opacity: 0.85;
+    opacity: 1;
     animation: glitchSliceA 7s steps(1) infinite;
 }
 
 .banner::after {
     z-index: 1;
-    opacity: 0.65;
+    opacity: 0.92;
     animation: glitchSliceB 7s steps(1) infinite 2.1s;
 }
 
@@ -180,6 +203,20 @@ main {
     width: min(94%, 18ch);
     text-wrap: balance;
     padding: 0 clamp(16px, 2.5vw, 40px);
+    pointer-events: none;
+}
+
+.banner-bg {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,255,0,0.03),
+        rgba(0,255,0,0.03) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    z-index: 0;
     pointer-events: none;
 }
 
@@ -418,6 +455,23 @@ main {
     overflow: hidden;
 }
 
+.bscan-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to bottom, transparent, #39FF1480, transparent);
+    animation: pescaoScan 2.2s linear infinite;
+    top: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes pescaoScan {
+    0%   { top: -5%; }
+    100% { top: 105%; }
+}
+
 .banner-pescao {
     display: block;
     width: 100%;
@@ -442,7 +496,8 @@ main {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1;
+    z-index: 3;
+    filter: brightness(1.4) saturate(1.6);
 }
 
 .banner-wave {
@@ -458,10 +513,6 @@ main {
 }
 
 @media (max-width: 600px) {
-    .banner-terminal,
-    .banner-panel-right {
-        display: none;
-    }
     .banner-wave {
         height: 24px;
     }
@@ -551,10 +602,17 @@ main {
 }
 
 .Info img {
-    width: 80%;
+    width: 100%;
     height: auto;
-    border-radius: 30px;  
-    align-content: center;
+    border-radius: 30px;
+    display: block;
+    filter: grayscale(1) sepia(1) hue-rotate(85deg) saturate(3) brightness(0.75) contrast(1.2);
+}
+
+.Info .multimedia1,
+.Info .multimedia2 {
+    position: relative;
+    width: 80%;
 }
 
 .Info .multimedia1 {
@@ -565,10 +623,115 @@ main {
     rotate: -2.5deg;
 }
 
+.Info .multimedia1::after,
+.Info .multimedia2::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.14) 0px, rgba(0,0,0,0.14) 1px, transparent 1px, transparent 4px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,0.14) 0px, rgba(0,0,0,0.14) 1px, transparent 1px, transparent 4px);
+    pointer-events: none;
+    border-radius: 30px;
+}
+
 .Info video {
     width: 100%;
     height: 100%;
     border-radius: 30px;
+}
+
+/* Propuestas section styles */
+
+.Propuestas {
+    background-color: #041404;
+    padding: 32px 150px;
+    border-top: 1px solid #1AFF1A44;
+    border-bottom: 1px solid #1AFF1A44;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.propuestas-desc {
+    color: #A8FFA8;
+    font-size: 32px;
+    margin-bottom: 16px;
+    font-family: 'Courier New', monospace;
+    max-width: 800px;
+    text-align: center;
+}
+
+.propuestas-form {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.propuestas-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.propuestas-field input,
+.propuestas-field textarea {
+    background: #010d01;
+    border: 1px solid #1AFF1A55;
+    border-radius: 8px;
+    color: #A8FFA8;
+    font-family: 'SGK075', 'Courier New', monospace;
+    font-size: 32px;
+    padding: 10px 14px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.propuestas-field input:focus,
+.propuestas-field textarea:focus {
+    border-color: #39FF14;
+    box-shadow: 0 0 0 2px #39FF1422, 0 0 20px #39FF1430;
+}
+
+.propuestas-field textarea {
+    min-height: 90px;
+}
+
+.propuestas-btn {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px solid #39FF14;
+    color: #39FF14;
+    font-family: 'SGK075', 'Courier New', monospace;
+    font-size: 27px;
+    letter-spacing: 0.2em;
+    padding: 10px 28px;
+    cursor: pointer;
+    text-shadow: 0 0 10px #39FF1490;
+    box-shadow: 0 0 12px #39FF1440, inset 0 0 12px #39FF1410;
+    transition: background 0.2s, box-shadow 0.2s;
+    border-radius: 6px;
+}
+
+.propuestas-btn:hover {
+    background: #39FF1415;
+    box-shadow: 0 0 24px #39FF1480, inset 0 0 16px #39FF1420;
+}
+
+.propuestas-status {
+    color: #39FF14;
+    font-family: 'SGK075', 'Courier New', monospace;
+    font-size: 14px;
+    min-height: 1.5em;
+    text-shadow: 0 0 8px #39FF1460;
+}
+
+.Propuestas h2 {
+    margin-top: 28px;
+    margin-bottom: 16px;
 }
 
 /* Carousel styles */
@@ -625,7 +788,7 @@ main {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
-  cursor: pointer;
+    cursor: default;
 }
 
 /* ---- HOVER: versión SENCILLA (nombre arriba, desc abajo, solo esas bandas con fondo) ----
@@ -671,28 +834,51 @@ main {
 ---- fin versión SENCILLA ---- */
 
 /* ---- HOVER: versión FLIP (la foto da la vuelta y aparece la info) ---- */
-.carousel-track .slide-item img {
+.carousel-track .slide-item > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
   transform-origin: center;
   transition: transform 0.25s ease 0.22s;
+  filter: grayscale(1) sepia(1) hue-rotate(85deg) saturate(3) brightness(0.75) contrast(1.2);
 }
 
-.slide-item:hover img {
+.carousel-track .slide-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.14) 0px, rgba(0,0,0,0.14) 1px, transparent 1px, transparent 4px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.14) 0px, rgba(0,0,0,0.14) 1px, transparent 1px, transparent 4px);
+  border-radius: 20px;
+}
+
+.slide-item:hover > img {
   transform: scaleX(0);
   transition: transform 0.25s ease;
+}
+
+.slide-item.is-flipped > img {
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
 }
 
 .slide-overlay {
   position: absolute;
   inset: 0;
-  background-image: url('Fiespa\'26/fotos/palmera.png');
-  background-size: cover;
-  background-position: center;
+  background-color: #010d01;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0,255,0,0.09),
+    rgba(0,255,0,0.09) 1px,
+    transparent 1px,
+    transparent 3px
+  );
   border-radius: 20px;
   border: 3px solid #37ff1463;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -704,13 +890,95 @@ main {
   transition: transform 0.25s ease;
 }
 
+.slide-bg-img {
+  position: absolute;
+  inset: 0;
+  background-image: url("Fiespa'26/fotos/palmerareverso.png");
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  pointer-events: none;
+  filter: none;
+}
+
+.slide-glitch-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+
+.slide-overlay::before,
+.slide-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url('Fiespa\'26/fotos/palmerareverso.png');
+  background-size: cover;
+  background-position: center;
+  clip-path: inset(0 0 100% 0);
+}
+
+.slide-overlay::before {
+  z-index: 1;
+  opacity: 1;
+  animation: glitchSliceA 7s steps(1) infinite 1.5s;
+}
+
+.slide-overlay::after {
+  z-index: 1;
+  opacity: 0.92;
+  animation: glitchSliceB 7s steps(1) infinite 3.6s;
+}
+
+@keyframes cardChromGlitch {
+  0%, 86%, 100% { filter: none; }
+  87.5% { filter: drop-shadow(5px 0 0 rgba(255,0,80,0.75)) drop-shadow(-5px 0 0 rgba(0,200,255,0.75)); }
+  89%   { filter: drop-shadow(-4px 0 0 rgba(255,0,80,0.65)) drop-shadow(4px 0 0 rgba(0,200,255,0.65)); }
+  90.5% { filter: drop-shadow(2px 0 0 rgba(255,0,80,0.45)) drop-shadow(-2px 0 0 rgba(0,200,255,0.45)); }
+}
+
 .slide-item:hover .slide-overlay {
   transform: scaleX(1);
   transition: transform 0.25s ease 0.22s;
+  animation: cardChromGlitch 4s steps(1) infinite 1s;
+}
+
+.slide-item.is-flipped .slide-overlay {
+    transform: scaleX(1);
+    transition: transform 0.25s ease 0.22s;
+    animation: cardChromGlitch 4s steps(1) infinite 1s;
+}
+
+@media (hover: none), (pointer: coarse) {
+    .slide-item:hover > img {
+        transform: none;
+    }
+
+    .slide-item:hover .slide-overlay {
+        transform: scaleX(0);
+        animation: none;
+    }
+
+    /* is-flipped debe ir DESPUÉS del override :hover para ganar la cascada */
+    .slide-item.is-flipped > img {
+        transform: scaleX(0);
+    }
+
+    .slide-item.is-flipped .slide-overlay {
+        transform: scaleX(1);
+        animation: cardChromGlitch 4s steps(1) infinite 1s;
+    }
 }
 /* ---- fin versión FLIP ---- */
 
 .slide-nombre {
+  position: relative;
+  z-index: 2;
   color: #39FF14;
     font-size: var(--size-slide-name);
   font-weight: bold;
@@ -721,6 +989,8 @@ main {
 }
 
 .slide-desc {
+  position: relative;
+  z-index: 2;
   color: #9AFF9A;
     font-size: var(--size-slide-desc);
   line-height: 1.5;
@@ -744,26 +1014,208 @@ main {
     line-height: 1.6;
     margin-bottom: 40px;
     color: #A8FFA8;
+    margin-top: 0;  
 }
 
-.Ubicacion iframe {
+.ubicacion-mapa {
     width: 70%;
-    height: 600px;
+    margin: 0 auto;
     border-radius: 20px;
     border: 2px solid #1AFF1A44;
-    filter: hue-rotate(75deg) saturate(0.7) brightness(0.8);
+    box-shadow: 0 12px 42px rgba(57, 255, 20, 0.18);
+    overflow: hidden;
+    position: relative;
+    background: #031203;
+}
+
+.ubicacion-mapa::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 520;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(57, 255, 20, 0.05),
+        rgba(57, 255, 20, 0.05) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+}
+
+.ubicacion-mapa::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 510;
+    background: rgba(40, 255, 90, 0.08);
+    mix-blend-mode: color;
 }
 
 #mapa {
-  height: 400px;
-  border-radius: 20px;
+    width: 100%;
+    height: 600px;
+    position: relative;
+    z-index: 1;
+}
+
+#mapa .leaflet-tile-pane {
+    filter: grayscale(1) sepia(1) hue-rotate(72deg) saturate(5.2) brightness(0.92) contrast(1.18);
+}
+
+#mapa::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 380;
+    background: rgba(46, 255, 115, 0.08);
+    mix-blend-mode: screen;
+}
+
+
+.mapa-scanner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -8%;
+    height: 4px;
+    pointer-events: none;
+    z-index: 560;
+    background: linear-gradient(to bottom, transparent, rgba(57, 255, 20, 0.5), transparent);
+    box-shadow: 0 0 8px rgba(57, 255, 20, 0.3);
+    animation: mapScannerSweep 3.4s linear infinite;
+}
+
+.mapa-scanner.scanner-2 {
+    top: -32%;
+    height: 3px;
+    opacity: 0.45;
+    background: linear-gradient(to bottom, transparent, rgba(57, 255, 20, 0.42), transparent);
+    box-shadow: 0 0 6px rgba(57, 255, 20, 0.24);
+    animation: mapScannerSweepAlt 4.8s linear infinite 0.9s;
+}
+
+.mapa-scanner.scanner-3 {
+    top: -62%;
+    height: 3px;
+    opacity: 0.35;
+    background: linear-gradient(to bottom, transparent, rgba(57, 255, 20, 0.38), transparent);
+    box-shadow: 0 0 5px rgba(57, 255, 20, 0.2);
+    animation: mapScannerSweepFast 2.6s linear infinite 0.5s;
+}
+
+@keyframes mapScannerSweep {
+    0% {
+        top: -8%;
+        opacity: 0.55;
+    }
+    100% {
+        top: 105%;
+        opacity: 0.55;
+    }
+}
+
+@keyframes mapScannerSweepAlt {
+    0% {
+        top: -32%;
+        opacity: 0.45;
+    }
+    100% {
+        top: 105%;
+        opacity: 0.45;
+    }
+}
+
+@keyframes mapScannerSweepFast {
+    0% {
+        top: -62%;
+        opacity: 0.35;
+    }
+    100% {
+        top: 105%;
+        opacity: 0.35;
+    }
+}
+
+.ubicacion-link {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #39FF14;
+    text-decoration: none;
+    border: 0.5px solid #1AFF1A55;
+    background: #031203;
+    backdrop-filter: blur(4px);
+    padding: 9px 14px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease;
+}
+
+.ubicacion-link:hover {
+    background: #063006;
+    color: #9AFF9A;
+}
+
+#mapa .leaflet-control-zoom a {
+    background: #031203;
+    color: #39FF14;
+    border-color: #1AFF1A55;
+}
+
+#mapa .leaflet-control-zoom a:hover {
+    background: #063006;
+    color: #9AFF9A;
+}
+
+#mapa .leaflet-container a,
+#mapa .leaflet-popup-close-button {
+    color: #72ff72 !important;
+}
+
+#mapa .leaflet-popup-close-button:hover {
+    color: #b8ffb8 !important;
+}
+
+#mapa .leaflet-popup-content-wrapper,
+#mapa .leaflet-popup-tip {
+    background: #031203;
+    color: #9AFF9A;
+    border: 1px solid #1AFF1A55;
+}
+
+#mapa .leaflet-control-attribution {
+    background: rgba(3, 18, 3, 0.78);
+    color: #7bd67b;
+    border-top-left-radius: 8px;
+}
+
+#mapa .leaflet-control-attribution a {
+    color: #9AFF9A;
+}
+
+.fiespa-pin {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #9aff9a 0 35%, #39FF14 36% 60%, #031203 61% 100%);
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.9);
+    border: 1px solid #9AFF9A;
 }
 
 /* Planning styles */
 
 .Planning {
     text-align: center;
-    padding: 0 0 100px 0;
+    padding: 0 0 80px 0;
     color: #39FF14;
 }
 
@@ -778,15 +1230,19 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 30px;
-    padding: 0 80px;
+    gap: 20px;
+    padding: 0 64px;
+}
+
+.planning-controls-mobile {
+    display: none;
 }
 
 .planning-viewport {
     overflow: hidden;
     flex: 1;
     min-width: 0;
-    max-width: 1100px;
+    max-width: 980px;
     border-radius: 30px;
     box-shadow: 0 16px 50px rgba(57, 255, 20, 0.15);
     border: 1px solid #1AFF1A44;
@@ -801,14 +1257,14 @@ main {
     flex: 0 0 100%;
     box-sizing: border-box;
     background-color: #0A2A0A;
-    min-height: 620px;
+    min-height: 540px;
     display: flex;
     flex-direction: column;
 }
 
 .dia-header {
     background-color: #39FF14;
-    padding: 60px 40px 50px 40px;
+    padding: 42px 32px 34px 32px;
     text-align: center;
     border-bottom: 2px solid #1AFF1A;
 }
@@ -836,7 +1292,7 @@ main {
 
 .dia-eventos {
     list-style: none;
-    padding: 50px 80px;
+    padding: 32px 52px;
     margin: 0;
     text-align: left;
     flex: 1;
@@ -845,8 +1301,8 @@ main {
 .dia-eventos li {
     display: flex;
     align-items: center;
-    gap: 30px;
-    padding: 38px 0;
+    gap: 22px;
+    padding: 26px 0;
     border-bottom: 1px solid rgba(26, 255, 26, 0.12);
 }
 
@@ -871,8 +1327,8 @@ main {
     background: transparent;
     color: #39FF14;
     border: none;
-    width: 70px;
-    font-size: 42px;
+    width: 56px;
+    font-size: 34px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -961,8 +1417,7 @@ footer {
     color: #A8FFA8;
     text-align: center;
     display: grid;
-    grid-template-areas:    "social-media"
-                            "footer-links"
+    grid-template-areas:    "footer-links"
                             "copyright";
     grid-template-columns: 1fr;
     grid-gap: 40px;
@@ -978,70 +1433,34 @@ footer a {
     transition: all 0.3s ease;
 }
 
-.instagram {
-    background-image: url('Fiespa\'26/Insta.png');
-}
-
-.twitter {
-    background-image: url('Fiespa\'26/twitter.png');
-    background-position: center;
-}
-
-.tiktok {
-    background-image: url('Fiespa\'26/tikTok.png');
-}
-
-.social-media {
-    grid-area: social-media;
-    display: flex;
-    justify-content: center;
-    gap: 100px;
-}
-.social-media a {
-    width: 40px;
-    height: 40px;
-    display: inline-block;
-    transition: all 0.3s ease;
-    background-size: cover;
-    display: inline-block;
-}
-
-.instagram:hover{
-    transform: scale(1.1);
-    transition: transform 0.2s;
-    background-image: url('Fiespa\'26/insta_hover.png');
-}
-
-.twitter:hover{
-    transform: scale(1.1);
-    transition: transform 0.2s;
-    background-image: url('Fiespa\'26/twitter_hover.png');
-}
-
-.tiktok:hover{
-    transform: scale(1.1);
-    transition: transform 0.2s;
-    background-image: url('Fiespa\'26/tikTok_hover.png');
-}
-
 footer a:hover {
     color: #9AFF9A;
     text-shadow: 0 0 8px #39FF14;
     transition: transform 0.2s;
 }
 
+.footer-links {
+    grid-area: footer-links;
+    display: flex;
+    justify-content: center;
+}
+
 footer ul {
     list-style-type: none;
-    padding: 0;
+    padding: 18px 28px;
     margin: 0;
-    grid-area: footer-links;
-    display: inline-flex;
-    gap: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 40px;
+    align-items: center;
+    justify-content: center;
+    background: rgba(57, 255, 20, 0.05);
+    border-radius: 12px;
 }
 
 footer li {
-    margin: 15px 0;
-    
+    display: flex;
+    align-items: center;
 }
 
 .copyright {
@@ -1073,19 +1492,362 @@ footer li {
 }
 
 /* =============================
+   RESPONSIVE — LAPTOP LARGE (≤1536px)
+   ============================= */
+
+@media (max-width: 1536px) {
+    :root {
+        --size-countdown: 73px;
+        --size-section-title: 80px;
+        --size-body-text: 24px;
+        --size-slide-name: 63px;
+        --size-slide-desc: 20px;
+        --size-day-number: 95px;
+        --size-day-name: 39px;
+        --size-time: 24px;
+        --size-event: 28px;
+    }
+
+    nav a {
+        padding: 12px clamp(8px, 1.5vw, 34px);
+    }
+
+    .banner {
+        min-height: 38vw;
+        padding: 0 clamp(12px, 2vw, 28px);
+    }
+
+    .banner h1 {
+        width: min(92%, 16ch);
+        line-height: 1.02;
+    }
+
+    .banner-terminal {
+        max-width: 28%;
+        font-size: clamp(12px, 1.5vw, 20px);
+    }
+
+    .banner-panel-right {
+        max-width: 26%;
+        font-size: clamp(11px, 1.2vw, 17px);
+    }
+
+    .logoFIESPA {
+        height: 88px;
+    }
+
+    .Info,
+    .Propuestas,
+    .Ubicacion,
+    .Playlist {
+        padding-left: 110px;
+        padding-right: 110px;
+    }
+
+    .Info {
+        gap: 70px;
+    }
+
+    .carousel {
+        max-width: 1500px;
+        margin: 64px auto;
+        padding: 44px 0;
+    }
+
+    .carousel-track .slide-item {
+        height: 620px;
+    }
+
+    .propuestas-field textarea {
+        min-height: 110px;
+        font-size: 30px;
+        padding: 12px 16px;
+    }
+
+    .propuestas-btn {
+        font-size: 25px;
+        padding: 10px 24px;
+    }
+
+    .planning-carrusel {
+        padding: 0 50px;
+    }
+
+    .planning-viewport {
+        max-width: 980px;
+    }
+
+    .dia-card {
+        min-height: 520px;
+    }
+
+    .dia-header {
+        padding: 38px 28px 30px 28px;
+    }
+
+    .dia-eventos {
+        padding: 28px 44px;
+    }
+
+    .dia-eventos li {
+        padding: 22px 0;
+    }
+
+    #mapa {
+        height: 540px;
+    }
+
+    .Playlist iframe {
+        height: 620px;
+    }
+
+    footer a {
+        font-size: 21px;
+    }
+}
+
+/* =============================
+   RESPONSIVE — LAPTOP (≤1366px)
+   ============================= */
+
+@media (max-width: 1366px) {
+    :root {
+        --size-countdown: 66px;
+        --size-section-title: 70px;
+        --size-body-text: 21px;
+        --size-slide-name: 54px;
+        --size-slide-desc: 18px;
+        --size-day-number: 83px;
+        --size-day-name: 35px;
+        --size-time: 20px;
+        --size-event: 25px;
+    }
+
+    header {
+        padding: 14px;
+    }
+
+    nav a {
+        font-size: clamp(14px, 1.2vw, 20px);
+        padding: 10px clamp(8px, 1.2vw, 24px);
+    }
+
+    .banner {
+        min-height: 34vw;
+        padding: 0 14px;
+    }
+
+    .banner h1 {
+        width: min(90%, 14ch);
+        line-height: 1.01;
+    }
+
+    .banner-terminal {
+        max-width: 30%;
+        font-size: clamp(11px, 1.2vw, 16px);
+    }
+
+    .banner-panel-right {
+        max-width: 28%;
+        font-size: clamp(10px, 1vw, 14px);
+    }
+
+    .logoFIESPA {
+        height: 76px;
+    }
+
+    .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2, .Propuestas h2 {
+        margin-top: 56px;
+        margin-bottom: 40px;
+    }
+
+    .Info,
+    .Propuestas,
+    .Ubicacion,
+    .Playlist {
+        padding-left: 72px;
+        padding-right: 72px;
+    }
+
+    .Info {
+        padding-top: 95px;
+        padding-bottom: 95px;
+        gap: 54px;
+    }
+
+    .Propuestas,
+    .Ubicacion,
+    .Playlist {
+        padding-top: 24px;
+        padding-bottom: 84px;
+    }
+
+    .propuestas-form {
+        max-width: 720px;
+        gap: 12px;
+    }
+
+    .propuestas-field textarea {
+        min-height: 96px;
+        font-size: 26px;
+        padding: 10px 14px;
+    }
+
+    .propuestas-btn {
+        font-size: 23px;
+        padding: 9px 22px;
+        letter-spacing: 0.16em;
+    }
+
+    .carousel {
+        max-width: 1360px;
+        margin: 50px auto;
+        padding: 34px 0;
+    }
+
+    .carousel-outer {
+        gap: 14px;
+    }
+
+    .carousel-track .slide-item {
+        height: 560px;
+    }
+
+    .planning-carrusel {
+        padding: 0 34px;
+        gap: 14px;
+    }
+
+    .planning-btn {
+        width: 50px;
+        font-size: 30px;
+    }
+
+    .dia-card {
+        min-height: 500px;
+    }
+
+    .dia-eventos {
+        padding: 24px 38px;
+    }
+
+    .dia-eventos li {
+        gap: 18px;
+        padding: 20px 0;
+    }
+
+    .ubicacion-mapa,
+    .Playlist iframe {
+        width: 82%;
+    }
+
+    #mapa {
+        height: 500px;
+    }
+
+    .Playlist iframe {
+        height: 560px;
+    }
+
+    footer {
+        gap: 30px;
+        padding: 30px;
+    }
+
+    footer a {
+        font-size: 19px;
+    }
+}
+
+/* =============================
    RESPONSIVE — LARGE TABLET (≤1200px)
    ============================= */
 
 @media (max-width: 1200px) {
+    :root {
+        --size-countdown: 63px;
+        --size-section-title: 63px;
+        --size-body-text: 19px;
+        --size-slide-name: 49px;
+        --size-slide-desc: 17px;
+        --size-day-number: 75px;
+        --size-day-name: 31px;
+        --size-time: 19px;
+        --size-event: 22px;
+    }
+
+    nav a {
+        padding: 10px clamp(8px, 1vw, 16px);
+    }
+
+    .logoFIESPA {
+        height: 70px;
+    }
+
+    .banner {
+        min-height: clamp(320px, 36vw, 480px);
+        padding: 0 8px;
+    }
+
+    .banner-terminal {
+        max-width: 22%;
+        font-size: clamp(9px, 1vw, 13px);
+        overflow: hidden;
+    }
+
+    .banner-panel-right {
+        max-width: 20%;
+        font-size: clamp(8px, 0.85vw, 11px);
+        gap: 4px;
+        overflow: hidden;
+    }
+
+    .banner-panel-right .btag-hero {
+        font-size: clamp(13px, 1.8vw, 22px);
+    }
+
+    .bcanvas-chart-right {
+        height: clamp(50px, 7vw, 90px);
+    }
+
+    .banner h1 {
+        width: min(58%, 16ch);
+        font-size: clamp(52px, 7.5vw, 100px);
+        line-height: 1.02;
+    }
+
     .Info {
         padding: 80px 60px;
         gap: 60px;
         grid-template-rows: auto;
     }
 
+    .Propuestas,
+    .Ubicacion,
+    .Playlist {
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+
     .planning-carrusel {
         padding: 0 40px;
         gap: 20px;
+    }
+
+    .propuestas-form {
+        max-width: 680px;
+    }
+
+    .propuestas-field textarea {
+        min-height: 92px;
+        font-size: 22px;
+        padding: 9px 12px;
+    }
+
+    .propuestas-btn {
+        font-size: 20px;
+        padding: 8px 18px;
+        letter-spacing: 0.14em;
     }
 
     .Ubicacion {
@@ -1095,6 +1857,19 @@ footer li {
     .Playlist {
         padding: 0 80px 80px;
     }
+
+    #mapa {
+        height: 440px;
+    }
+
+    .Playlist iframe {
+        width: 80%;
+        height: 500px;
+    }
+
+    footer ul {
+        gap: 6px 20px;
+    }
 }
 
 /* =============================
@@ -1103,20 +1878,57 @@ footer li {
 
 @media (max-width: 900px) {
     :root {
-        --size-countdown: 72px;
-        --size-section-title: 78px;
-        --size-body-text: 23px;
-        --size-slide-name: 63px;
-        --size-slide-desc: 20px;
-        --size-day-number: 94px;
-        --size-day-name: 39px;
-        --size-time: 23px;
-        --size-event: 27px;
+        --size-countdown: 61px;
+        --size-section-title: 66px;
+        --size-body-text: 20px;
+        --size-slide-name: 54px;
+        --size-slide-desc: 17px;
+        --size-day-number: 80px;
+        --size-day-name: 33px;
+        --size-time: 20px;
+        --size-event: 23px;
     }
 
     .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
         margin-top: 50px;
         margin-bottom: 50px;
+    }
+
+    .banner {
+        min-height: clamp(260px, 40vw, 360px);
+        padding: 0 6px;
+    }
+
+    .banner-terminal {
+        max-width: 26%;
+        font-size: clamp(8px, 0.9vw, 11px);
+        overflow: hidden;
+    }
+
+    .banner-panel-right {
+        max-width: 24%;
+        font-size: clamp(7px, 0.8vw, 10px);
+        gap: 3px;
+        overflow: hidden;
+    }
+
+    .banner-panel-right .btag-hero {
+        font-size: clamp(11px, 1.5vw, 17px);
+    }
+
+    .bcanvas-chart-right {
+        height: clamp(40px, 6vw, 70px);
+    }
+
+    .banner h1 {
+        width: min(52%, 15ch);
+        font-size: clamp(36px, 8vw, 66px);
+        line-height: 1.02;
+    }
+
+    .Propuestas h2 {
+        margin-top: 50px;
+        margin-bottom: 30px;
     }
 
     .Info {
@@ -1146,7 +1958,26 @@ footer li {
         padding: 0 40px 70px;
     }
 
-    .Ubicacion iframe {
+    .Propuestas {
+        padding: 26px 40px 56px;
+    }
+
+    .propuestas-form {
+        max-width: 100%;
+    }
+
+    .propuestas-field textarea {
+        min-height: 84px;
+        font-size: 20px;
+    }
+
+    .propuestas-btn {
+        font-size: 18px;
+        padding: 8px 16px;
+        letter-spacing: 0.12em;
+    }
+
+    .ubicacion-mapa {
         width: 85%;
     }
 
@@ -1156,6 +1987,7 @@ footer li {
 
     .Playlist iframe {
         width: 85%;
+        height: 420px;
     }
 
     .dia-eventos {
@@ -1185,6 +2017,10 @@ footer li {
         width: 14px;
         height: 14px;
     }
+
+    footer ul {
+        gap: 6px 16px;
+    }
 }
 
 /* =============================
@@ -1193,15 +2029,15 @@ footer li {
 
 @media (max-width: 768px) {
     :root {
-        --size-countdown: 48px;
-        --size-section-title: 58px;
-        --size-body-text: 18px;
-        --size-slide-name: 49px;
-        --size-slide-desc: 16px;
-        --size-day-number: 73px;
-        --size-day-name: 30px;
-        --size-time: 18px;
-        --size-event: 22px;
+        --size-countdown: 41px;
+        --size-section-title: 49px;
+        --size-body-text: 15px;
+        --size-slide-name: 42px;
+        --size-slide-desc: 14px;
+        --size-day-number: 62px;
+        --size-day-name: 26px;
+        --size-time: 15px;
+        --size-event: 19px;
     }
 
 
@@ -1267,11 +2103,105 @@ footer li {
         margin-bottom: 35px;
     }
 
+    .banner {
+        display: grid;
+        grid-template-columns: 27fr 46fr 25fr;
+        grid-template-rows: clamp(160px, 35vw, 260px);
+        min-height: auto;
+        padding: 0;
+    }
+
+    .banner h1 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        font-size: clamp(22px, 6vw, 40px);
+        line-height: 1.1;
+        padding: 0;
+        z-index: 10;
+        width: min(90%, 16ch);
+    }
+
+    .banner-center {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .banner-terminal {
+        grid-column: 1;
+        grid-row: 1;
+        max-width: 100%;
+        font-size: clamp(6px, 1.8vw, 10px);
+        padding: 4px 6px;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .banner-panel-right {
+        grid-column: 3;
+        grid-row: 1;
+        max-width: 100%;
+        font-size: clamp(5px, 1.5vw, 9px);
+        padding: 4px 6px;
+        gap: 2px;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .banner-panel-right .btag-hero {
+        font-size: clamp(9px, 2.5vw, 14px);
+    }
+
+    .bline-hero {
+        font-size: clamp(8px, 2.2vw, 13px);
+    }
+
+    .bbio-inner {
+        height: clamp(40px, 9vw, 80px);
+    }
+
+    .bcanvas-chart-right,
+    .banner-terminal .bcanvas-chart,
+    .banner-terminal .bcanvas-graph {
+        height: 30px;
+    }
+
+    .Propuestas h2 {
+        margin-top: 40px;
+        margin-bottom: 24px;
+    }
+
     /* --- Info --- */
     .Info {
         padding: 45px 22px;
         grid-template-areas: none;
         gap: 24px;
+    }
+
+    .Propuestas {
+        padding: 24px 18px 46px;
+    }
+
+    .propuestas-desc {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    .propuestas-field textarea {
+        min-height: 78px;
+        font-size: 18px;
+        padding: 8px 10px;
+    }
+
+    .propuestas-btn {
+        align-self: stretch;
+        width: 100%;
+        text-align: center;
+        font-size: 17px;
+        letter-spacing: 0.1em;
+        padding: 10px 14px;
     }
 
     .Info img {
@@ -1321,14 +2251,20 @@ footer li {
         min-width: 50px;
     }
 
+    /* --- Glitch bars: cubren todo el banner (single row) --- */
+
     /* --- Carousel (Invitados) --- */
     .carousel {
-        margin: 0px auto;
+        margin: 0 auto;
     }
 
     .carousel-outer {
         gap: 10px;
         padding: 0 5px;
+    }
+
+    .carousel-track {
+        gap: 0;
     }
 
     .carousel-track .slide-item {
@@ -1341,14 +2277,42 @@ footer li {
         font-size: 20px;
     }
 
+    /* --- Planning (Horario) botones móvil --- */
+    .planning-btn--side {
+        display: none;
+    }
+
+    .planning-carrusel {
+        padding: 0;
+        gap: 0;
+    }
+
+    .planning-controls-mobile {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 16px;
+        padding-bottom: 8px;
+    }
+
     /* --- Ubicación --- */
     .Ubicacion {
         padding: 0 16px 55px;
     }
 
-    .Ubicacion iframe {
+    .ubicacion-mapa {
         width: 100%;
+    }
+
+    #mapa {
         height: 300px;
+    }
+
+    .ubicacion-link {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 12px;
     }
 
     /* --- Playlist --- */
@@ -1366,14 +2330,36 @@ footer li {
     }
 
     /* --- Footer --- */
-    .social-media {
-        gap: 40px;
+    footer {
+        padding: 24px 16px;
+        grid-gap: 16px;
     }
 
     footer ul {
-        flex-wrap: wrap;
-        gap: 4px 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px 16px;
+        justify-items: center;
+    }
+
+    footer ul li:nth-child(4) {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        justify-self: center;
+        display: flex;
         justify-content: center;
+        width: 100%;
+    }
+
+    footer ul li:nth-child(1) { grid-column: 1; grid-row: 2; }
+    footer ul li:nth-child(2) { grid-column: 1; grid-row: 3; }
+    footer ul li:nth-child(3) { grid-column: 1; grid-row: 4; }
+    footer ul li:nth-child(5) { grid-column: 2; grid-row: 2; }
+    footer ul li:nth-child(6) { grid-column: 2; grid-row: 3; }
+    footer ul li:nth-child(7) { grid-column: 2; grid-row: 4; }
+
+    footer .logoFIESPA {
+        height: 80px;
     }
 
     footer a {
@@ -1387,15 +2373,15 @@ footer li {
 
 @media (max-width: 480px) {
     :root {
-        --size-countdown: 28px;
-        --size-section-title: 48px;
-        --size-body-text: 15px;
-        --size-slide-name: 40px;
-        --size-slide-desc: 14px;
-        --size-day-number: 60px;
-        --size-day-name: 24px;
-        --size-time: 15px;
-        --size-event: 18px;
+        --size-countdown: 24px;
+        --size-section-title: 41px;
+        --size-body-text: 13px;
+        --size-slide-name: 34px;
+        --size-slide-desc: 12px;
+        --size-day-number: 51px;
+        --size-day-name: 20px;
+        --size-time: 13px;
+        --size-event: 15px;
     }
 
     .contador h1 {
@@ -1405,6 +2391,39 @@ footer li {
     .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
         margin-top: 32px;
         margin-bottom: 28px;
+    }
+
+    .banner {
+        grid-template-rows: clamp(110px, 28vw, 160px);
+    }
+
+    .banner h1 {
+        font-size: clamp(18px, 5.5vw, 28px);
+        padding: 0;
+    }
+
+    .banner-terminal,
+    .banner-panel-right {
+        font-size: 6px;
+        padding: 2px 4px;
+    }
+
+    .banner-panel-right .btag-hero {
+        font-size: 8px;
+    }
+
+    .bline-hero {
+        font-size: 7px;
+    }
+
+    .bbio-inner {
+        height: 28px;
+    }
+
+    .bcanvas-chart-right,
+    .banner-terminal .bcanvas-chart,
+    .banner-terminal .bcanvas-graph {
+        height: 22px;
     }
 
     .Info {
@@ -1442,6 +2461,28 @@ footer li {
 
     .Playlist iframe {
         height: 380px;
+    }
+
+    .propuestas-field textarea {
+        min-height: 72px;
+        font-size: 16px;
+    }
+
+    .propuestas-btn {
+        font-size: 15px;
+    }
+
+    footer ul {
+        gap: 6px 10px;
+    }
+
+    .carousel-track .slide-item {
+        height: 380px;
+    }
+
+    .planning-controls-mobile {
+        gap: 28px;
+        margin-top: 12px;
     }
 }
 
