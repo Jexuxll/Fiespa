@@ -405,9 +405,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   nav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href") || "";
+      const isHashLink = href.startsWith("#") && href.length > 1;
+
+      if (isHashLink) {
+        e.preventDefault();
+      }
+
       nav.classList.remove("open");
       hamburger.textContent = "\u2630";
+
+      if (!isHashLink) return;
+
+      // Scroll after menu collapse so anchor alignment is consistent on mobile.
+      requestAnimationFrame(() => {
+        const target = document.querySelector(href);
+        if (!target) return;
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        history.replaceState(null, "", href);
+      });
     });
   });
 });
