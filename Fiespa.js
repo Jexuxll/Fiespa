@@ -3,15 +3,15 @@
 // Añade, quita o edita aquí.
 // ==============================
 const invitados = [
-    { foto: "Fiespa'26/fotos/pablo4.jpeg",  nombre: "Pablo Sanchez", desc: "El arquitecto del caos, el creador de la Fiespa" },
-    { foto: "Fiespa'26/fotos/nuri4.jpeg", nombre: "Nuria", desc: "La que lo da todo en la pista y fuera de ella" },
-    { foto: "Fiespa'26/fotos/helen3.jpeg",  nombre: "Elena", desc: "El terremoto del Pacífico, nadie la para" },
-    { foto: "Fiespa'26/fotos/ait2.jpeg", nombre: "Aitor", desc: "Proteína, rutina y mucha marcha" },
-    { foto: "Fiespa'26/fotos/pablor1.jpeg", nombre: "Pablo Romero", desc: "El alma de la fiesta, siempre el último en irse" },
+    { foto: "Fiespa'26/fotos/pablo4.jpeg",  nombre: "Pablo Sánchez", desc: "El arquitecto del caos, el creador de la Fiespa" },
+    { foto: "Fiespa'26/fotos/nuri4.jpeg", nombre: "Nuria", desc: "Escucha como si estuvieras revelando el secreto de la vida cada vez que hablas" },
+    { foto: "Fiespa'26/fotos/ait2.jpeg", nombre: "Aitor", desc: "Se mata en el gym, pero luego no te deja salir sin haber comido bien" },
+    { foto: "Fiespa'26/fotos/pablor2.jpeg", nombre: "Pablo Romero", desc: "El alma de la fiesta, siempre el último en irse" },
     { foto: "Fiespa'26/fotos/jesus2.jpeg",  nombre: "Jesús", desc: "Más tranquilo que un martes por la mañana" },
-    { foto: "Fiespa'26/fotos/cris1.jpeg", nombre: "Cris", desc: "Capaz de bailar cualquier canción, de cualquier década" },
-    { foto: "Fiespa'26/fotos/henry1.jpeg",  nombre: "Enrique", desc: "El que siempre llega tarde pero nunca falta" },
-    { foto: "Fiespa'26/fotos/almu1.jpeg", nombre: "Almu", desc: "La que convierte cada momento en un recuerdo" },
+    { foto: "Fiespa'26/fotos/cris1.jpeg", nombre: "Cris", desc: "También conocida como CRISPY CHICKEN o ECOCRIS, siempre sabe lo que hay que hacer" },
+    { foto: "Fiespa'26/fotos/henry1.jpeg",  nombre: "Enrique", desc: "Cualquier conversación puede acabar en una guerra que no conocías" },
+    { foto: "Fiespa'26/fotos/helen3.jpeg",  nombre: "Elena", desc: "El terremoto de Méndez Alvaro, siempre tiene alguna locura bajo la manga" },
+    { foto: "Fiespa'26/fotos/almu1.jpeg", nombre: "Almu", desc: "Si necesitas una lloradita, estará dispuesta a ayudarte sin cita" },
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -102,12 +102,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const unflipItem = (item) => {
           const img = item.querySelector(":scope > img");
-          if (img) {
-            img.style.transition = "transform 0.25s ease 0.22s";
-            void img.getBoundingClientRect();
-          }
+          const overlay = item.querySelector(":scope > .slide-overlay");
+
+          if (img) img.style.transition = "transform 0.25s ease 0.22s";
+          if (overlay) overlay.style.transition = "transform 0.25s ease";
+
+          // Ensure transition overrides are applied before removing the flip class.
+          void item.getBoundingClientRect();
           item.classList.remove("is-flipped");
-          if (img) setTimeout(() => { img.style.transition = ""; }, 600);
+
+          setTimeout(() => {
+            if (img) img.style.transition = "";
+            if (overlay) overlay.style.transition = "";
+          }, 450);
         };
 
         const clearFlip = () => {
@@ -245,6 +252,55 @@ document.addEventListener("DOMContentLoaded", () => {
       if (Math.abs(diff) > 50) { clearInterval(autoplay); diff > 0 ? advance() : retreat(); }
     }, { passive: true });
   }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const targets = Array.from(document.querySelectorAll([
+    ".contador",
+    ".Info h2", ".Info .text1", ".Info .multimedia1", ".Info .text2", ".Info .multimedia2",
+    ".carousel h2", ".carousel-outer",
+    ".Ubicacion h2", ".Ubicacion p", ".ubicacion-mapa",
+    ".Planning h2", ".planning-subtitulo", ".planning-viewport", ".planning-dots",
+    ".Playlist h2", ".Playlist p", ".Playlist iframe", ".Playlist a",
+    ".Propuestas h2", ".propuestas-desc", ".propuestas-form"
+  ].join(",")));
+
+  if (!targets.length) return;
+
+  targets.forEach((el, index) => {
+    el.classList.add("scroll-reveal");
+    el.style.setProperty("--reveal-delay", `${(index % 6) * 70}ms`);
+  });
+
+  const revealInView = () => {
+    targets.forEach((el) => {
+      if (el.classList.contains("is-visible")) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+        el.classList.add("is-visible");
+      }
+    });
+  };
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, {
+      root: null,
+      threshold: 0.12,
+      rootMargin: "0px 0px -8% 0px"
+    });
+
+    targets.forEach((el) => observer.observe(el));
+  }
+
+  revealInView();
+  window.addEventListener("scroll", revealInView, { passive: true });
+  window.addEventListener("resize", revealInView, { passive: true });
 });
 
 // ==========================
@@ -461,8 +517,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const N = 80;
 
     function resizeWave() {
-      waveCanvas.width  = waveCanvas.offsetWidth  || waveCanvas.parentElement.offsetWidth;
-      waveCanvas.height = waveCanvas.offsetHeight || 48;
+      waveCanvas.width  = waveCanvas.offsetWidth || waveCanvas.parentElement.offsetWidth;
+      waveCanvas.height = waveCanvas.offsetHeight || 44;
     }
     resizeWave();
     window.addEventListener("resize", resizeWave);
@@ -512,8 +568,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const gCtx = graphCanvas.getContext("2d");
 
     function resizeGraph() {
-      graphCanvas.width  = graphCanvas.offsetWidth  || graphCanvas.parentElement.offsetWidth || 200;
-      graphCanvas.height = graphCanvas.offsetHeight || 52;
+      graphCanvas.width  = graphCanvas.offsetWidth || graphCanvas.parentElement.offsetWidth || 320;
+      graphCanvas.height = graphCanvas.offsetHeight || 80;
     }
     resizeGraph();
     window.addEventListener("resize", resizeGraph);
@@ -612,8 +668,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let cPhase = 0;
 
     function resizeChart() {
-      chartCanvas.width  = chartCanvas.offsetWidth  || chartCanvas.parentElement.offsetWidth || 200;
-      chartCanvas.height = chartCanvas.offsetHeight || 90;
+      chartCanvas.width  = chartCanvas.offsetWidth || chartCanvas.parentElement.offsetWidth || 320;
+      chartCanvas.height = chartCanvas.offsetHeight || 80;
     }
     resizeChart();
     window.addEventListener("resize", resizeChart);
@@ -713,18 +769,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const rBuf = [];       // historial de valores
     let rVal  = 180;
     let rFrame = 0;
+    let rDpr = 1;
     // Etiquetas fijas del eje Y
     const Y_LABELS = [0, 100, 200, 300, 400, 500];
 
     function resizeChartRight() {
-      chartRightCanvas.width  = chartRightCanvas.offsetWidth  || chartRightCanvas.parentElement.offsetWidth || 200;
-      chartRightCanvas.height = chartRightCanvas.offsetHeight || 120;
+      const cssW = chartRightCanvas.offsetWidth || chartRightCanvas.parentElement.offsetWidth || 300;
+      const cssH = chartRightCanvas.offsetHeight || 120;
+      rDpr = Math.min(2, window.devicePixelRatio || 1);
+
+      chartRightCanvas.style.width = `${cssW}px`;
+      chartRightCanvas.style.height = `${cssH}px`;
+      chartRightCanvas.width = Math.round(cssW * rDpr);
+      chartRightCanvas.height = Math.round(cssH * rDpr);
+      rCtx.setTransform(rDpr, 0, 0, rDpr, 0, 0);
     }
     resizeChartRight();
     window.addEventListener("resize", resizeChartRight);
 
     function drawChartRight() {
-      const W = chartRightCanvas.width, H = chartRightCanvas.height;
+      const W = chartRightCanvas.width / rDpr;
+      const H = chartRightCanvas.height / rDpr;
       const PAD_L = Math.round(W * 0.12);
       const PAD_B = Math.round(H * 0.14);
       const PAD_T = Math.round(H * 0.07);
@@ -732,6 +797,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const plotW = W - PAD_L - PAD_R;
       const plotH = H - PAD_T - PAD_B;
       const Y_MIN = 0, Y_MAX = 520;
+      const scale128 = Math.max(0.65, Math.min(1.35, H / 128));
+      const gridLineW = Math.max(0.35, 0.5 * scale128);
+      const axisLineW = Math.max(0.7, 1 * scale128);
+      const lineMainW = Math.max(1.05, 1.5 * scale128);
+      const lineGlitchW = Math.max(1.7, 2.5 * scale128);
+      const dotRadius = Math.max(2.2, Math.min(4.4, 3 * scale128));
 
       // Fondo
       rCtx.fillStyle = "rgba(0,0,0,0.78)";
@@ -751,7 +822,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Grid
       rCtx.strokeStyle = "rgba(57,255,20,0.13)";
-      rCtx.lineWidth = 0.5;
+      rCtx.lineWidth = gridLineW;
       const fSize = Math.max(8, Math.round(H * 0.09));
       rCtx.font = `${fSize}px 'SGK075','Courier New',monospace`;
       rCtx.fillStyle = "rgba(57,255,20,0.6)";
@@ -764,6 +835,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Líneas verticales
       const vLines = 5;
       rCtx.strokeStyle = "rgba(57,255,20,0.07)";
+      rCtx.lineWidth = Math.max(0.35, 0.5 * scale128);
       for (let i = 1; i <= vLines; i++) {
         const x = PAD_L + Math.round((plotW / (vLines + 1)) * i);
         rCtx.beginPath(); rCtx.moveTo(x + 0.5, PAD_T); rCtx.lineTo(x + 0.5, PAD_T + plotH); rCtx.stroke();
@@ -771,7 +843,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Ejes
       rCtx.strokeStyle = "rgba(57,255,20,0.55)";
-      rCtx.lineWidth = 1;
+      rCtx.lineWidth = axisLineW;
       rCtx.beginPath();
       rCtx.moveTo(PAD_L, PAD_T);
       rCtx.lineTo(PAD_L, PAD_T + plotH);
@@ -813,7 +885,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             rCtx.strokeStyle = color;
             rCtx.shadowBlur = 0;
-            rCtx.lineWidth = 2.5;
+            rCtx.lineWidth = lineGlitchW;
             rCtx.stroke();
           });
           rCtx.restore();
@@ -826,18 +898,26 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         rCtx.strokeStyle = "#39FF14";
         rCtx.shadowColor  = "#39FF14";
-        rCtx.shadowBlur   = 5;
-        rCtx.lineWidth    = 1.5;
+        rCtx.shadowBlur   = Math.max(4, 5 * scale128);
+        rCtx.lineWidth    = lineMainW;
         rCtx.stroke();
 
         // Punto final (cursor)
         const lastX = PAD_L + (rBuf.length - 1) * xStep;
         const lastY = toY(rBuf[rBuf.length - 1]);
         rCtx.beginPath();
-        rCtx.arc(lastX, lastY, 3, 0, Math.PI * 2);
+        rCtx.arc(lastX, lastY, dotRadius, 0, Math.PI * 2);
         rCtx.fillStyle = "rgba(220,255,200,0.95)";
-        rCtx.shadowBlur = 10;
+        rCtx.shadowBlur = Math.max(6, 10 * scale128);
         rCtx.fill();
+
+        // Halo exterior para que el punto final destaque en pantallas pequeñas.
+        rCtx.beginPath();
+        rCtx.arc(lastX, lastY, dotRadius + Math.max(0.8, 1.2 * scale128), 0, Math.PI * 2);
+        rCtx.strokeStyle = "rgba(57,255,20,0.58)";
+        rCtx.lineWidth = Math.max(0.8, 1 * scale128);
+        rCtx.shadowBlur = 0;
+        rCtx.stroke();
       }
 
       // Etiqueta eje X
@@ -963,7 +1043,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let glFrame = 0;
 
     function resizeGlitch() {
-      glitchCanvas.width  = glitchCanvas.offsetWidth  || glitchCanvas.parentElement.offsetWidth;
+      glitchCanvas.width  = glitchCanvas.offsetWidth || glitchCanvas.parentElement.offsetWidth;
       glitchCanvas.height = glitchCanvas.offsetHeight || 300;
     }
     resizeGlitch();
