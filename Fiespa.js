@@ -420,13 +420,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!target) return;
 
       setTimeout(() => {
-        // Walk offsetParent chain for true document-absolute position,
-        // avoiding getBoundingClientRect which depends on current scroll/layout state.
-        let absTop = 0, el = target;
-        while (el) { absTop += el.offsetTop; el = el.offsetParent; }
-        const header = document.querySelector("header");
-        const headerOffset = header ? header.offsetHeight + 8 : 0;
-        window.scrollTo({ top: Math.max(0, absTop - headerOffset), behavior: "smooth" });
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
         history.replaceState(null, "", href);
       }, 100);
     });

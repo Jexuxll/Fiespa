@@ -2053,6 +2053,11 @@ footer li {
         transform: none;
     }
 
+    /* Offset for sticky header when navigating to anchor IDs */
+    #Info, #Planning, #Propuestas, #Invitados, #Ubicacion, #Playlist, #Inicio {
+        scroll-margin-top: 74px;
+    }
+
     .nav-links {
         display: none !important;
         flex-direction: column;
