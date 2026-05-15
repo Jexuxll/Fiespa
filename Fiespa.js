@@ -446,6 +446,7 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("click", (e) => {
       const href = link.getAttribute("href") || "";
       const isHashLink = href.startsWith("#") && href.length > 1;
+      const target = isHashLink ? document.querySelector(href) : null;
 
       if (isHashLink) e.preventDefault();
 
@@ -454,12 +455,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!isHashLink) return;
 
-      setTimeout(() => {
-        // Native hash navigation — works on all mobile browsers including iOS Safari.
-        // Clear hash first so the browser always re-scrolls even if hash is unchanged.
-        if (location.hash === href) history.replaceState(null, "", location.pathname);
-        location.href = href;
-      }, 100);
+      if (!target) {
+        history.pushState(null, "", href);
+        return;
+      }
+
+      // Scroll explicitly instead of relying on hash navigation, which can fail on some viewport/browser combinations.
+      target.scrollIntoView({ behavior: "auto", block: "start" });
+
+      if (location.hash === href) {
+        history.replaceState(null, "", `${location.pathname}${location.search}`);
+      }
+
+      history.pushState(null, "", href);
     });
   });
 });
