@@ -416,18 +416,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!isHashLink) return;
 
-      // Resolve by id first to avoid selector edge-cases and scroll after menu collapse.
-      const targetId = href.slice(1);
-      const target = document.getElementById(targetId) || document.querySelector(href);
+      const target = document.getElementById(href.slice(1));
       if (!target) return;
 
       setTimeout(() => {
+        // Walk offsetParent chain for true document-absolute position,
+        // avoiding getBoundingClientRect which depends on current scroll/layout state.
+        let absTop = 0, el = target;
+        while (el) { absTop += el.offsetTop; el = el.offsetParent; }
         const header = document.querySelector("header");
         const headerOffset = header ? header.offsetHeight + 8 : 0;
-        const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-        window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+        window.scrollTo({ top: Math.max(0, absTop - headerOffset), behavior: "smooth" });
         history.replaceState(null, "", href);
-      }, 20);
+      }, 100);
     });
   });
 });
