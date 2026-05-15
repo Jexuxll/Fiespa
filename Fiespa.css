@@ -1870,6 +1870,70 @@ footer li {
         --banner-pad-x: 10px;
     }
 
+    header {
+        padding: 10px 16px;
+        position: relative;
+    }
+
+    nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .hamburger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        z-index: 20;
+    }
+
+    nav.open .hamburger {
+        top: 10px;
+        transform: none;
+    }
+
+    #Info, #Planning, #Propuestas, #Invitados, #Ubicacion, #Playlist, #Inicio {
+        scroll-margin-top: 74px;
+    }
+
+    .nav-links {
+        display: none !important;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        order: 3;
+    }
+
+    nav.open .nav-links {
+        display: flex !important;
+    }
+
+    nav a {
+        font-size: 19px;
+        padding: 10px 20px;
+        display: block;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .logo {
+        flex: 1 0 0;
+        justify-content: center;
+        display: flex;
+    }
+
+    .logoFIESPA {
+        height: 55px;
+    }
+
     .banner h1 {
         font-size: 130px;
         width: 820px;
