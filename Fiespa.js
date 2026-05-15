@@ -409,22 +409,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const href = link.getAttribute("href") || "";
       const isHashLink = href.startsWith("#") && href.length > 1;
 
-      if (isHashLink) {
-        e.preventDefault();
-      }
+      if (isHashLink) e.preventDefault();
 
       nav.classList.remove("open");
       hamburger.textContent = "\u2630";
 
       if (!isHashLink) return;
 
-      // Scroll after menu collapse so anchor alignment is consistent on mobile.
-      requestAnimationFrame(() => {
-        const target = document.querySelector(href);
-        if (!target) return;
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Resolve by id first to avoid selector edge-cases and scroll after menu collapse.
+      const targetId = href.slice(1);
+      const target = document.getElementById(targetId) || document.querySelector(href);
+      if (!target) return;
+
+      setTimeout(() => {
+        const header = document.querySelector("header");
+        const headerOffset = header ? header.offsetHeight + 8 : 0;
+        const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+        window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
         history.replaceState(null, "", href);
-      });
+      }, 20);
     });
   });
 });
