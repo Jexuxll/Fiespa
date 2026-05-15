@@ -187,20 +187,44 @@ document.addEventListener("DOMContentLoaded", () => {
   const slides = Array.from(track.children);
   if (slides.length === 0) return;
 
-  const visible = 3;
+  let index = 0;
 
-  // Clonamos los primeros slides para loop infinito
-  for (let i = 0; i < visible; i++) {
-    const clone = slides[i].cloneNode(true);
-    clone.classList.add("clone");
-    track.appendChild(clone);
+  function currentSlides() {
+    return Array.from(track.children).filter(slide => !slide.classList.contains("clone"));
   }
 
-  let index = 0;
+  function visibleSlides() {
+    const viewport = document.querySelector(".carousel-viewport");
+    const firstSlide = currentSlides()[0];
+    if (!viewport || !firstSlide) return 1;
+
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+    const slideSize = firstSlide.offsetWidth + gap;
+    if (!slideSize) return 1;
+
+    return Math.max(1, Math.round((viewport.clientWidth + gap) / slideSize));
+  }
+
+  function syncClones() {
+    track.querySelectorAll(".clone").forEach(clone => clone.remove());
+
+    const originals = currentSlides();
+    const cloneCount = Math.min(visibleSlides(), originals.length);
+    for (let i = 0; i < cloneCount; i++) {
+      const clone = originals[i].cloneNode(true);
+      clone.classList.add("clone");
+      track.appendChild(clone);
+    }
+
+    if (index >= originals.length) {
+      index = 0;
+    }
+  }
 
   function slideWidth() {
     const gap = parseFloat(getComputedStyle(track).gap) || 0;
-    return slides[0].offsetWidth + gap;
+    const firstSlide = currentSlides()[0];
+    return (firstSlide?.offsetWidth || 0) + gap;
   }
 
   function move(animated = true) {
@@ -209,19 +233,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function advance() {
+    const originals = currentSlides();
+    if (originals.length === 0) return;
+
     index++;
     move();
-    if (index === slides.length) {
+    if (index === originals.length) {
       setTimeout(() => { index = 0; move(false); }, 650);
     }
   }
 
   function retreat() {
+    const originals = currentSlides();
+    if (originals.length === 0) return;
+
     if (index > 0) {
       index--;
       move();
     } else {
-      index = slides.length - 1;
+      index = originals.length - 1;
       move(false);
       requestAnimationFrame(() => requestAnimationFrame(() => {
         index--;
@@ -229,6 +259,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }));
     }
   }
+
+  syncClones();
+  move(false);
 
   const autoplay = setInterval(advance, 4000);
 
@@ -252,6 +285,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (Math.abs(diff) > 50) { clearInterval(autoplay); diff > 0 ? advance() : retreat(); }
     }, { passive: true });
   }
+
+  window.addEventListener("resize", () => {
+    syncClones();
+    move(false);
+  }, { passive: true });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -337,7 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   L.marker([lat, lng], { icon: markerIcon })
     .addTo(mapa)
-    .bindPopup("FIESPA 2026<br>Camino de la Bascula, 1")
+    .bindPopup("FIESPA 2026<br>Camino de la Bascula, 2")
     .openPopup();
 
   setTimeout(() => mapa.invalidateSize(), 120);
