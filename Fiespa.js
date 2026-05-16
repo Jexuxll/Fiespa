@@ -470,8 +470,27 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      closeMenu();
+    link.addEventListener("click", (e) => {
+      const href = (link.getAttribute("href") || "").trim();
+      const isHashLink = href.startsWith("#") && href.length > 1;
+      if (!isHashLink) {
+        closeMenu();
+        return;
+      }
+
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+
+      if (location.hash === href) {
+        history.replaceState(null, "", `${location.pathname}${location.search}`);
+      }
+      history.pushState(null, "", href);
+
+      // Delay menu close slightly so mobile browsers don't cancel the anchor interaction.
+      setTimeout(closeMenu, 60);
     });
   });
 

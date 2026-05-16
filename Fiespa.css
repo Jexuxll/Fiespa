@@ -1901,6 +1901,7 @@ footer li {
         justify-content: center;
         align-items: center;
         position: relative;
+        z-index: 40;
     }
 
     .hamburger {
@@ -1933,6 +1934,9 @@ footer li {
 
     nav.open .nav-links {
         display: flex !important;
+        position: relative;
+        z-index: 45;
+        background-color: #010F01;
     }
 
     nav a {
@@ -2144,6 +2148,7 @@ footer li {
         justify-content: center;
         align-items: center;
         position: relative;
+        z-index: 40;
     }
 
     .hamburger {
@@ -2177,6 +2182,9 @@ footer li {
 
     nav.open .nav-links {
         display: flex !important;
+        position: relative;
+        z-index: 45;
+        background-color: #010F01;
     }
 
     nav a {
