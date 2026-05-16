@@ -447,17 +447,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const href = link.getAttribute("href") || "";
       const isHashLink = href.startsWith("#") && href.length > 1;
 
-      if (!isHashLink) {
-        nav.classList.remove("open");
-        hamburger.textContent = "\u2630";
-        return;
-      }
+      nav.classList.remove("open");
+      hamburger.textContent = "\u2630";
 
-      // Let the browser handle hash navigation natively for consistent mobile behavior.
+      if (!isHashLink) return;
+
+      // Prevent native scroll: the menu was open (taller layout) so native hash scroll
+      // would land in the wrong position. Close the menu first, let the layout settle,
+      // then scroll to the correct element respecting its scroll-margin-top.
+      e.preventDefault();
       setTimeout(() => {
-        nav.classList.remove("open");
-        hamburger.textContent = "\u2630";
-      }, 60);
+        const target = document.querySelector(href);
+        if (target) {
+          history.pushState(null, "", href);
+          target.scrollIntoView({ behavior: "auto", block: "start" });
+        }
+      }, 100);
     });
   });
 });
