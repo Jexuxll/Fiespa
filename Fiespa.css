@@ -1970,6 +1970,13 @@ footer li {
         --size-event: 23px;
     }
 
+    .Info p,
+    .Ubicacion p,
+    .Playlist p,
+    .Propuestas p {
+        font-size: calc(var(--size-body-text) + 5px);
+    }
+
     .slide-overlay {
         padding: 28px 20px;
     }
