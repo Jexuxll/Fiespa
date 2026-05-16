@@ -1974,7 +1974,20 @@ footer li {
     .Ubicacion p,
     .Playlist p,
     .Propuestas p {
-        font-size: calc(var(--size-body-text) + 5px);
+        font-size: calc(var(--size-body-text) + 3px);
+    }
+
+    .Info ul,
+    .Info li {
+        font-size: calc(var(--size-body-text) + 3px);
+    }
+
+    .Info ul {
+        width: fit-content;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
     }
 
     .slide-overlay {
