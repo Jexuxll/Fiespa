@@ -1913,8 +1913,8 @@ footer li {
     }
 
     nav.open .hamburger {
-        top: 10px;
-        transform: none;
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     #Info, #Planning, #Propuestas, #Invitados, #Ubicacion, #Playlist, #Inicio {
@@ -2156,8 +2156,8 @@ footer li {
     }
 
     nav.open .hamburger {
-        top: 10px;
-        transform: none;
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     /* Offset for sticky header when navigating to anchor IDs */
