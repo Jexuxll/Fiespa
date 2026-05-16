@@ -801,8 +801,11 @@ main {
   border-radius: 20px;
   overflow: hidden;
     cursor: default;
-    --card-name-size: clamp(30px, 4.7vw, var(--size-slide-name));
-    --card-desc-size: clamp(12px, 1.45vw, var(--size-slide-desc));
+    --card-height: 680px;
+    --card-name-ratio: 0.1294;
+    --card-desc-ratio: 0.0412;
+    --card-name-size: clamp(24px, calc(var(--card-height) * var(--card-name-ratio)), 88px);
+    --card-desc-size: clamp(10px, calc(var(--card-height) * var(--card-desc-ratio)), 28px);
 }
 
 /* ---- HOVER: versión SENCILLA (nombre arriba, desc abajo, solo esas bandas con fondo) ----
@@ -1581,6 +1584,7 @@ footer li {
 
     .carousel-track .slide-item {
         height: 620px;
+        --card-height: 620px;
     }
 
     .propuestas-field textarea {
@@ -1726,6 +1730,7 @@ footer li {
 
     .carousel-track .slide-item {
         height: 560px;
+        --card-height: 560px;
     }
 
     .slide-overlay {
@@ -2000,6 +2005,7 @@ footer li {
     .carousel-track .slide-item {
         flex: 0 0 calc((100% - 24px) / 2);
         height: 580px;
+        --card-height: 580px;
     }
 
     .Ubicacion {
@@ -2287,8 +2293,7 @@ footer li {
     .carousel-track .slide-item {
         flex: 0 0 100%;
         height: clamp(356px, calc(124vw - 40px), 680px);
-        --card-name-size: clamp(26px, 9.2vw, var(--size-slide-name));
-        --card-desc-size: clamp(12px, calc(var(--card-name-size) * 0.34), calc(var(--card-name-size) * 0.40));
+        --card-height: clamp(356px, calc(124vw - 40px), 680px);
     }
 
     .slide-overlay {
@@ -2321,7 +2326,7 @@ footer li {
     }
 
     .planning-controls-mobile {
-        display: flex;
+        display: none;
         justify-content: center;
         gap: 40px;
         margin-top: 16px;
@@ -2454,11 +2459,6 @@ footer li {
 
     .slide-overlay {
         padding: 18px 14px;
-    }
-
-    .carousel-track .slide-item {
-        --card-name-size: clamp(22px, 10vw, var(--size-slide-name));
-        --card-desc-size: clamp(11px, calc(var(--card-name-size) * 0.36), calc(var(--card-name-size) * 0.42));
     }
 
     .slide-nombre {
