@@ -801,6 +801,8 @@ main {
   border-radius: 20px;
   overflow: hidden;
     cursor: default;
+    --card-name-size: clamp(30px, 4.7vw, var(--size-slide-name));
+    --card-desc-size: clamp(12px, 1.45vw, var(--size-slide-desc));
 }
 
 /* ---- HOVER: versión SENCILLA (nombre arriba, desc abajo, solo esas bandas con fondo) ----
@@ -992,22 +994,25 @@ main {
   position: relative;
   z-index: 2;
   color: #39FF14;
-    font-size: var(--size-slide-name);
+    font-size: var(--card-name-size);
   font-weight: bold;
   margin-bottom: 0;
   font-family: 'SGK075', 'Courier New', monospace;
   text-shadow: 0 0 16px #39FF14, 0 0 40px #39FF1460;
   text-transform: uppercase;
+    line-height: 1.05;
 }
 
 .slide-desc {
   position: relative;
   z-index: 2;
   color: #9AFF9A;
-    font-size: var(--size-slide-desc);
-  line-height: 1.5;
+    font-size: var(--card-desc-size);
+    line-height: 1.42;
   font-weight: bold;
   text-shadow: 0 0 8px #39FF14;
+    max-width: 24ch;
+    margin: 0 auto;
 }
 
 /* Mapa styles */
@@ -1723,6 +1728,14 @@ footer li {
         height: 560px;
     }
 
+    .slide-overlay {
+        padding: 32px 22px;
+    }
+
+    .slide-desc {
+        max-width: 26ch;
+    }
+
     .planning-carrusel {
         padding: 0 34px;
         gap: 14px;
@@ -1944,12 +1957,16 @@ footer li {
         --size-countdown: 61px;
         --size-section-title: 66px;
         --size-body-text: 20px;
-        --size-slide-name: 54px;
-        --size-slide-desc: 17px;
+        --size-slide-name: 46px;
+        --size-slide-desc: 16px;
         --size-day-number: 80px;
         --size-day-name: 33px;
         --size-time: 20px;
         --size-event: 23px;
+    }
+
+    .slide-overlay {
+        padding: 28px 20px;
     }
 
     .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2 {
@@ -2270,6 +2287,21 @@ footer li {
     .carousel-track .slide-item {
         flex: 0 0 100%;
         height: clamp(356px, calc(124vw - 40px), 680px);
+        --card-name-size: clamp(26px, 9.2vw, var(--size-slide-name));
+        --card-desc-size: clamp(12px, calc(var(--card-name-size) * 0.34), calc(var(--card-name-size) * 0.40));
+    }
+
+    .slide-overlay {
+        padding: 24px 16px;
+    }
+
+    .slide-nombre {
+        line-height: 1.04;
+    }
+
+    .slide-desc {
+        line-height: 1.36;
+        max-width: 30ch;
     }
 }
 
@@ -2418,6 +2450,23 @@ footer li {
 
     .Info {
         padding: 35px 15px;
+    }
+
+    .slide-overlay {
+        padding: 18px 14px;
+    }
+
+    .carousel-track .slide-item {
+        --card-name-size: clamp(22px, 10vw, var(--size-slide-name));
+        --card-desc-size: clamp(11px, calc(var(--card-name-size) * 0.36), calc(var(--card-name-size) * 0.42));
+    }
+
+    .slide-nombre {
+        line-height: 1.03;
+    }
+
+    .slide-desc {
+        line-height: 1.34;
     }
 
     .hora {

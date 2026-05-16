@@ -4,10 +4,10 @@
 // ==============================
 const invitados = [
     { foto: "Fiespa'26/fotos/pablo4.jpeg",  nombre: "Pablo Sánchez", desc: "El arquitecto del caos, el creador de la Fiespa" },
-    { foto: "Fiespa'26/fotos/nuri4.jpeg", nombre: "Nuria", desc: "Escucha como si estuvieras revelando el secreto de la vida cada vez que hablas" },
-    { foto: "Fiespa'26/fotos/ait2.jpeg", nombre: "Aitor", desc: "Se mata en el gym, pero luego no te deja salir sin haber comido bien" },
+    { foto: "Fiespa'26/fotos/nuri4.jpeg", nombre: "Nuria", desc: "La ripense más gamberra. Siempre dispuesta a echar una mano" },
+    { foto: "Fiespa'26/fotos/ait2.jpeg", nombre: "Aitor", desc: "Se mata en el gym, para luego no dejarte salir sin haber comido bien" },
     { foto: "Fiespa'26/fotos/pablor2.jpeg", nombre: "Pablo Romero", desc: "El alma de la fiesta, siempre el último en irse" },
-    { foto: "Fiespa'26/fotos/jesus2.jpeg",  nombre: "Jesús", desc: "Más tranquilo que un martes por la mañana" },
+    { foto: "Fiespa'26/fotos/jesus2.jpeg",  nombre: "Jesús", desc: "El enviado de Dios. Al que eligen para todos los juegos. Dejad que los niños se acerquen a él" },
     { foto: "Fiespa'26/fotos/cris1.jpeg", nombre: "Cris", desc: "También conocida como CRISPY CHICKEN o ECOCRIS, siempre sabe lo que hay que hacer" },
     { foto: "Fiespa'26/fotos/henry1.jpeg",  nombre: "Enrique", desc: "Cualquier conversación puede acabar en una guerra que no conocías" },
     { foto: "Fiespa'26/fotos/helen3.jpeg",  nombre: "Elena", desc: "El terremoto de Méndez Alvaro, siempre tiene alguna locura bajo la manga" },
