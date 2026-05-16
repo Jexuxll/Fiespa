@@ -14,6 +14,11 @@ const invitados = [
     { foto: "Fiespa'26/fotos/almu1.jpeg", nombre: "Almu", desc: "Si necesitas una lloradita, estará dispuesta a ayudarte sin cita" },
 ];
 
+const carouselAutoplayBridge = {
+  pause: null,
+  resume: null,
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     const track = document.querySelector(".carousel-track");
     if (!track) return;
@@ -100,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (touchLikeDevice) {
         let flipTimer;
 
-        const unflipItem = (item) => {
+        const unflipItem = (item, { resumeIfNone = false } = {}) => {
           const img = item.querySelector(":scope > img");
           const overlay = item.querySelector(":scope > .slide-overlay");
 
@@ -114,11 +119,17 @@ document.addEventListener("DOMContentLoaded", () => {
           setTimeout(() => {
             if (img) img.style.transition = "";
             if (overlay) overlay.style.transition = "";
+
+            if (resumeIfNone && !track.querySelector(".slide-item.is-flipped")) {
+              carouselAutoplayBridge.resume?.();
+            }
           }, 450);
         };
 
-        const clearFlip = () => {
-          track.querySelectorAll(".slide-item.is-flipped").forEach(unflipItem);
+        const clearFlip = ({ resumeAutoplay = true } = {}) => {
+          track.querySelectorAll(".slide-item.is-flipped").forEach(item => {
+            unflipItem(item, { resumeIfNone: resumeAutoplay });
+          });
         };
 
         track.addEventListener("click", (e) => {
@@ -126,19 +137,20 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!item) return;
 
           const wasFlipped = item.classList.contains("is-flipped");
-          clearFlip();
+          clearFlip({ resumeAutoplay: wasFlipped });
 
           if (!wasFlipped) {
             item.classList.add("is-flipped");
+            carouselAutoplayBridge.pause?.();
             clearTimeout(flipTimer);
             flipTimer = setTimeout(() => {
-              unflipItem(item);
-            }, 3000);
+              unflipItem(item, { resumeIfNone: true });
+            }, 6000);
           }
         });
 
         document.addEventListener("touchstart", (e) => {
-          if (!track.contains(e.target)) clearFlip();
+          if (!track.contains(e.target)) clearFlip({ resumeAutoplay: true });
         }, { passive: true });
       }
 });
@@ -263,15 +275,40 @@ document.addEventListener("DOMContentLoaded", () => {
   syncClones();
   move(false);
 
-  const autoplay = setInterval(advance, 6000);
+  let autoplayId = setInterval(advance, 6000);
+  let autoplayStoppedByUser = false;
+
+  const pauseAutoplay = () => {
+    if (autoplayStoppedByUser) return;
+    if (autoplayId) {
+      clearInterval(autoplayId);
+      autoplayId = null;
+    }
+  };
+
+  const resumeAutoplay = () => {
+    if (autoplayStoppedByUser || autoplayId) return;
+    autoplayId = setInterval(advance, 6000);
+  };
+
+  const stopAutoplayByUser = () => {
+    autoplayStoppedByUser = true;
+    if (autoplayId) {
+      clearInterval(autoplayId);
+      autoplayId = null;
+    }
+  };
+
+  carouselAutoplayBridge.pause = pauseAutoplay;
+  carouselAutoplayBridge.resume = resumeAutoplay;
 
   document.getElementById("carouselNext")?.addEventListener("click", () => {
-    clearInterval(autoplay);
+    stopAutoplayByUser();
     advance();
   });
 
   document.getElementById("carouselPrev")?.addEventListener("click", () => {
-    clearInterval(autoplay);
+    stopAutoplayByUser();
     retreat();
   });
 
@@ -282,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
     vp.addEventListener("touchstart", (e) => { swipeX = e.changedTouches[0].clientX; }, { passive: true });
     vp.addEventListener("touchend", (e) => {
       const diff = swipeX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) { clearInterval(autoplay); diff > 0 ? advance() : retreat(); }
+      if (Math.abs(diff) > 50) { stopAutoplayByUser(); diff > 0 ? advance() : retreat(); }
     }, { passive: true });
   }
 
