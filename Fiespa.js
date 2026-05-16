@@ -446,28 +446,18 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("click", (e) => {
       const href = link.getAttribute("href") || "";
       const isHashLink = href.startsWith("#") && href.length > 1;
-      const target = isHashLink ? document.querySelector(href) : null;
 
-      if (isHashLink) e.preventDefault();
-
-      nav.classList.remove("open");
-      hamburger.textContent = "\u2630";
-
-      if (!isHashLink) return;
-
-      if (!target) {
-        history.pushState(null, "", href);
+      if (!isHashLink) {
+        nav.classList.remove("open");
+        hamburger.textContent = "\u2630";
         return;
       }
 
-      // Scroll explicitly instead of relying on hash navigation, which can fail on some viewport/browser combinations.
-      target.scrollIntoView({ behavior: "auto", block: "start" });
-
-      if (location.hash === href) {
-        history.replaceState(null, "", `${location.pathname}${location.search}`);
-      }
-
-      history.pushState(null, "", href);
+      // Let the browser handle hash navigation natively for consistent mobile behavior.
+      setTimeout(() => {
+        nav.classList.remove("open");
+        hamburger.textContent = "\u2630";
+      }, 60);
     });
   });
 });
