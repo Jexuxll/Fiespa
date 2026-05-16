@@ -1913,8 +1913,8 @@ footer li {
     }
 
     nav.open .hamburger {
-        top: 50%;
-        transform: translateY(-50%);
+        top: 10px;
+        transform: none;
     }
 
     #Info, #Planning, #Propuestas, #Invitados, #Ubicacion, #Playlist, #Inicio {
@@ -1959,7 +1959,7 @@ footer li {
     }
 
     :root {
-        --size-countdown: 61px;
+        --size-countdown: 56px;
         --size-section-title: 66px;
         --size-body-text: 20px;
         --size-slide-name: 46px;
@@ -2118,7 +2118,7 @@ footer li {
     }
 
     :root {
-        --size-countdown: 41px;
+        --size-countdown: 39px;
         --size-section-title: 49px;
         --size-body-text: 15px;
         --size-slide-name: 42px;
@@ -2156,8 +2156,8 @@ footer li {
     }
 
     nav.open .hamburger {
-        top: 50%;
-        transform: translateY(-50%);
+        top: 10px;
+        transform: none;
     }
 
     /* Offset for sticky header when navigating to anchor IDs */
@@ -2453,7 +2453,7 @@ footer li {
     }
 
     :root {
-        --size-countdown: 24px;
+        --size-countdown: 31px;
         --size-section-title: 41px;
         --size-body-text: 13px;
         --size-slide-name: 34px;
