@@ -437,7 +437,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const nav = document.querySelector("nav");
   if (!hamburger || !nav) return;
 
-  let lastTouchTs = 0;
+  let lastHamburgerTouchTs = 0;
+
+  const isMobileNav = () => window.matchMedia("(max-width: 900px)").matches;
 
   const closeMenu = () => {
     nav.classList.remove("open");
@@ -454,54 +456,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   hamburger.setAttribute("aria-expanded", "false");
 
-  const onTap = (el, handler) => {
-    el.addEventListener("touchend", (e) => {
-      e.preventDefault();
-      lastTouchTs = Date.now();
-      handler(e);
-    }, { passive: false });
+  hamburger.addEventListener("touchend", (e) => {
+    if (!isMobileNav()) return;
+    e.preventDefault();
+    lastHamburgerTouchTs = Date.now();
+    toggleMenu();
+  }, { passive: false });
 
-    el.addEventListener("click", (e) => {
-      if (Date.now() - lastTouchTs < 450) return;
-      handler(e);
-    });
-  };
-
-  onTap(hamburger, () => {
+  hamburger.addEventListener("click", () => {
+    if (!isMobileNav()) return;
+    if (Date.now() - lastHamburgerTouchTs < 450) return;
     toggleMenu();
   });
 
-  nav.querySelectorAll("a").forEach(link => {
-    onTap(link, (e) => {
-      const href = link.getAttribute("href") || "";
-      const isHashLink = href.startsWith("#") && href.length > 1;
-      const target = isHashLink ? document.querySelector(href) : null;
-
-      if (isHashLink) e.preventDefault();
-
+  nav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
       closeMenu();
-
-      if (!isHashLink) return;
-
-      if (!target) {
-        history.pushState(null, "", href);
-        return;
-      }
-
-      requestAnimationFrame(() => {
-        target.scrollIntoView({ behavior: "auto", block: "start" });
-      });
-
-      if (location.hash === href) {
-        history.replaceState(null, "", `${location.pathname}${location.search}`);
-      }
-
-      history.pushState(null, "", href);
     });
   });
 
+  document.addEventListener("click", (e) => {
+    if (!isMobileNav() || !nav.classList.contains("open")) return;
+    if (nav.contains(e.target)) return;
+    closeMenu();
+  });
+
   document.addEventListener("touchstart", (e) => {
-    if (!nav.classList.contains("open")) return;
+    if (!isMobileNav() || !nav.classList.contains("open")) return;
     if (nav.contains(e.target)) return;
     closeMenu();
   }, { passive: true });
