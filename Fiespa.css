@@ -65,6 +65,7 @@ nav a {
     padding: 14px clamp(10px, 2vw, 50px);
     transition: all 0.3s ease;
     letter-spacing: 0.05em;
+    touch-action: manipulation;
 }
 
 nav a:hover {
@@ -1517,6 +1518,7 @@ footer li {
     transition: color 0.3s ease, transform 0.2s ease;
     flex-shrink: 0;
     text-shadow: 0 0 6px #39FF14;
+    touch-action: manipulation;
 }
 
 .hamburger:hover {

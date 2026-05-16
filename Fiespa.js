@@ -437,21 +437,49 @@ document.addEventListener("DOMContentLoaded", () => {
   const nav = document.querySelector("nav");
   if (!hamburger || !nav) return;
 
-  hamburger.addEventListener("click", () => {
+  let lastTouchTs = 0;
+
+  const closeMenu = () => {
+    nav.classList.remove("open");
+    hamburger.textContent = "\u2630";
+    hamburger.setAttribute("aria-expanded", "false");
+  };
+
+  const toggleMenu = () => {
     nav.classList.toggle("open");
-    hamburger.textContent = nav.classList.contains("open") ? "\u2715" : "\u2630";
+    const isOpen = nav.classList.contains("open");
+    hamburger.textContent = isOpen ? "\u2715" : "\u2630";
+    hamburger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  };
+
+  hamburger.setAttribute("aria-expanded", "false");
+
+  const onTap = (el, handler) => {
+    el.addEventListener("touchend", (e) => {
+      e.preventDefault();
+      lastTouchTs = Date.now();
+      handler(e);
+    }, { passive: false });
+
+    el.addEventListener("click", (e) => {
+      if (Date.now() - lastTouchTs < 450) return;
+      handler(e);
+    });
+  };
+
+  onTap(hamburger, () => {
+    toggleMenu();
   });
 
   nav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", (e) => {
+    onTap(link, (e) => {
       const href = link.getAttribute("href") || "";
       const isHashLink = href.startsWith("#") && href.length > 1;
       const target = isHashLink ? document.querySelector(href) : null;
 
       if (isHashLink) e.preventDefault();
 
-      nav.classList.remove("open");
-      hamburger.textContent = "\u2630";
+      closeMenu();
 
       if (!isHashLink) return;
 
@@ -460,8 +488,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Scroll explicitly instead of relying on hash navigation, which can fail on some viewport/browser combinations.
-      target.scrollIntoView({ behavior: "auto", block: "start" });
+      requestAnimationFrame(() => {
+        target.scrollIntoView({ behavior: "auto", block: "start" });
+      });
 
       if (location.hash === href) {
         history.replaceState(null, "", `${location.pathname}${location.search}`);
@@ -470,6 +499,23 @@ document.addEventListener("DOMContentLoaded", () => {
       history.pushState(null, "", href);
     });
   });
+
+  document.addEventListener("touchstart", (e) => {
+    if (!nav.classList.contains("open")) return;
+    if (nav.contains(e.target)) return;
+    closeMenu();
+  }, { passive: true });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    closeMenu();
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 900) {
+      closeMenu();
+    }
+  }, { passive: true });
 });
 
 // ==========================
