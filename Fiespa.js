@@ -429,55 +429,6 @@ window.addEventListener("load", () => {
 });
 
 // ==========================
-// HAMBURGER MENU
-// ==========================
-
-document.addEventListener("DOMContentLoaded", () => {
-  const hamburger = document.getElementById("hamburger");
-  const nav = document.querySelector("nav");
-  if (!hamburger || !nav) return;
-
-  let mobileMenu = nav.querySelector(".mobile-menu");
-  if (!mobileMenu) {
-    mobileMenu = document.createElement("div");
-    mobileMenu.className = "mobile-menu";
-
-    const seenLinks = new Set();
-    nav.querySelectorAll(".nav-links a").forEach(link => {
-      const href = link.getAttribute("href") || "";
-      const text = (link.textContent || "").trim();
-      const key = `${text}|${href}`;
-      if (seenLinks.has(key)) return;
-      seenLinks.add(key);
-
-      const clonedLink = link.cloneNode(true);
-      mobileMenu.appendChild(clonedLink);
-    });
-
-    nav.appendChild(mobileMenu);
-  }
-
-  hamburger.setAttribute("aria-expanded", "false");
-
-  hamburger.addEventListener("click", () => {
-    nav.classList.toggle("open");
-    const isOpen = nav.classList.contains("open");
-    hamburger.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    hamburger.textContent = nav.classList.contains("open") ? "\u2715" : "\u2630";
-  });
-
-  // The open nav-links are position:absolute (overlay), so the page layout never shifts
-  // when the menu opens/closes. Native browser href navigation works correctly on all devices.
-  nav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
-      nav.classList.remove("open");
-      hamburger.setAttribute("aria-expanded", "false");
-      hamburger.textContent = "\u2630";
-    });
-  });
-});
-
-// ==========================
 // PROPUESTAS FORM
 // ==========================
 

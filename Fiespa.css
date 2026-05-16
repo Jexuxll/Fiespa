@@ -1909,7 +1909,7 @@ footer li {
     }
 
     .hamburger {
-        display: flex;
+        display: none !important;
         align-items: center;
         justify-content: center;
         position: absolute;
@@ -1941,7 +1941,7 @@ footer li {
     }
 
     .mobile-menu {
-        display: none;
+        display: none !important;
         flex-direction: column;
         align-items: center;
         width: 100%;
@@ -1949,7 +1949,7 @@ footer li {
     }
 
     nav.open .mobile-menu {
-        display: flex;
+        display: none !important;
         position: relative;
         z-index: 45;
         background-color: #010F01;
@@ -2168,7 +2168,7 @@ footer li {
     }
 
     .hamburger {
-        display: flex;
+        display: none !important;
         align-items: center;
         justify-content: center;
         position: absolute;
@@ -2201,7 +2201,7 @@ footer li {
     }
 
     .mobile-menu {
-        display: none;
+        display: none !important;
         flex-direction: column;
         align-items: center;
         width: 100%;
@@ -2209,7 +2209,7 @@ footer li {
     }
 
     nav.open .mobile-menu {
-        display: flex;
+        display: none !important;
         position: absolute;
         top: 100%;
         left: 0;
