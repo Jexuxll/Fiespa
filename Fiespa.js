@@ -438,8 +438,25 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!hamburger || !nav) return;
 
   let lastHamburgerTouchTs = 0;
+  let lastNavLinkTouchTs = 0;
 
   const isMobileNav = () => window.matchMedia("(max-width: 900px)").matches;
+
+  const resolveNavTarget = (href) => {
+    const sectionMap = {
+      "#Info": ".Info",
+      "#Planning": ".Planning",
+      "#Propuestas": ".Propuestas",
+      "#Invitados": ".carousel",
+      "#Ubicacion": ".Ubicacion",
+      "#Playlist": ".Playlist"
+    };
+    const sectionSelector = sectionMap[href];
+    if (sectionSelector) {
+      return document.querySelector(sectionSelector);
+    }
+    return document.querySelector(href);
+  };
 
   const closeMenu = () => {
     nav.classList.remove("open");
@@ -470,7 +487,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", (e) => {
+    const activateLink = (e) => {
       const href = (link.getAttribute("href") || "").trim();
       const isHashLink = href.startsWith("#") && href.length > 1;
       if (!isHashLink) {
@@ -479,9 +496,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       e.preventDefault();
-      const target = document.querySelector(href);
+      const target = resolveNavTarget(href);
       if (target) {
-        target.scrollIntoView({ behavior: "auto", block: "start" });
+        target.scrollIntoView({ behavior: "auto", block: "start", inline: "nearest" });
       }
 
       if (location.hash === href) {
@@ -491,6 +508,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Delay menu close slightly so mobile browsers don't cancel the anchor interaction.
       setTimeout(closeMenu, 60);
+    };
+
+    link.addEventListener("touchend", (e) => {
+      if (!isMobileNav()) return;
+      e.preventDefault();
+      lastNavLinkTouchTs = Date.now();
+      activateLink(e);
+    }, { passive: false });
+
+    link.addEventListener("click", (e) => {
+      if (Date.now() - lastNavLinkTouchTs < 450) return;
+      activateLink(e);
     });
   });
 
