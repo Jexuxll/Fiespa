@@ -101,6 +101,10 @@ main {
     flex-wrap: nowrap;
 }
 
+.mobile-menu {
+    display: none;
+}
+
 .Info h2, .Playlist h2, .Ubicacion h2, .Planning h2, .carousel h2, .Propuestas h2 {
     text-align: center;
     color: #39FF14;
@@ -1933,7 +1937,19 @@ footer li {
     }
 
     nav.open .nav-links {
-        display: flex !important;
+        display: none !important;
+    }
+
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        order: 3;
+    }
+
+    nav.open .mobile-menu {
+        display: flex;
         position: relative;
         z-index: 45;
         background-color: #010F01;
@@ -2181,7 +2197,19 @@ footer li {
     }
 
     nav.open .nav-links {
-        display: flex !important;
+        display: none !important;
+    }
+
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        order: 3;
+    }
+
+    nav.open .mobile-menu {
+        display: flex;
         position: absolute;
         top: 100%;
         left: 0;
