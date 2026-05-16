@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
   syncClones();
   move(false);
 
-  const autoplay = setInterval(advance, 4000);
+  const autoplay = setInterval(advance, 6000);
 
   document.getElementById("carouselNext")?.addEventListener("click", () => {
     clearInterval(autoplay);
