@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
             clearTimeout(flipTimer);
             flipTimer = setTimeout(() => {
               unflipItem(item);
-            }, 1800);
+            }, 2500);
           }
         });
 
