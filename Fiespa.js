@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const resumeAutoplay = () => {
     if (autoplayStoppedByUser || autoplayId) return;
-    autoplayId = setInterval(advance, 6000);
+    autoplayId = setInterval(advance, 5000);
   };
 
   const stopAutoplayByUser = () => {
