@@ -2182,7 +2182,10 @@ footer li {
 
     nav.open .nav-links {
         display: flex !important;
-        position: relative;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
         z-index: 45;
         background-color: #010F01;
     }

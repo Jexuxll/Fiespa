@@ -442,27 +442,12 @@ document.addEventListener("DOMContentLoaded", () => {
     hamburger.textContent = nav.classList.contains("open") ? "\u2715" : "\u2630";
   });
 
+  // The open nav-links are position:absolute (overlay), so the page layout never shifts
+  // when the menu opens/closes. Native browser href navigation works correctly on all devices.
   nav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", (e) => {
-      const href = link.getAttribute("href") || "";
-      const isHashLink = href.startsWith("#") && href.length > 1;
-
+    link.addEventListener("click", () => {
       nav.classList.remove("open");
       hamburger.textContent = "\u2630";
-
-      if (!isHashLink) return;
-
-      // Prevent native scroll: the menu was open (taller layout) so native hash scroll
-      // would land in the wrong position. Close the menu first, let the layout settle,
-      // then scroll to the correct element respecting its scroll-margin-top.
-      e.preventDefault();
-      setTimeout(() => {
-        const target = document.querySelector(href);
-        if (target) {
-          history.pushState(null, "", href);
-          target.scrollIntoView({ behavior: "auto", block: "start" });
-        }
-      }, 100);
     });
   });
 });
