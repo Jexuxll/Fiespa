@@ -166,7 +166,7 @@ const MENSAJES_DECISION = {
 // ==========================
 // CONTADOR REGRESIVO
 // ==========================
-const fechaObjetivo = new Date("2026-05-22 23:59:59").getTime();
+const fechaObjetivo = new Date("2026-05-22T18:00:00+02:00").getTime();
 
 const intervalo = setInterval(() => {
   const ahora = new Date().getTime();
