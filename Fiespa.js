@@ -10,8 +10,9 @@ const invitados = [
     { foto: "Fiespa'26/fotos/jesus2.jpeg",  nombre: "Jesús", desc: "El enviado de Dios. Al que eligen para todos los juegos. Dejad que los niños se acerquen a él" },
     { foto: "Fiespa'26/fotos/cris1.jpeg", nombre: "Cris", desc: "También conocida como CRISPY CHICKEN o ECOCRIS, siempre sabe lo que hay que hacer" },
     { foto: "Fiespa'26/fotos/henry1.jpeg",  nombre: "Enrique", desc: "Cualquier conversación puede acabar en una guerra que no conocías" },
-    { foto: "Fiespa'26/fotos/helen3.jpeg",  nombre: "Elena", desc: "El terremoto de Méndez Alvaro, siempre tiene alguna locura bajo la manga" },
+    { foto: "Fiespa'26/fotos/helen3.jpeg",  nombre: "Elena", desc: "El terremoto de Méndez Álvaro, siempre tiene alguna locura bajo la manga" },
     { foto: "Fiespa'26/fotos/almu1.jpeg", nombre: "Almu", desc: "Si necesitas una lloradita, estará dispuesta a ayudarte sin cita" },
+    { foto: "Fiespa'26/fotos/german1.jpeg", nombre: "Germán", desc: "Ha conseguido sobrevivir todos estos años para venir a la Fiespa" },
 ];
 
 const carouselAutoplayBridge = {
